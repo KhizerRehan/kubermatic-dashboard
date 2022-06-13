@@ -25,7 +25,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatOptionModule, MatRippleModule} from '@angular/material/core';
-import {MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS} from '@angular/material/dialog';
+import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -63,7 +63,8 @@ import {AKSCredentialsComponent} from '@shared/components/add-external-cluster-d
 import {CustomCredentialsComponent} from '@shared/components/add-external-cluster-dialog/steps/credentials/provider/custom/component';
 import {EKSCredentialsComponent} from '@shared/components/add-external-cluster-dialog/steps/credentials/provider/eks/component';
 import {GKECredentialsComponent} from '@shared/components/add-external-cluster-dialog/steps/credentials/provider/gke/component';
-import {ProviderStepComponent} from '@shared/components/add-external-cluster-dialog/steps/provider/component';
+import {ExternalClusterProviderStepComponent} from '@shared/components/add-external-cluster-dialog/steps/external-provider/component';
+import {SelectExternalClusterProviderComponent} from '@shared/components/select-external-cluster-provider/component';
 import {AutocompleteComponent} from '@shared/components/autocomplete/component';
 import {CIDRFormComponent} from '@shared/components/cidr-form/component';
 import {ClusterFromTemplateComponent} from '@shared/components/cluster-from-template/content/component';
@@ -213,7 +214,8 @@ const components = [
   SaveClusterTemplateDialogComponent,
   SizeFormatterPipe,
   NumberStepperComponent,
-  ProviderStepComponent,
+  ExternalClusterProviderStepComponent,
+  SelectExternalClusterProviderComponent,
   CredentialsStepComponent,
   CustomCredentialsComponent,
   AKSCredentialsComponent,
