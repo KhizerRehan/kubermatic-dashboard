@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -29,11 +29,10 @@ enum Controls {
 })
 export class SelectExternalClusterProviderComponent implements OnInit, OnDestroy {
   private readonly _unsubscribe = new Subject<void>();
-  readonly controls = Controls;
-  readonly externalProviders = [ExternalClusterProvider.AKS, ExternalClusterProvider.EKS, ExternalClusterProvider.GKE];
-
+  readonly Controls = Controls;
   form: FormGroup;
-  @Output() externalProvider = new EventEmitter<string>();
+  @Input() providers: ExternalClusterProvider[] = [];
+  @Output() providerChange = new EventEmitter<string>();
 
   constructor(private readonly _builder: FormBuilder) {}
 
@@ -57,6 +56,6 @@ export class SelectExternalClusterProviderComponent implements OnInit, OnDestroy
     this.form
       .get(Controls.Provider)
       .valueChanges.pipe(takeUntil(this._unsubscribe))
-      .subscribe(provider => this.externalProvider.next(provider));
+      .subscribe(provider => this.providerChange.emit(provider));
   }
 }

@@ -18,7 +18,7 @@ import {SimplePresetList} from '@shared/entity/preset';
 import {BaseFormValidator} from '@shared/validators/base-form.validator';
 import _ from 'lodash';
 import {filter, map, switchMap, takeUntil} from 'rxjs/operators';
-import {ExternalClusterService} from '@shared/components/add-external-cluster-dialog/steps/service';
+import {ExternalClusterService} from '@core/services/external-cluster';
 
 export enum Controls {
   Preset = 'name',

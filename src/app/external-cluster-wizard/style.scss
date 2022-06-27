@@ -12,8 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-[buttonid] {
-  margin-left: 10px;
+.button-navigation {
+  margin-top: 30px;
+
+  button {
+    margin-left: 10px;
+  }
+
+  km-button {
+    margin-left: 10px;
+  }
 }
 
 mat-card {
