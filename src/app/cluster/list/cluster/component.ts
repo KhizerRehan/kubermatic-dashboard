@@ -46,12 +46,24 @@ import {MachineDeploymentService} from '@core/services/machine-deployment';
 import {getClusterHealthStatus, HealthStatus} from '@shared/utils/health-status';
 import {QuotaWidgetComponent} from '../../../dynamic/enterprise/quotas/quota-widget/component';
 
+enum Column {
+  Status = 'status',
+  Name = 'name',
+  Provider = 'provider',
+  Version = 'version',
+  Region = 'region',
+  Created = 'created',
+  Actions = 'actions',
+}
+
 @Component({
   selector: 'km-cluster-list',
   templateUrl: './template.html',
   styleUrls: ['./style.scss'],
 })
 export class ClusterListComponent implements OnInit, OnChanges, OnDestroy {
+  readonly Column = Column;
+  readonly displayedColumns: Column[] = Object.values(Column);
   private _unsubscribe: Subject<void> = new Subject<void>();
   private _selectedProject = {} as Project;
   private _user: Member;
@@ -64,7 +76,6 @@ export class ClusterListComponent implements OnInit, OnChanges, OnDestroy {
   nodeDC: Datacenter[] = [];
   health: Health[] = [];
   machineDeployments: MachineDeployment[][] = [];
-  displayedColumns: string[] = ['status', 'name', 'labels', 'provider', 'region', 'created', 'actions'];
   dataSource = new MatTableDataSource<Cluster>();
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;

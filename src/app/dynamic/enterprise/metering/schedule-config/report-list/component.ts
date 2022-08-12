@@ -56,7 +56,7 @@ export class MeteringReportListComponent implements OnInit {
   reports: Report[] = [];
 
   readonly column = Column;
-  readonly displayedColumns: string[] = Object.values(Column);
+  displayedColumns: string[] = Object.values(Column);
 
   dataSource = new MatTableDataSource<Report>();
   @ViewChild(MatSort, {static: true}) sort: MatSort;
