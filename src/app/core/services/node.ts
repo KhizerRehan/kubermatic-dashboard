@@ -18,12 +18,15 @@ import {DialogDataInput, DialogDataOutput, NodeDataDialogComponent} from '@app/n
 import {NotificationService} from '@core/services/notification';
 import {ConfirmationDialogComponent} from '@shared/components/confirmation-dialog/component';
 import {Cluster} from '@shared/entity/cluster';
-import {MachineDeployment, MachineDeploymentPatch} from '@shared/entity/machine-deployment';
+import {
+  MachineDeployment,
+  MachineDeploymentPatch,
+  OPERATING_SYSTEM_PROFILE_ANNOTATION,
+} from '@shared/entity/machine-deployment';
 import {NodeData} from '@shared/model/NodeSpecChange';
 import {Observable, of} from 'rxjs';
 import {catchError, filter, mergeMap, switchMap, take} from 'rxjs/operators';
 import {MachineDeploymentService} from '@core/services/machine-deployment';
-import {OPERATING_SYSTEM_PROFILE_ANNOTATION} from '@shared/entity/machine-deployment';
 
 @Injectable()
 export class NodeService {
@@ -61,7 +64,7 @@ export class NodeService {
     patch.spec.template.operatingSystem.ubuntu = patch.spec.template.operatingSystem.ubuntu || null;
     patch.spec.template.operatingSystem.centos = patch.spec.template.operatingSystem.centos || null;
     patch.spec.template.operatingSystem.flatcar = patch.spec.template.operatingSystem.flatcar || null;
-    patch.spec.template.operatingSystem.rockylinux = patch.spec.template.operatingSystem.rockylinux || null;
+    patch.spec.template.operatingSystem.rockyLinux = patch.spec.template.operatingSystem.rockyLinux || null;
     patch.spec.template.operatingSystem.sles = patch.spec.template.operatingSystem.sles || null;
     patch.spec.template.operatingSystem.amzn2 = patch.spec.template.operatingSystem.amzn2 || null;
 
