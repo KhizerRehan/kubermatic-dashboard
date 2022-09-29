@@ -45,3 +45,6 @@ cypress/plugins/cy-ts-preprocessor.js
 
 # GO
 /vendor
+
+# Compodoc Documentation
+/documentation
