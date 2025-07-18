@@ -2390,3 +2390,41 @@ type BackupStorageLocationBucketObject struct {
 // BackupStorageLocationBucketObjectList represents an array of Backup Storage Location Bucket Objects.
 // swagger:model BackupStorageLocationBucketObjectList
 type BackupStorageLocationBucketObjectList []BackupStorageLocationBucketObject
+
+// KubeLBTenant represents a kubeLB tenant
+// swagger:model KubeLBTenant
+type KubeLBTenant struct {
+	apiv1.ObjectMeta `json:",inline"`
+	Spec       KubeLBTenantSpec   `json:"spec"`
+	Status     KubeLBTenantStatus `json:"status,omitempty"`
+}
+
+// KubeLBTenantSpec represents the specification of a kubeLB tenant
+// swagger:model KubeLBTenantSpec
+type KubeLBTenantSpec struct {
+	LoadBalancer *LoadBalancerConfig `json:"loadBalancer,omitempty"`
+	Ingress     *IngressConfig      `json:"ingress,omitempty"`
+	GatewayAPI  *GatewayAPIConfig   `json:"gatewayAPI,omitempty"`
+}
+
+// KubeLBTenantStatus represents the status of a kubeLB tenant
+// swagger:model KubeLBTenantStatus
+type KubeLBTenantStatus struct {
+	// Phase represents the current phase of the tenant
+	Phase string `json:"phase,omitempty"`
+}
+
+// LoadBalancerConfig represents the load balancer configuration for a kubeLB tenant
+type LoadBalancerConfig struct {
+	// Add any specific load balancer configuration fields here
+}
+
+// IngressConfig represents the ingress configuration for a kubeLB tenant
+type IngressConfig struct {
+	// Add any specific ingress configuration fields here
+}
+
+// GatewayAPIConfig represents the gateway API configuration for a kubeLB tenant
+type GatewayAPIConfig struct {
+	// Add any specific gateway API configuration fields here
+}

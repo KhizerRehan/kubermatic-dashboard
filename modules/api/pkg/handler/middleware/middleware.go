@@ -419,6 +419,23 @@ func GetClusterProvider(ctx context.Context, request interface{}, seedsGetter pr
 		return getClusterProviderByClusterID(ctx, seeds, clusterProviderGetter, getter.GetSeedCluster().ClusterID)
 	}
 
+	// For dashboard endpoints, we can have an empty seed name
+	// In this case, we just need to get any valid seed to get the privileged cluster provider
+	if getter.GetSeedCluster().SeedName == "" {
+		// Find the first valid seed
+		for _, seed := range seeds {
+			if seed.Status.Phase != kubermaticv1.SeedInvalidPhase {
+				clusterProvider, err := clusterProviderGetter(seed)
+				if err != nil {
+					continue
+				}
+				ctx = context.WithValue(ctx, datacenterContextKey, seed)
+				return clusterProvider, ctx, nil
+			}
+		}
+		return nil, ctx, utilerrors.NewNotFound("seed", "no valid seed found")
+	}
+
 	seed, exists := seeds[getter.GetSeedCluster().SeedName]
 	if !exists {
 		return nil, ctx, utilerrors.NewNotFound("seed", getter.GetSeedCluster().SeedName)

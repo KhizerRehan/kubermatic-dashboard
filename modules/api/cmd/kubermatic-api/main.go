@@ -72,6 +72,7 @@ import (
 	kubernetesprovider "k8c.io/dashboard/v2/pkg/provider/kubernetes"
 	"k8c.io/dashboard/v2/pkg/serviceaccount"
 	kuberneteswatcher "k8c.io/dashboard/v2/pkg/watcher/kubernetes"
+	kubelbv1alpha1 "k8c.io/kubelb/api/kubelb.k8c.io/v1alpha1"
 	kubermaticv1 "k8c.io/kubermatic/sdk/v2/apis/kubermatic/v1"
 	"k8c.io/kubermatic/v2/pkg/cluster/client"
 	"k8c.io/kubermatic/v2/pkg/controller/master-controller-manager/rbac"
@@ -148,6 +149,10 @@ func main() {
 
 	if err := kubeovnv1.AddToScheme(scheme.Scheme); err != nil {
 		log.Fatalw("failed to register scheme", zap.Stringer("api", kubeovnv1.SchemeGroupVersion), zap.Error(err))
+	}
+
+	if err := kubelbv1alpha1.AddToScheme(scheme.Scheme); err != nil {
+		log.Fatalw("failed to register scheme", zap.Stringer("api", kubelbv1alpha1.SchemeGroupVersion), zap.Error(err))
 	}
 
 	masterCfg, err := ctrlruntime.GetConfig()
