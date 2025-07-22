@@ -30,14 +30,8 @@ func listAllKubeLBTenants(_ context.Context, _ interface{}, _ provider.UserInfoG
 	return nil, nil
 }
 
-func listProjectKubeLBTenants(_ context.Context, _ interface{}, _ provider.UserInfoGetter, _ provider.SeedsGetter, _ provider.ProjectProvider, _ provider.PrivilegedProjectProvider, _ provider.ClusterProviderGetter) (interface{}, error) {
-	return nil, nil
-}
 
 func DecodeListAllKubeLBTenantsReq(_ context.Context, _ *http.Request) (interface{}, error) {
 	return nil, nil
 }
 
-func DecodeListProjectKubeLBTenantsReq(_ context.Context, _ *http.Request) (interface{}, error) {
-	return nil, nil
-}

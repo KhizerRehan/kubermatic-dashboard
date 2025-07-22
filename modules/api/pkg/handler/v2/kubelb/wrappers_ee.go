@@ -26,21 +26,12 @@ import (
 	"k8c.io/dashboard/v2/pkg/provider"
 )
 
-
 // New Dashboard Endpoints
 func listAllKubeLBTenants(ctx context.Context, request interface{}, userInfoGetter provider.UserInfoGetter, seedsGetter provider.SeedsGetter) (interface{}, error) {
 	return kubelb.ListAllKubeLBTenants(ctx, request, userInfoGetter, seedsGetter)
 }
 
-func listProjectKubeLBTenants(ctx context.Context, request interface{}, userInfoGetter provider.UserInfoGetter, seedsGetter provider.SeedsGetter, projectProvider provider.ProjectProvider, privilegedProjectProvider provider.PrivilegedProjectProvider, clusterProviderGetter provider.ClusterProviderGetter) (interface{}, error) {
-	return kubelb.ListProjectKubeLBTenants(ctx, request, userInfoGetter, seedsGetter, projectProvider, privilegedProjectProvider, clusterProviderGetter)
-}
-
-
 func DecodeListAllKubeLBTenantsReq(c context.Context, r *http.Request) (interface{}, error) {
 	return kubelb.DecodeListAllKubeLBTenantsReq(c, r)
 }
 
-func DecodeListProjectKubeLBTenantsReq(c context.Context, r *http.Request) (interface{}, error) {
-	return kubelb.DecodeListProjectKubeLBTenantsReq(c, r)
-}

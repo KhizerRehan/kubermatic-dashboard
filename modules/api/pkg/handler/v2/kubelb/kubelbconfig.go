@@ -23,7 +23,6 @@ import (
 	"k8c.io/dashboard/v2/pkg/provider"
 )
 
-
 // ListAllKubeLBTenantsEndpoint returns a list of all KubeLB tenants across all seeds/datacenters (admin panel)
 func ListAllKubeLBTenantsEndpoint(userInfoGetter provider.UserInfoGetter, seedsGetter provider.SeedsGetter) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
@@ -31,10 +30,4 @@ func ListAllKubeLBTenantsEndpoint(userInfoGetter provider.UserInfoGetter, seedsG
 	}
 }
 
-// ListProjectKubeLBTenantsEndpoint returns a list of KubeLB tenants for a specific project
-func ListProjectKubeLBTenantsEndpoint(userInfoGetter provider.UserInfoGetter, seedsGetter provider.SeedsGetter, projectProvider provider.ProjectProvider, privilegedProjectProvider provider.PrivilegedProjectProvider, clusterProviderGetter provider.ClusterProviderGetter) endpoint.Endpoint {
-	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		return listProjectKubeLBTenants(ctx, request, userInfoGetter, seedsGetter, projectProvider, privilegedProjectProvider, clusterProviderGetter)
-	}
-}
 

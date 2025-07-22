@@ -52,7 +52,7 @@ import (
 	"k8c.io/dashboard/v2/pkg/handler/v2/gatekeeperconfig"
 	groupprojectbinding "k8c.io/dashboard/v2/pkg/handler/v2/group-project-binding"
 	ipampool "k8c.io/dashboard/v2/pkg/handler/v2/ipampool"
-	"k8c.io/dashboard/v2/pkg/handler/v2/kubelb"
+	kubelb "k8c.io/dashboard/v2/pkg/handler/v2/kubelb"
 	kubernetesdashboard "k8c.io/dashboard/v2/pkg/handler/v2/kubernetes-dashboard"
 	policybinding "k8c.io/dashboard/v2/pkg/handler/v2/kyverno/policy-binding"
 	policytemplate "k8c.io/dashboard/v2/pkg/handler/v2/kyverno/policy-template"
@@ -1765,16 +1765,12 @@ func (r Routing) RegisterV2(mux *mux.Router, oidcKubeConfEndpoint bool) {
 	mux.Methods(http.MethodDelete).
 		Path("/projects/{project_id}/clusters/{cluster_id}/policybindings/{binding_name}").
 		Handler(r.deleteKyvernoPolicyBinding())
-	// Defines KubeLB Dashboard endpoints
-	// Admin Panel: List all tenants across all seeds/datacenters
+
+	// Define a set of endpoints for KubeLB tenants management
 	mux.Methods(http.MethodGet).
 		Path("/seeds/{seed_name}/kubelb/tenants").
 		Handler(r.listSeedKubeLBTenants())
 
-	// Project Panel: List tenants for a specific project
-	mux.Methods(http.MethodGet).
-		Path("/projects/{project_id}/kubelb/tenants").
-		Handler(r.listProjectKubeLBTenants())
 
 }
 
@@ -1795,6 +1791,7 @@ func (r Routing) listSeedKubeLBTenants() http.Handler {
 		endpoint.Chain(
 			middleware.TokenVerifier(r.tokenVerifiers, r.userProvider),
 			middleware.UserSaver(r.userProvider),
+			middleware.SetClusterProvider(r.clusterProviderGetter, r.seedsGetter),
 			middleware.SetPrivilegedClusterProvider(r.clusterProviderGetter, r.seedsGetter),
 		)(kubelb.ListAllKubeLBTenantsEndpoint(r.userInfoGetter, r.seedsGetter)),
 		kubelb.DecodeListAllKubeLBTenantsReq,
@@ -1803,30 +1800,6 @@ func (r Routing) listSeedKubeLBTenants() http.Handler {
 	)
 }
 
-// swagger:route GET /api/v2/projects/{project_id}/kubelb/tenants project listProjectKubeLBTenants
-//
-// Lists KubeLB tenants for a specific project
-//
-//	Produces:
-//	- application/json
-//
-//	Responses:
-//	  default: errorResponse
-//	  200: []KubeLBTenant
-//	  401: empty
-//	  403: empty
-func (r Routing) listProjectKubeLBTenants() http.Handler {
-	return httptransport.NewServer(
-		endpoint.Chain(
-			middleware.TokenVerifier(r.tokenVerifiers, r.userProvider),
-			middleware.UserSaver(r.userProvider),
-			middleware.SetPrivilegedClusterProvider(r.clusterProviderGetter, r.seedsGetter),
-		)(kubelb.ListProjectKubeLBTenantsEndpoint(r.userInfoGetter, r.seedsGetter, r.projectProvider, r.privilegedProjectProvider, r.clusterProviderGetter)),
-		kubelb.DecodeListProjectKubeLBTenantsReq,
-		handler.EncodeJSON,
-		r.defaultServerOptions()...,
-	)
-}
 
 
 // swagger:route GET /api/v2/projects/{project_id}/providers/aws/sizes project listProjectAWSSizes
@@ -11346,6 +11319,7 @@ func (r Routing) listSeedStatus() http.Handler {
 
 // Define endpoints to manage kyverno policies
 //
+// swagger:route GET /api/v2/policytemplates admin listPolicyTemplate
 //
 //	List all policy templates, If query parameter `project_id` is set then the endpoint will return only the policy templates that are associated with the project. Only available in Kubermatic Enterprise Edition
 //
@@ -11368,7 +11342,6 @@ func (r Routing) listKyvernoPolicyTemplates() http.Handler {
 		r.defaultServerOptions()...,
 	)
 }
-
 
 // swagger:route GET /api/v2/policytemplates/{template_name} admin getPolicyTemplate
 //
@@ -11578,7 +11551,6 @@ func (r Routing) patchKyvernoPolicyBinding() http.Handler {
 		r.defaultServerOptions()...,
 	)
 }
-
 
 // swagger:route DELETE /api/v2/projects/{project_id}/clusters/{cluster_id}/policybindings/{binding_name} project deletePolicyBinding
 //

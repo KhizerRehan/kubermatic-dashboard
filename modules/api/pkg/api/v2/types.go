@@ -23,6 +23,7 @@ import (
 	velerov1 "github.com/vmware-tanzu/velero/pkg/apis/velero/v1"
 
 	apiv1 "k8c.io/dashboard/v2/pkg/api/v1"
+	kubelbv1alpha1 "k8c.io/kubelb/api/ee/kubelb.k8c.io/v1alpha1"
 	appskubermaticv1 "k8c.io/kubermatic/sdk/v2/apis/apps.kubermatic/v1"
 	kubermaticv1 "k8c.io/kubermatic/sdk/v2/apis/kubermatic/v1"
 	ksemver "k8c.io/kubermatic/sdk/v2/semver"
@@ -2395,36 +2396,5 @@ type BackupStorageLocationBucketObjectList []BackupStorageLocationBucketObject
 // swagger:model KubeLBTenant
 type KubeLBTenant struct {
 	apiv1.ObjectMeta `json:",inline"`
-	Spec       KubeLBTenantSpec   `json:"spec"`
-	Status     KubeLBTenantStatus `json:"status,omitempty"`
-}
-
-// KubeLBTenantSpec represents the specification of a kubeLB tenant
-// swagger:model KubeLBTenantSpec
-type KubeLBTenantSpec struct {
-	LoadBalancer *LoadBalancerConfig `json:"loadBalancer,omitempty"`
-	Ingress     *IngressConfig      `json:"ingress,omitempty"`
-	GatewayAPI  *GatewayAPIConfig   `json:"gatewayAPI,omitempty"`
-}
-
-// KubeLBTenantStatus represents the status of a kubeLB tenant
-// swagger:model KubeLBTenantStatus
-type KubeLBTenantStatus struct {
-	// Phase represents the current phase of the tenant
-	Phase string `json:"phase,omitempty"`
-}
-
-// LoadBalancerConfig represents the load balancer configuration for a kubeLB tenant
-type LoadBalancerConfig struct {
-	// Add any specific load balancer configuration fields here
-}
-
-// IngressConfig represents the ingress configuration for a kubeLB tenant
-type IngressConfig struct {
-	// Add any specific ingress configuration fields here
-}
-
-// GatewayAPIConfig represents the gateway API configuration for a kubeLB tenant
-type GatewayAPIConfig struct {
-	// Add any specific gateway API configuration fields here
+	Spec  kubelbv1alpha1.TenantSpec `json:",inline"`
 }

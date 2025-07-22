@@ -73,25 +73,26 @@ require (
 	google.golang.org/api v0.232.0
 	gopkg.in/yaml.v3 v3.0.1
 	k8c.io/kubeone v1.10.0
-	k8c.io/kubermatic/sdk/v2 v2.28.1
-	k8c.io/kubermatic/v2 v2.28.1
+	k8c.io/kubermatic/sdk/v2 v2.28.1-0.20250701095505-c72660d9df3c
+	k8c.io/kubermatic/v2 v2.28.1-0.20250701095505-c72660d9df3c
 	k8c.io/machine-controller/sdk v1.62.0
 	k8c.io/operating-system-manager v1.7.2
 	k8c.io/reconciler v0.5.0
-	k8s.io/api v0.33.1
-	k8s.io/apiextensions-apiserver v0.33.1
-	k8s.io/apimachinery v0.33.1
-	k8s.io/apiserver v0.33.1
+	k8s.io/api v0.33.3
+	k8s.io/apiextensions-apiserver v0.33.3
+	k8s.io/apimachinery v0.33.3
+	k8s.io/apiserver v0.33.3
 	k8s.io/client-go v12.0.0+incompatible
-	k8s.io/code-generator v0.33.1
+	k8s.io/code-generator v0.33.3
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kubectl v0.33.0
 	k8s.io/metrics v0.33.0
-	k8s.io/utils v0.0.0-20250502105355-0f33e8f1c979
+	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
 	kubevirt.io/api v1.4.0
 	kubevirt.io/containerized-data-importer-api v1.62.0
+	sigs.k8s.io/controller-runtime v0.21.0
 	sigs.k8s.io/controller-tools v0.17.3
-	sigs.k8s.io/yaml v1.4.0
+	sigs.k8s.io/yaml v1.5.0
 )
 
 // follow repository deprecation
@@ -102,20 +103,19 @@ replace github.com/nutanix-cloud-native/prism-go-client => github.com/nutanix-cl
 
 replace k8s.io/kube-openapi => k8s.io/kube-openapi v0.0.0-20240903163716-9e1beecbcb38
 
-replace k8s.io/client-go => k8s.io/client-go v0.32.1
+replace k8s.io/client-go => k8s.io/client-go v0.33.3
 
 // Needs to be the same as https://github.com/kubermatic/kubermatic/blob/main/pkg/resources/resources.go#L643
 replace k8c.io/kubeone => k8c.io/kubeone v1.7.2
 
 replace github.com/theupdateframework/go-tuf/v2 => github.com/theupdateframework/go-tuf/v2 v2.0.2
 
-require (
-	k8c.io/kubelb v1.1.5
-	sigs.k8s.io/controller-runtime v0.20.4
-)
+replace k8c.io/kubelb => k8c.io/kubelb v1.1.2-0.20250722063420-7e4ef3d27c6d
+
+require k8c.io/kubelb v1.1.2
 
 require (
-	cel.dev/expr v0.24.0 // indirect
+	cel.dev/expr v0.23.1 // indirect
 	cloud.google.com/go/auth v0.16.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.6.0 // indirect
@@ -314,7 +314,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/pquerna/cachecontrol v0.2.0 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
-	github.com/prometheus/common v0.64.0 // indirect
+	github.com/prometheus/common v0.63.0 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
 	github.com/protocolbuffers/txtpbfmt v0.0.0-20250326144435-a5fe55684d52 // indirect
 	github.com/r3labs/diff v1.1.0 // indirect
@@ -372,6 +372,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.35.0 // indirect
 	go.step.sm/crypto v0.63.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
+	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	golang.org/x/crypto v0.38.0 // indirect
 	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6 // indirect
 	golang.org/x/mod v0.24.0 // indirect
@@ -383,10 +384,11 @@ require (
 	golang.org/x/time v0.11.0 // indirect
 	golang.org/x/tools v0.33.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20250528174236-200df99c418a // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250528174236-200df99c418a // indirect
-	google.golang.org/grpc v1.72.2 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20250505200425-f936aa4a68b2 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250505200425-f936aa4a68b2 // indirect
+	google.golang.org/grpc v1.73.0 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	gopkg.in/go-jose/go-jose.v2 v2.6.3 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
@@ -394,8 +396,9 @@ require (
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/validator.v2 v2.0.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	helm.sh/helm/v3 v3.14.3 // indirect
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.3.1 // indirect
-	k8s.io/component-base v0.33.1 // indirect
+	k8s.io/component-base v0.33.3 // indirect
 	k8s.io/gengo/v2 v2.0.0-20250207200755-1244d31929d7 // indirect
 	k8s.io/kube-aggregator v0.33.0 // indirect
 	k8s.io/kube-openapi v0.31.8 // indirect
