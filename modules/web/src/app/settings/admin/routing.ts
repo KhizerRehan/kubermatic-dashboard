@@ -74,6 +74,10 @@ const routes: Routes = [
         loadChildren: () => DynamicModule.KyvernoPolicies,
       },
       {
+        path: 'kubelb-tenants',
+        loadChildren: () => DynamicModule.KubeLBTenants,
+      },
+      {
         path: 'backupdestinations',
         loadChildren: () => import('./bucket-settings/module').then(m => m.AdminSettingsBucketSettingsModule),
       },

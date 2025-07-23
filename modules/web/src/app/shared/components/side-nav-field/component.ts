@@ -152,7 +152,8 @@ export class SideNavExpansionMenuComponent implements AfterViewChecked, OnInit {
       this.checkUrl(AdminPanelView.OPA) ||
       this.checkUrl(AdminPanelView.SeedConfiguration) ||
       this.checkUrl(AdminPanelView.Applications) ||
-      this.checkUrl(AdminPanelView.KyvernoPolicies)
+      this.checkUrl(AdminPanelView.KyvernoPolicies) ||
+      this.checkUrl(AdminPanelView.KubeLBTenants)
     );
   }
 

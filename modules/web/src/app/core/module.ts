@@ -82,6 +82,7 @@ import {AuthInterceptor, CheckTokenInterceptor, ErrorNotificationsInterceptor, L
 import {ClusterBackupService} from './services/cluster-backup';
 import {SSHKeyGuard} from './services/ssh-key/guard';
 import {KyvernoService} from './services/kyverno';
+import {TenantService} from './services/tenant';
 
 const components = [
   SidenavComponent,
@@ -150,6 +151,7 @@ const services = [
   DialogModeService,
   BaremetalService,
   KyvernoService,
+  TenantService,
 ];
 
 const interceptors = [

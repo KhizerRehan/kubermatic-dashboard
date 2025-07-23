@@ -169,6 +169,17 @@ limitations under the License.
           </a>
         </div>
       </div>
+
+      <div class="sub-menu-item"
+           *ngIf="isEnterpriseEdition"
+           routerLinkActive="active">
+        <div fxLayoutAlign="flex-start center">
+          <a [routerLink]="getRouterLink(adminPanelView.KubeLBTenants)"
+             fxLayoutAlign=" center">
+            <span>{{adminPanelViewDisplayName.KubeLBTenants}} </span>
+          </a>
+        </div>
+      </div>
     </ng-container>
 
     <ng-container *ngIf="isSidenavCollapsed">
@@ -229,6 +240,12 @@ limitations under the License.
         <span>{{adminPanelViewDisplayName.KyvernoPolicies}} </span>
         <span class="km-label-primary"
               matTooltip="Early access feature - still under development.">Beta</span>
+      </a>
+      <a fxLayoutAlign=" center"
+         routerLinkActive="active"
+         [routerLink]="getRouterLink(adminPanelView.KubeLBTenants)"
+         class="collapsed-sub-menu-item">
+        <span>{{adminPanelViewDisplayName.KubeLBTenants}}</span>
       </a>
     </ng-container>
   </km-side-nav-field>

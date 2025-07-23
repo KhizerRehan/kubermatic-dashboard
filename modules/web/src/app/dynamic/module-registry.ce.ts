@@ -24,5 +24,6 @@ export namespace DynamicModule {
   export const Group = import('./community/group/module').then(module => module.GroupModule);
   export const ClusterBackups = import('./community/cluster-backups/module').then(module => module.ClusterBackupsModule);
   export const KyvernoPolicies = import('./community/kyverno-policies/module').then(module => module.KyvernoPoliciesModule);
+  export const KubeLBTenants = import('./community/kubelb-tenants/module').then(module => module.KubeLBTenantsModule);
   export const isEnterpriseEdition = false;
 }

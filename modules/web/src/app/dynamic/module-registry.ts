@@ -31,5 +31,6 @@ export namespace DynamicModule {
   export const KyvernoPolicies = import('./enterprise/kyverno-policies/module').then(
     module => module.KyvernoPoliciesModule
   );
+  export const KubeLBTenants = import('./enterprise/kubelb-tenants/module').then(module => module.KubeLBTenantsModule);
   export const isEnterpriseEdition = true;
 }
