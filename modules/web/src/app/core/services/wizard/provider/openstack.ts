@@ -33,6 +33,7 @@ export class Openstack extends Provider {
   private readonly _tenantsUrl = `${this._newRestRoot}/projects/${this._projectID}/providers/openstack/tenants`;
   readonly securityGroupsUrl = `${this._newRestRoot}/projects/${this._projectID}/providers/openstack/securitygroups`;
   readonly networksUrl = `${this._newRestRoot}/projects/${this._projectID}/providers/openstack/networks`;
+  readonly memberSubnetsUrl = `${this._newRestRoot}/projects/${this._projectID}/providers/openstack/membersubnets`;
   readonly availabilityZonesUrl = `${this._newRestRoot}/projects/${this._projectID}/providers/openstack/availabilityzones`;
   readonly serverGroupsURL = `${this._newRestRoot}/projects/${this._projectID}/providers/openstack/servergroups`;
   private _usingApplicationCredentials = false;
@@ -271,6 +272,52 @@ export class Openstack extends Provider {
     }
 
     const url = `${this._newRestRoot}/projects/${this._projectID}/providers/openstack/subnets?network_id=${network}`;
+    return this._http.get<OpenstackSubnet[]>(url, {headers: this._headers});
+  }
+
+  memberSubnets(network: string, onLoadingCb: () => void = null): Observable<OpenstackSubnet[]> {
+    if (this._usingApplicationCredentials) {
+      this._setRequiredHeaders(
+        Openstack.Header.ApplicationCredentialID,
+        Openstack.Header.ApplicationCredentialSecret,
+        Openstack.Header.Datacenter
+      );
+
+      this._cleanupOptionalHeaders();
+    }
+
+    if (!this._hasRequiredHeaders() || !network) {
+      return EMPTY;
+    }
+
+    if (onLoadingCb) {
+      onLoadingCb();
+    }
+
+    const url = `${this.memberSubnetsUrl}?network_id=${network}`;
+    return this._http.get<OpenstackSubnet[]>(url, {headers: this._headers});
+  }
+
+  floatingSubnets(floatingNetworkId: string, onLoadingCb: () => void = null): Observable<OpenstackSubnet[]> {
+    if (this._usingApplicationCredentials) {
+      this._setRequiredHeaders(
+        Openstack.Header.ApplicationCredentialID,
+        Openstack.Header.ApplicationCredentialSecret,
+        Openstack.Header.Datacenter
+      );
+
+      this._cleanupOptionalHeaders();
+    }
+
+    if (!this._hasRequiredHeaders() || !floatingNetworkId) {
+      return EMPTY;
+    }
+
+    if (onLoadingCb) {
+      onLoadingCb();
+    }
+
+    const url = `${this._newRestRoot}/projects/${this._projectID}/providers/openstack/subnets?network_id=${floatingNetworkId}`;
     return this._http.get<OpenstackSubnet[]>(url, {headers: this._headers});
   }
 

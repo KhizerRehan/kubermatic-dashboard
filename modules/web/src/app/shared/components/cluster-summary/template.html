@@ -464,6 +464,16 @@ limitations under the License.
               <div key>Ingress Hostname Suffix</div>
               <div value>{{cluster.spec.cloud?.openstack.ingressHostnameSuffix}}</div>
             </km-property>
+              <km-property *ngIf="cluster.spec.cloud?.openstack.loadBalancerClasses?.length > 0">
+                <div key>LoadBalancer Classes</div>
+                <div value>
+                  <div fxFlex fxLayoutGap="8px">
+                    <span *ngFor="let lbClass of cluster.spec.cloud.openstack.loadBalancerClasses">
+                      {{lbClass.name}}
+                    </span>
+                  </div>
+                </div>
+              </km-property>
           </ng-container>
 
 

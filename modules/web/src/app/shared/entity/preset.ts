@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {Metadata} from '@shared/entity/common';
+import {LoadBalancerClass} from '@shared/entity/cluster';
 import {NodeProvider, NodeProviderConstants} from '@shared/model/NodeProviderConstants';
 import _ from 'lodash';
 
@@ -79,6 +80,7 @@ export class OpenstackAPIPreset {
   floatingIPPool?: string;
   routerID?: string;
   subnetID?: string;
+  loadBalancerClasses?: LoadBalancerClass[];
 }
 
 export class VMwareCloudDirectorAPIPreset {

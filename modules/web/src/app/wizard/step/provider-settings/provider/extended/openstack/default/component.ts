@@ -284,6 +284,8 @@ export class OpenstackProviderExtendedCredentialsComponent
       case Controls.IPv4SubnetID:
       case Controls.IPv6SubnetID:
         return this._canLoadSubnet() ? '' : 'Please enter your credentials and network first.';
+      default:
+        return '';
     }
   }
 

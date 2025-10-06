@@ -28,6 +28,7 @@ enum Controls {
   Credentials = 'credentials',
   EnableIngressHostname = 'enableIngressHostname',
   IngressHostnameSuffix = 'ingressHostnameSuffix',
+  LoadBalancerClasses = 'loadBalancerClasses',
 }
 
 @Component({
@@ -68,6 +69,7 @@ export class OpenstackProviderExtendedComponent extends BaseFormValidator implem
       [Controls.Credentials]: this._builder.control(''),
       [Controls.EnableIngressHostname]: this._builder.control(false),
       [Controls.IngressHostnameSuffix]: this._builder.control({value: '', disabled: true}),
+      [Controls.LoadBalancerClasses]: this._builder.control([]),
     });
 
     this.form
@@ -79,7 +81,8 @@ export class OpenstackProviderExtendedComponent extends BaseFormValidator implem
 
     merge(
       this.form.get(Controls.EnableIngressHostname).valueChanges,
-      this.form.get(Controls.IngressHostnameSuffix).valueChanges
+      this.form.get(Controls.IngressHostnameSuffix).valueChanges,
+      this.form.get(Controls.LoadBalancerClasses).valueChanges
     )
       .pipe(distinctUntilChanged())
       .pipe(takeUntil(this._unsubscribe))
@@ -92,12 +95,14 @@ export class OpenstackProviderExtendedComponent extends BaseFormValidator implem
   }
 
   private _getClusterEntity(): Cluster {
+    const loadBalancerClasses = this.form.get(Controls.LoadBalancerClasses).value;
     return {
       spec: {
         cloud: {
           openstack: {
             enableIngressHostname: this.form.get(Controls.EnableIngressHostname).value || null,
             ingressHostnameSuffix: this.form.get(Controls.IngressHostnameSuffix).value || null,
+            loadBalancerClasses: loadBalancerClasses?.length > 0 ? loadBalancerClasses : null,
           } as OpenstackCloudSpec,
         } as CloudSpec,
       } as ClusterSpec,

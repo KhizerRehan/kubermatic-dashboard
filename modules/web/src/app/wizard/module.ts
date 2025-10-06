@@ -17,6 +17,7 @@ import {ApplicationsStepComponent} from '@app/wizard/step/applications/component
 import {CiliumApplicationValuesDialogComponent} from '@app/wizard/step/cluster/cilium-application-values-dialog/component';
 import {BaremetalProviderBasicComponent} from '@app/wizard/step/provider-settings/provider/basic/baremetal/component';
 import {OpenstackProviderExtendedCredentialsComponent} from '@app/wizard/step/provider-settings/provider/extended/openstack/default/component';
+import {LoadBalancerClassesComponent} from '@app/wizard/step/provider-settings/provider/extended/openstack/loadbalancer-classes/component';
 import {OpenstackCredentialsTypeService} from '@app/wizard/step/provider-settings/provider/extended/openstack/service';
 import {WizardService} from '@core/services/wizard/wizard';
 import {SharedModule} from '@shared/module';
@@ -75,6 +76,7 @@ const components = [
   OpenstackProviderBasicComponent,
   OpenstackProviderExtendedComponent,
   OpenstackProviderExtendedCredentialsComponent,
+  LoadBalancerClassesComponent,
 
   VSphereProviderBasicComponent,
   ProviderExtendedComponent,

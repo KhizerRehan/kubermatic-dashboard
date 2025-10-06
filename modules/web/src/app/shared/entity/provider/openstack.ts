@@ -43,6 +43,7 @@ export class OpenstackSubnet {
   id: string;
   name: string;
   ipVersion: number;
+  tags?: string[];
 }
 
 export class OpenstackSecurityGroup {

@@ -1,0 +1,212 @@
+<!--
+Copyright 2025 The Kubermatic Kubernetes Platform contributors.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<km-expansion-panel expandLabel="LOADBALANCER CLASSES"
+                    collapseLabel="LOADBALANCER CLASSES">
+  <form [formGroup]="form"
+        fxLayout="column"
+        fxLayoutGap="15px">
+
+    <!-- Tree Structure for LoadBalancer Classes -->
+    <div formArrayName="loadBalancerClasses"
+         class="km-loadbalancer-tree-container">
+      <div *ngFor="let lbClass of loadBalancerClassesArray.controls; let i = index;"
+           [formGroupName]="i"
+           class="km-loadbalancer-tree-node">
+
+        <!-- Tree Node Header (Class Name + Controls) -->
+        <div class="km-tree-node-header"
+             fxLayout="row"
+             fxLayoutAlign="space-between center"
+             fxLayoutGap="10px">
+
+          <!-- Expandable Header with Class Name -->
+          <div class="km-pointer"
+               fxLayout="row"
+               fxLayoutAlign="start center"
+               fxLayoutGap="8px"
+               fxFlex
+               (click)="toggleClassExpansion(i)">
+            <i class="km-icon-mask km-tree-toggle-icon"
+               [ngClass]="isClassExpanded(i) ? 'km-icon-arrow-down' : 'km-icon-arrow-right'"></i>
+
+            <span class="km-class-name-text" *ngIf="lbClass.get('name').value">
+              {{lbClass.get('name').value}}
+            </span>
+          </div>
+
+          <!-- Remove Button -->
+          <button mat-icon-button
+                  type="button"
+                  color="warn"
+                  class="km-remove-class-btn"
+                  (click)="removeLoadBalancerClass(i)"
+                  [disabled]="!canRemove()"
+                  matTooltip="Remove LoadBalancer Class">
+            <i class="km-icon-mask km-icon-delete"></i>
+          </button>
+        </div>
+
+        <!-- Expandable Configuration Section -->
+        <div *ngIf="isClassExpanded(i)"
+             fxLayout="column"
+             fxLayoutGap="15px">
+          <!-- Name field (aligned with other fields) -->
+          <mat-form-field>
+            <mat-label>LoadBalancer Class Name</mat-label>
+            <input matInput
+                   formControlName="name"
+                   type="text"
+                   placeholder="e.g., default, internal, external"
+                   autocomplete="off"
+                   (blur)="onTouched()"
+                   (input)="onNameChange(i, $event.target.value)"
+                   required />
+            <mat-error *ngIf="lbClass.get('name').hasError('required')">
+              <strong>Name is required</strong>
+            </mat-error>
+            <mat-error *ngIf="lbClass.get('name').hasError('minlength')">
+              Name must be at least 1 character
+            </mat-error>
+            <mat-hint>Required field</mat-hint>
+          </mat-form-field>
+
+          <div formGroupName="config"
+               class="km-loadbalancer-config"
+               fxLayout="column"
+               fxLayoutGap="15px">
+            <!-- Floating Network Configuration -->
+            <km-combobox [required]="false"
+                       [grouped]="false"
+                       [options]="getFloatingNetworksForClass(i)"
+                       [hint]="'Network for floating IPs'"
+                       [formControlName]="'floatingNetworkID'"
+                       [label]="getFloatingNetworksLabel(i)"
+                       [valueFormatter]="getFloatingNetworkDisplayName.bind(this, i)"
+                       (changed)="onFloatingNetworkChange(i, $event)"
+                       inputLabel="Select floating network..."
+                       filterBy="name"
+                       selectBy="id">
+              <div *option="let network">{{network.name}} ({{network.id}})</div>
+            </km-combobox>
+
+            <km-combobox [required]="false"
+                       [grouped]="false"
+                       [options]="getFloatingSubnetsForClass(i)"
+                       [hint]="'Subnet for floating IPs (ID stored)'"
+                       [formControlName]="'floatingSubnetID'"
+                       [label]="getFloatingSubnetsLabel(i)"
+                       [valueFormatter]="getFloatingSubnetDisplayName.bind(this, i)"
+                       (changed)="onFloatingSubnetIDChange(i, $event)"
+                       inputLabel="Select floating subnet..."
+                       filterBy="name"
+                       selectBy="id">
+              <div *option="let subnet">{{subnet.name}} ({{subnet.id}})</div>
+            </km-combobox>
+
+            <km-combobox [required]="false"
+                       [grouped]="false"
+                       [options]="getFloatingSubnetsForClass(i)"
+                       [hint]="'Subnet for floating IPs (name stored)'"
+                       [formControlName]="'floatingSubnet'"
+                       [label]="getFloatingSubnetsLabel(i)"
+                       [valueFormatter]="getFloatingSubnetDisplayName.bind(this, i)"
+                       (changed)="onFloatingSubnetChange(i, $event)"
+                       inputLabel="Select floating subnet..."
+                       filterBy="name"
+                       selectBy="name">
+              <div *option="let subnet">{{subnet.name}} ({{subnet.id}})</div>
+            </km-combobox>
+
+            <mat-form-field>
+              <mat-label>Floating Subnet Tags</mat-label>
+              <mat-select formControlName="floatingSubnetTags"
+                        multiple
+                        panelClass="km-multiple-values-dropdown"
+                        disableOptionCentering
+                        (selectionChange)="onFloatingSubnetTagsChange(i, $event.value)">
+                <mat-option *ngFor="let tag of getFloatingSubnetTagsForClass(i)"
+                          [value]="tag">
+                  {{tag}}
+                </mat-option>
+              </mat-select>
+              <mat-hint>Tags for subnet used to create floating IP</mat-hint>
+            </mat-form-field>
+
+            <km-combobox [required]="false"
+                       [grouped]="false"
+                       [options]="getNetworksForClass(i)"
+                       [hint]="'Network for load balancer'"
+                       [formControlName]="'networkID'"
+                       [label]="getNetworksLabel(i)"
+                       [valueFormatter]="getNetworkDisplayName.bind(this, i)"
+                       (changed)="onNetworkChange(i, $event)"
+                       inputLabel="Select network..."
+                       filterBy="name"
+                       selectBy="id">
+              <div *option="let network">{{network.name}} ({{network.id}})</div>
+            </km-combobox>
+
+            <km-combobox [required]="false"
+                       [grouped]="false"
+                       [options]="getSubnetsForClass(i)"
+                       [hint]="'Subnet for load balancer'"
+                       [formControlName]="'subnetID'"
+                       [label]="getSubnetsLabel(i)"
+                       [valueFormatter]="getSubnetDisplayName.bind(this, i)"
+                       (changed)="onSubnetIDChange(i, $event)"
+                       inputLabel="Select subnet..."
+                       filterBy="name"
+                       selectBy="id">
+              <div *option="let subnet">{{subnet.name}} ({{subnet.id}})</div>
+            </km-combobox>
+
+            <km-combobox [required]="false"
+                       [grouped]="false"
+                       [options]="getMemberSubnetsForClass(i)"
+                       [hint]="'Subnet for load balancer members'"
+                       [formControlName]="'memberSubnetID'"
+                       [label]="getMemberSubnetsLabel(i)"
+                       [valueFormatter]="getMemberSubnetDisplayName.bind(this, i)"
+                       (changed)="onMemberSubnetIDChange(i, $event)"
+                       inputLabel="Select member subnet..."
+                       filterBy="name"
+                       selectBy="id">
+              <div *option="let subnet">{{subnet.name}} ({{subnet.id}})</div>
+            </km-combobox>
+          </div>
+        </div>
+         <hr />
+      </div>
+    </div>
+
+    <!-- Add button -->
+    <div fxLayout="row"
+         fxLayoutAlign="start center"
+         class="km-add-class-section">
+      <button mat-flat-button
+              type="button"
+              color="quaternary"
+              [disabled]="!canAddLoadBalancerClass()"
+              (click)="addLoadBalancerClass()"
+              [matTooltip]="!canAddLoadBalancerClass() ? 'Please provide a name for the current LoadBalancer Class before adding a new one' : 'Add a new LoadBalancer Class'">
+        <i class="km-icon-mask km-icon-add"
+           matButtonIcon></i>
+        <span>Add LoadBalancer Class</span>
+      </button>
+    </div>
+  </form>
+</km-expansion-panel>

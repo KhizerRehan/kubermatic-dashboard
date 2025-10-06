@@ -269,6 +269,7 @@ export class OpenstackCloudSpec extends ExtraCloudSpecOptions {
   ipv6SubnetPool: string;
   enableIngressHostname?: boolean;
   ingressHostnameSuffix?: string;
+  loadBalancerClasses?: LoadBalancerClass[];
 
   static isEmpty(spec: OpenstackCloudSpec): boolean {
     return _.difference(
@@ -278,8 +279,25 @@ export class OpenstackCloudSpec extends ExtraCloudSpecOptions {
   }
 
   private static getKeysToCompare(spec: ExtraCloudSpecOptions): string[] {
-    return Object.keys(spec).filter(key => key !== 'enableIngressHostname' && key !== 'ingressHostnameSuffix');
+    return Object.keys(spec).filter(
+      key => key !== 'enableIngressHostname' && key !== 'ingressHostnameSuffix' && key !== 'loadBalancerClasses'
+    );
   }
+}
+
+export class LoadBalancerClass {
+  name: string;
+  config: LoadBalancerClassConfig;
+}
+
+export class LoadBalancerClassConfig {
+  floatingNetworkID?: string;
+  floatingSubnet?: string;
+  floatingSubnetID?: string;
+  floatingSubnetTags?: string;
+  networkID?: string;
+  subnetID?: string;
+  memberSubnetID?: string;
 }
 
 export class VSphereCloudSpec {
@@ -618,6 +636,7 @@ export class OpenstackCloudSpecPatch {
   applicationCredentialID?: string;
   applicationCredentialSecret?: string;
   domain?: string;
+  loadBalancerClasses?: LoadBalancerClass[];
 }
 
 export class NutanixCloudSpecPatch {
