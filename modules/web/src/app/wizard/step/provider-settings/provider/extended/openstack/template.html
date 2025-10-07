@@ -43,8 +43,5 @@ limitations under the License.
     </mat-hint>
   </mat-form-field>
 
-  <km-wizard-openstack-loadbalancer-classes 
-    [formControl]="form.get(Controls.LoadBalancerClasses)"
-    [loadBalancerClasses]="loadBalancerClasses"
-    (loadBalancerClassesChange)="onLoadBalancerClassesChange($event)"></km-wizard-openstack-loadbalancer-classes>
+  <km-wizard-openstack-loadbalancer-classes [formControl]="form.get(Controls.LoadBalancerClasses)"></km-wizard-openstack-loadbalancer-classes>
 </form>
