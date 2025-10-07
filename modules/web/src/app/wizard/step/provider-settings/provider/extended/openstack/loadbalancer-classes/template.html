@@ -72,7 +72,6 @@ limitations under the License.
                    type="text"
                    placeholder="e.g., default, internal, external"
                    autocomplete="off"
-                   (blur)="onTouched()"
                    (input)="onNameChange(i, $event.target.value)"
                    required />
             <mat-error *ngIf="lbClass.get('name').hasError('required')">
@@ -122,7 +121,7 @@ limitations under the License.
                        [options]="getFloatingSubnetsForClass(i)"
                        [hint]="'Subnet for floating IPs (name stored)'"
                        [formControlName]="'floatingSubnet'"
-                       [label]="getFloatingSubnetsLabel(i)"
+                       [label]="getFloatingSubnetsLabelByName(i)"
                        [valueFormatter]="getFloatingSubnetDisplayName.bind(this, i)"
                        (changed)="onFloatingSubnetChange(i, $event)"
                        inputLabel="Select floating subnet..."

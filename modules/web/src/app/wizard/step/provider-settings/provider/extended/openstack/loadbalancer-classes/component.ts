@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AfterViewInit, Component, forwardRef, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {
-  ControlValueAccessor,
   FormArray,
   FormBuilder,
   FormGroup,
@@ -22,6 +21,7 @@ import {
   NG_VALUE_ACCESSOR,
   Validators,
 } from '@angular/forms';
+import {ComboboxControls} from '@shared/components/combobox/component';
 import {ClusterSpecService} from '@core/services/cluster-spec';
 import {PresetsService} from '@core/services/wizard/presets';
 import {LoadBalancerClass} from '@shared/entity/cluster';
@@ -30,52 +30,62 @@ import {NodeProvider} from '@shared/model/NodeProviderConstants';
 import {BaseFormValidator} from '@shared/validators/base-form.validator';
 import _ from 'lodash';
 import {EMPTY, merge, Observable, onErrorResumeNext, Subject} from 'rxjs';
-import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil, tap} from 'rxjs/operators';
+import {catchError, debounceTime, filter, map, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {CredentialsType, OpenstackCredentialsTypeService} from '../service';
 
-// State enums for LoadBalancer classes
-enum FloatingNetworkState {
-  Ready = 'Floating Network ID',
-  Loading = 'Loading...',
-  Empty = 'No Floating Networks Available',
-}
-
-enum FloatingSubnetState {
-  Ready = 'Floating Subnet ID',
-  Loading = 'Loading...',
-  Empty = 'No Floating Subnets Available',
-}
-
-enum NetworkState {
+// Enums for state labels
+enum NetworkStateLabel {
   Ready = 'Network ID',
   Loading = 'Loading...',
   Empty = 'No Networks Available',
 }
 
-enum SubnetState {
+enum FloatingNetworkStateLabel {
+  Ready = 'Floating Network ID',
+  Loading = 'Loading...',
+  Empty = 'No Floating Networks Available',
+}
+
+enum SubnetStateLabel {
   Ready = 'Subnet ID',
   Loading = 'Loading...',
   Empty = 'No Subnets Available',
 }
 
-enum MemberSubnetState {
+enum MemberSubnetStateLabel {
   Ready = 'Member Subnet ID',
   Loading = 'Loading...',
   Empty = 'No Member Subnets Available',
 }
 
-interface LoadBalancerClassState {
-  floatingNetworks: OpenstackNetwork[];
-  floatingSubnets: OpenstackSubnet[];
-  floatingSubnetTags: string[];
+enum FloatingSubnetStateLabel {
+  Ready = 'Floating Subnet ID',
+  Loading = 'Loading...',
+  Empty = 'No Floating Subnets ID Available',
+}
+
+enum FloatingSubnetStateByNameLabel {
+  Ready = 'Floating Subnet Name',
+  Loading = 'Loading...',
+  Empty = 'No Floating Subnets Name Available',
+}
+
+interface SharedNetworkState {
   networks: OpenstackNetwork[];
+  floatingNetworks: OpenstackNetwork[];
+  networksLoading: boolean;
+  floatingNetworksLoading: boolean;
+}
+
+// Per LB Class state 
+interface LoadBalancerClassState {
   subnets: OpenstackSubnet[];
   memberSubnets: OpenstackSubnet[];
-  networksLabel: NetworkState;
-  subnetsLabel: SubnetState;
-  memberSubnetsLabel: MemberSubnetState;
-  floatingNetworksLabel: FloatingNetworkState;
-  floatingSubnetsLabel: FloatingSubnetState;
+  floatingSubnets: OpenstackSubnet[];
+  floatingSubnetTags: string[];
+  subnetsLoading: boolean;
+  memberSubnetsLoading: boolean;
+  floatingSubnetsLoading: boolean;
 }
 
 @Component({
@@ -96,16 +106,28 @@ interface LoadBalancerClassState {
   ],
   standalone: false,
 })
-export class LoadBalancerClassesComponent extends BaseFormValidator implements OnInit, AfterViewInit, ControlValueAccessor, OnDestroy {
+export class LoadBalancerClassesComponent extends BaseFormValidator implements OnInit, AfterViewInit, OnDestroy {
   private readonly _debounceTime = 500;
-  private readonly _networkChangeSubjects: Map<number, Subject<string>> = new Map();
-  private readonly _floatingNetworkChangeSubjects: Map<number, Subject<string>> = new Map();
-
-  isPresetSelected = false;
-  loadBalancerClassStates: Map<number, LoadBalancerClassState> = new Map();
-
-  // Tree node state management
+  
+  @Input() loadBalancerClasses: LoadBalancerClass[];
+  @Output() loadBalancerClassesChange = new EventEmitter<LoadBalancerClass[]>();
+  
+  private _sharedNetworkState: SharedNetworkState = {
+    networks: [],
+    floatingNetworks: [],
+    networksLoading: false,
+    floatingNetworksLoading: false,
+  };
+  
+  private _floatingNetworkLoadSubject = new Subject<void>();
+  private _floatingSubnetLoadSubject = new Map<number, Subject<string>>();
+  private _networkLoadSubject = new Subject<void>();
+  private _subnetLoadSubject = new Map<number, Subject<string>>();
+  private _loadBalancerClassStates: Map<number, LoadBalancerClassState> = new Map();
+  
   private _expandedClasses: Set<number> = new Set();
+  
+  isPresetSelected = false;
 
   private _domain = '';
   private _username = '';
@@ -117,8 +139,6 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
   private _preset = '';
 
   protected _unsubscribe = new Subject<void>();
-  private _onChange = (_: LoadBalancerClass[]) => {};
-  private _onTouched = () => {};
 
   constructor(
     private readonly _builder: FormBuilder,
@@ -136,19 +156,26 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
   ngOnInit(): void {
     this.initForm();
 
-    // Setup preset handling
+    if (!this.loadBalancerClasses) {
+      this.loadBalancerClasses = [];
+    }
+
+    this.setLoadBalancerClasses(this.loadBalancerClasses);
+    this._initNetworkSetup();
+    
+    this._updateLoadBalancerClasses();
+
+    // Setup Preset Handling
     this._presets.presetDetailedChanges.pipe(takeUntil(this._unsubscribe)).subscribe(preset => {
       this.isPresetSelected = !!preset;
       const providerSettings = preset?.providers.find(provider => provider.name === NodeProvider.OPENSTACK);
 
       if (providerSettings?.isCustomizable) {
-        // Handle preset load balancer classes if available
         const presetLoadBalancerClasses = providerSettings.openstack?.loadBalancerClasses || [];
         this.setLoadBalancerClasses(presetLoadBalancerClasses);
       }
     });
-
-    // Single subscription handling all credential changes and network loading (like default component)
+    
     merge(
       this._clusterSpecService.clusterChanges,
       this._credentialsTypeService.credentialsTypeChanges,
@@ -158,11 +185,9 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
       .pipe(debounceTime(this._debounceTime))
       .pipe(
         tap(_ => {
-          // Clear credentials when preset is removed
           if (!this._presets.preset && this._preset) {
             this._clearCredentials();
           }
-          // Clear data when credentials are invalid and no preset
           if (!this._hasRequiredCredentials() && !this.isPresetSelected) {
             this._clearAllData();
           }
@@ -172,13 +197,13 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
       .pipe(filter(_ => this._areCredentialsChanged()))
       .pipe(takeUntil(this._unsubscribe))
       .subscribe(() => {
-        this._loadNetworksForAllClasses();
-        this._loadFloatingNetworksForAllClasses();
+        this._networkLoadSubject.next();
+        this._floatingNetworkLoadSubject.next();
       });
+
   }
 
   ngAfterViewInit(): void {
-    // Set default class name for the initial class (index 0)
     if (this.loadBalancerClassesArray.length > 0) {
       this.setDefaultClassName(0);
     }
@@ -187,108 +212,103 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
   ngOnDestroy(): void {
     this._unsubscribe.next();
     this._unsubscribe.complete();
-    this._networkChangeSubjects.forEach(subject => subject.complete());
-    this._floatingNetworkChangeSubjects.forEach(subject => subject.complete());
+    this._networkLoadSubject.complete();
+    this._floatingNetworkLoadSubject.complete();
+    this._subnetLoadSubject.forEach(trigger => trigger.complete());
+    this._floatingSubnetLoadSubject.forEach(trigger => trigger.complete());
   }
 
-  writeValue(obj: LoadBalancerClass[]): void {
-    if (obj) {
-      this.setLoadBalancerClasses(obj);
-    }
-  }
 
-  registerOnChange(fn: (value: LoadBalancerClass[]) => void): void {
-    this._onChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this._onTouched = fn;
-  }
-
-  onTouched(): void {
-    this._onTouched();
-  }
-
-  getNetworkDisplayName(index: number, id: string): string {
+  getNetworkDisplayName(_index: number, id: string): string {
     if (!id) return '';
-    const state = this.loadBalancerClassStates.get(index);
-    const network = state?.networks.find(n => n.id === id);
+    const network = this._sharedNetworkState.networks.find(n => n.id === id);
     return network ? `${network.name} (ID: ${network.id})` : id;
   }
 
   getSubnetDisplayName(index: number, id: string): string {
     if (!id) return '';
-    const state = this.loadBalancerClassStates.get(index);
-    const subnet = state?.subnets.find(s => s.id === id);
+    const classState = this._loadBalancerClassStates.get(index);
+    const subnet = classState?.subnets.find(s => s.id === id);
     return subnet ? `${subnet.name} (${subnet.id})` : id;
   }
 
-  getFloatingNetworkDisplayName(index: number, id: string): string {
+  getFloatingNetworkDisplayName(_index: number, id: string): string {
     if (!id) return '';
-    const state = this.loadBalancerClassStates.get(index);
-    const network = state?.floatingNetworks.find(n => n.id === id);
+    const network = this._sharedNetworkState.floatingNetworks.find(n => n.id === id);
     return network ? `${network.name} (ID: ${network.id})` : id;
   }
 
   getFloatingSubnetDisplayName(index: number, id: string): string {
     if (!id) return '';
-    const state = this.loadBalancerClassStates.get(index);
-    const subnet = state?.floatingSubnets.find(s => s.id === id);
+    const classState = this._loadBalancerClassStates.get(index);
+    const subnet = classState?.floatingSubnets.find(s => s.id === id);
     return subnet ? `${subnet.name} (${subnet.id})` : id;
   }
 
   getMemberSubnetDisplayName(index: number, id: string): string {
     if (!id) return '';
-    const state = this.loadBalancerClassStates.get(index);
-    const subnet = state?.memberSubnets.find(s => s.id === id);
+    const classState = this._loadBalancerClassStates.get(index);
+    const subnet = classState?.memberSubnets.find(s => s.id === id);
     return subnet ? `${subnet.name} (${subnet.id})` : id;
   }
 
-  getNetworksForClass(index: number): OpenstackNetwork[] {
-    return this.loadBalancerClassStates.get(index)?.networks || [];
+  getNetworksForClass(_index: number): OpenstackNetwork[] {
+    return this._sharedNetworkState.networks;
   }
 
   getSubnetsForClass(index: number): OpenstackSubnet[] {
-    return this.loadBalancerClassStates.get(index)?.subnets || [];
+    return this._loadBalancerClassStates.get(index)?.subnets || [];
   }
 
   getMemberSubnetsForClass(index: number): OpenstackSubnet[] {
-    return this.loadBalancerClassStates.get(index)?.memberSubnets || [];
+    return this._loadBalancerClassStates.get(index)?.memberSubnets || [];
   }
 
-  getFloatingNetworksForClass(index: number): OpenstackNetwork[] {
-    const networks = this.loadBalancerClassStates.get(index)?.floatingNetworks || [];
-    console.log(`getFloatingNetworksForClass(${index}):`, networks);
-    return networks;
+  getFloatingNetworksForClass(_index: number): OpenstackNetwork[] {
+    return this._sharedNetworkState.floatingNetworks;
   }
 
   getFloatingSubnetsForClass(index: number): OpenstackSubnet[] {
-    return this.loadBalancerClassStates.get(index)?.floatingSubnets || [];
+    return this._loadBalancerClassStates.get(index)?.floatingSubnets || [];
   }
 
   getFloatingSubnetTagsForClass(index: number): string[] {
-    return this.loadBalancerClassStates.get(index)?.floatingSubnetTags || [];
+    return this._loadBalancerClassStates.get(index)?.floatingSubnetTags || [];
   }
 
-  // State label getters
-  getNetworksLabel(index: number): NetworkState {
-    return this.loadBalancerClassStates.get(index)?.networksLabel || NetworkState.Empty;
+  // State label getters using enums
+  getNetworksLabel(_index: number): string {
+    if (this._sharedNetworkState.networksLoading) return NetworkStateLabel.Loading;
+    return this._sharedNetworkState.networks.length > 0 ? NetworkStateLabel.Ready : NetworkStateLabel.Empty;
   }
 
-  getFloatingNetworksLabel(index: number): FloatingNetworkState {
-    return this.loadBalancerClassStates.get(index)?.floatingNetworksLabel || FloatingNetworkState.Empty;
+  getFloatingNetworksLabel(_index: number): string {
+    if (this._sharedNetworkState.floatingNetworksLoading) return FloatingNetworkStateLabel.Loading;
+    return this._sharedNetworkState.floatingNetworks.length > 0 ? FloatingNetworkStateLabel.Ready : FloatingNetworkStateLabel.Empty;
   }
 
-  getSubnetsLabel(index: number): SubnetState {
-    return this.loadBalancerClassStates.get(index)?.subnetsLabel || SubnetState.Empty;
+  getSubnetsLabel(index: number): string {
+    const classState = this._loadBalancerClassStates.get(index);
+    if (classState?.subnetsLoading) return SubnetStateLabel.Loading;
+    return classState?.subnets.length > 0 ? SubnetStateLabel.Ready : SubnetStateLabel.Empty;
   }
 
-  getMemberSubnetsLabel(index: number): MemberSubnetState {
-    return this.loadBalancerClassStates.get(index)?.memberSubnetsLabel || MemberSubnetState.Empty;
+  getMemberSubnetsLabel(index: number): string {
+    const classState = this._loadBalancerClassStates.get(index);
+    if (classState?.memberSubnetsLoading) return MemberSubnetStateLabel.Loading;
+    return classState?.memberSubnets.length > 0 ? MemberSubnetStateLabel.Ready : MemberSubnetStateLabel.Empty;
   }
 
-  getFloatingSubnetsLabel(index: number): FloatingSubnetState {
-    return this.loadBalancerClassStates.get(index)?.floatingSubnetsLabel || FloatingSubnetState.Empty;
+  getFloatingSubnetsLabel(index: number): string {
+    const classState = this._loadBalancerClassStates.get(index);
+    if (classState?.floatingSubnetsLoading) return FloatingSubnetStateLabel.Loading;
+    return classState?.floatingSubnets.length > 0 ? FloatingSubnetStateLabel.Ready : FloatingSubnetStateLabel.Empty;
+  }
+
+  getFloatingSubnetsLabelByName(index: number): string {
+    const classState = this._loadBalancerClassStates.get(index);
+    if (classState?.floatingSubnetsLoading) return FloatingSubnetStateByNameLabel.Loading;
+    return classState?.floatingSubnets.length > 0 ? FloatingSubnetStateByNameLabel.Ready : FloatingSubnetStateByNameLabel.Empty;
   }
 
   addLoadBalancerClass(): void {
@@ -297,56 +317,42 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
 
     this.loadBalancerClassesArray.push(classForm);
 
-    // Initialize with existing data from other classes (if any)
-    const existingState = this.loadBalancerClassStates.get(0);
-    this.loadBalancerClassStates.set(index, {
-      networks: existingState?.networks || [],
-      subnets: existingState?.subnets || [],
-      memberSubnets: existingState?.memberSubnets || [],
-      floatingNetworks: existingState?.floatingNetworks || [],
-      floatingSubnets: existingState?.floatingSubnets || [],
-      floatingSubnetTags: existingState?.floatingSubnetTags || [],
-      // Initialize state labels
-      networksLabel: existingState?.networksLabel || NetworkState.Empty,
-      subnetsLabel: SubnetState.Empty,
-      memberSubnetsLabel: MemberSubnetState.Empty,
-      floatingNetworksLabel: existingState?.floatingNetworksLabel || FloatingNetworkState.Empty,
-      floatingSubnetsLabel: FloatingSubnetState.Empty,
+    // Initialize class-dependent state only
+    this._loadBalancerClassStates.set(index, {
+      subnets: [],
+      memberSubnets: [],
+      floatingSubnets: [],
+      floatingSubnetTags: [],
+      subnetsLoading: false,
+      memberSubnetsLoading: false,
+      floatingSubnetsLoading: false,
     });
 
-    // Create network change subjects for this class
-    this._networkChangeSubjects.set(index, new Subject<string>());
-    this._floatingNetworkChangeSubjects.set(index, new Subject<string>());
-
-    // Setup network change listeners
-    this._setupNetworkChangeListener(index);
-    this._setupFloatingNetworkChangeListener(index);
-
-    // Expand the new class by default
     this._expandedClasses.add(index);
 
-    // Load networks for the new class if credentials are available
     if (this._hasRequiredCredentials() || this.isPresetSelected) {
-      this._loadNetworksForAllClasses();
-      this._loadFloatingNetworksForAllClasses();
+      this._networkLoadSubject.next();
+      this._floatingNetworkLoadSubject.next();
     }
 
-    // Set default class name for the newly added class
     this.setDefaultClassName(index);
-
-    // Notify parent form of changes
-    this._onChange(this._getCurrentLoadBalancerClasses());
+    this._updateLoadBalancerClasses();
   }
 
   removeLoadBalancerClass(index: number): void {
     this.loadBalancerClassesArray.removeAt(index);
-    this.loadBalancerClassStates.delete(index);
+    this._loadBalancerClassStates.delete(index);
 
-    // Clean up subjects
-    this._networkChangeSubjects.get(index)?.complete();
-    this._networkChangeSubjects.delete(index);
-    this._floatingNetworkChangeSubjects.get(index)?.complete();
-    this._floatingNetworkChangeSubjects.delete(index);
+    const subnetTrigger = this._subnetLoadSubject.get(index);
+    if (subnetTrigger) {
+      subnetTrigger.complete();
+      this._subnetLoadSubject.delete(index);
+    }
+    const floatingSubnetTrigger = this._floatingSubnetLoadSubject.get(index);
+    if (floatingSubnetTrigger) {
+      floatingSubnetTrigger.complete();
+      this._floatingSubnetLoadSubject.delete(index);
+    }
 
     // Clean up tree state
     this._expandedClasses.delete(index);
@@ -364,14 +370,7 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
 
     this._expandedClasses = newExpandedClasses;
 
-    // Remove from cluster spec
-    if (this._clusterSpecService.cluster.spec.cloud.openstack.loadBalancerClasses) {
-      this._clusterSpecService.cluster.spec.cloud.openstack.loadBalancerClasses.splice(index, 1);
-      this._clusterSpecService.cluster = {...this._clusterSpecService.cluster};
-    }
-
-    // Notify parent form of changes
-    this._onChange(this._getCurrentLoadBalancerClasses());
+    this._updateLoadBalancerClasses();
   }
 
   canRemove(): boolean {
@@ -383,7 +382,7 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
       return;
     }
 
-    const defaultClassName = `default-class-${index + 1}`;
+    const defaultClassName = `Default-LoadBalancer-Class-${index + 1}`;
     const formGroup = this.loadBalancerClassesArray.at(index);
 
     // Only set default name if it's empty
@@ -416,6 +415,7 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
 
   private setLoadBalancerClasses(loadBalancerClasses: LoadBalancerClass[]): void {
     this.loadBalancerClassesArray.clear();
+    this._loadBalancerClassStates.clear();
 
     // Clear tree state when setting new classes
     this._expandedClasses.clear();
@@ -427,17 +427,38 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
 
     loadBalancerClasses.forEach((lbClass, index) => {
       const formGroup = this.createLoadBalancerClassFormGroup();
-      const patchValue = {
-        ...lbClass,
-        config: {
-          ...lbClass.config,
-          floatingSubnetTags: Array.isArray(lbClass.config?.floatingSubnetTags)
-            ? lbClass.config.floatingSubnetTags
-            : lbClass.config?.floatingSubnetTags?.split(',').filter(tag => tag.trim()) || [],
-        },
+      
+      // Ensure all config values are strings, not null
+      const config = {
+        floatingNetworkID: lbClass.config?.floatingNetworkID || '',
+        floatingSubnetID: lbClass.config?.floatingSubnetID || '',
+        floatingSubnet: lbClass.config?.floatingSubnet || '',
+        floatingSubnetTags: Array.isArray(lbClass.config?.floatingSubnetTags)
+          ? lbClass.config.floatingSubnetTags
+          : lbClass.config?.floatingSubnetTags?.split(',').filter(tag => tag.trim()) || [],
+        networkID: lbClass.config?.networkID || '',
+        subnetID: lbClass.config?.subnetID || '',
+        memberSubnetID: lbClass.config?.memberSubnetID || '',
       };
+      
+      const patchValue = {
+        name: lbClass.name || '',
+        config,
+      };
+      
       formGroup.patchValue(patchValue);
       this.loadBalancerClassesArray.push(formGroup);
+
+      // Initialize class-dependent state
+      this._loadBalancerClassStates.set(index, {
+        subnets: [],
+        memberSubnets: [],
+        floatingSubnets: [],
+        floatingSubnetTags: [],
+        subnetsLoading: false,
+        memberSubnetsLoading: false,
+        floatingSubnetsLoading: false,
+      });
 
       // Expand the first class by default when loading existing classes
       if (index === 0) {
@@ -446,70 +467,136 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
     });
   }
 
+  private _updateLoadBalancerClasses(): void {
+    const loadBalancerClasses = this._getCurrentLoadBalancerClasses();
+    this.loadBalancerClassesChange.emit(loadBalancerClasses);
+  }
+
+  private _getCurrentLoadBalancerClasses(): LoadBalancerClass[] {
+    const formValue = this.form.get('loadBalancerClasses')?.value || [];
+    return formValue
+      .filter((lbClass: any) => lbClass.name && lbClass.name.trim())
+      .map((lbClass: any) => ({
+        name: lbClass.name || '',
+        config: {
+          floatingNetworkID: this._extractComboboxValue(lbClass.config?.floatingNetworkID),
+          floatingSubnetID: this._extractComboboxValue(lbClass.config?.floatingSubnetID),
+          floatingSubnet: this._extractComboboxValue(lbClass.config?.floatingSubnet),
+          floatingSubnetTags: Array.isArray(lbClass.config?.floatingSubnetTags) 
+            ? lbClass.config.floatingSubnetTags.join(',') 
+            : lbClass.config?.floatingSubnetTags || '',
+          networkID: this._extractComboboxValue(lbClass.config?.networkID),
+          subnetID: this._extractComboboxValue(lbClass.config?.subnetID),
+          memberSubnetID: this._extractComboboxValue(lbClass.config?.memberSubnetID),
+        },
+      }));
+  }
+
+  private _extractComboboxValue(value: any): string {
+    if (!value) return '';
+    if (typeof value === 'string') return value;
+    if (typeof value === 'object' && value[ComboboxControls.Select]) {
+      return value[ComboboxControls.Select] || '';
+    }
+    return '';
+  }
+
   onNetworkChange(index: number, networkId: string): void {
-    // Update cluster spec directly
-    this._updateLoadBalancerClassInCluster(index, {networkID: networkId});
-
-    const state = this.loadBalancerClassStates.get(index);
-    if (state) {
+    // Update form control directly
+    const formGroup = this.loadBalancerClassesArray.at(index) as FormGroup;
+    const configGroup = formGroup?.get('config') as FormGroup;
+    
+    if (configGroup) {
+      configGroup.get('networkID')?.patchValue(networkId || '');
+      
       if (!networkId) {
-        // Clear subnets and member subnets when network is cleared
-        state.subnets = [];
-        state.memberSubnets = [];
-
-        // Clear related config values from cluster spec
-        this._updateLoadBalancerClassInCluster(index, {
-          subnetID: '',
-          memberSubnetID: '',
-        });
+        // Clear related subnet values when network is cleared
+        configGroup.get('subnetID')?.patchValue('');
+        configGroup.get('memberSubnetID')?.patchValue('');
       }
     }
 
-    this._networkChangeSubjects.get(index)?.next(networkId);
+    const classState = this._loadBalancerClassStates.get(index);
+    if (classState) {
+      if (!networkId) {
+        classState.subnets = [];
+        classState.memberSubnets = [];
+      } else {
+        this._setupNetworkChangeListener(index).next(networkId);
+      }
+    }
+    
+    this._updateLoadBalancerClasses();
   }
 
   onFloatingNetworkChange(index: number, floatingNetworkId: string): void {
-    this._updateLoadBalancerClassInCluster(index, {floatingNetworkID: floatingNetworkId});
-
-    const state = this.loadBalancerClassStates.get(index);
-    if (state && !floatingNetworkId) {
-      // Clear floating subnets and floating subnet tags when floating network is cleared
-      state.floatingSubnets = [];
-      state.floatingSubnetTags = [];
-
-      // Clear related config values from cluster spec
-      this._updateLoadBalancerClassInCluster(index, {
-        floatingSubnetID: '',
-        floatingSubnet: '',
-        floatingSubnetTags: '',
-      });
+    // Update form control directly
+    const formGroup = this.loadBalancerClassesArray.at(index) as FormGroup;
+    const configGroup = formGroup?.get('config') as FormGroup;
+    
+    if (configGroup) {
+      configGroup.get('floatingNetworkID')?.patchValue(floatingNetworkId || '');
+      
+      if (!floatingNetworkId) {
+        // Clear related floating subnet values when floating network is cleared
+        configGroup.get('floatingSubnetID')?.patchValue('');
+        configGroup.get('floatingSubnet')?.patchValue('');
+        configGroup.get('floatingSubnetTags')?.patchValue([]);
+      }
     }
 
-    this._floatingNetworkChangeSubjects.get(index)?.next(floatingNetworkId);
+    const classState = this._loadBalancerClassStates.get(index);
+    if (classState) {
+      if (!floatingNetworkId) {
+        classState.floatingSubnets = [];
+        classState.floatingSubnetTags = [];
+      } else {
+        this._setupFloatingNetworkChangeListener(index).next(floatingNetworkId);
+      }
+    }
+    
+    this._updateLoadBalancerClasses();
   }
 
   onFloatingSubnetIDChange(index: number, floatingSubnetId: string): void {
-    this._updateLoadBalancerClassInCluster(index, {floatingSubnetID: floatingSubnetId});
+    const formGroup = this.loadBalancerClassesArray.at(index) as FormGroup;
+    const configGroup = formGroup?.get('config') as FormGroup;
+    configGroup?.get('floatingSubnetID')?.patchValue(floatingSubnetId || '');
+    this._updateLoadBalancerClasses();
   }
 
   onFloatingSubnetChange(index: number, floatingSubnet: string): void {
-    this._updateLoadBalancerClassInCluster(index, {floatingSubnet: floatingSubnet});
+    const formGroup = this.loadBalancerClassesArray.at(index) as FormGroup;
+    const configGroup = formGroup?.get('config') as FormGroup;
+    configGroup?.get('floatingSubnet')?.patchValue(floatingSubnet || '');
+    this._updateLoadBalancerClasses();
   }
 
   onSubnetIDChange(index: number, subnetId: string): void {
-    this._updateLoadBalancerClassInCluster(index, {subnetID: subnetId});
+    const formGroup = this.loadBalancerClassesArray.at(index) as FormGroup;
+    const configGroup = formGroup?.get('config') as FormGroup;
+    configGroup?.get('subnetID')?.patchValue(subnetId || '');
+    this._updateLoadBalancerClasses();
   }
 
   onMemberSubnetIDChange(index: number, memberSubnetId: string): void {
-    this._updateLoadBalancerClassInCluster(index, {memberSubnetID: memberSubnetId});
+    const formGroup = this.loadBalancerClassesArray.at(index) as FormGroup;
+    const configGroup = formGroup?.get('config') as FormGroup;
+    configGroup?.get('memberSubnetID')?.patchValue(memberSubnetId || '');
+    this._updateLoadBalancerClasses();
   }
 
   onNameChange(index: number, name: string): void {
-    this._updateLoadBalancerClassInCluster(index, {name: name});
+    const formGroup = this.loadBalancerClassesArray.at(index) as FormGroup;
+    formGroup?.get('name')?.patchValue(name || '');
+    this._updateLoadBalancerClasses();
   }
 
   onFloatingSubnetTagsChange(index: number, tags: string[]): void {
-    this._updateLoadBalancerClassInCluster(index, {floatingSubnetTags: tags.join(',')});
+    const formGroup = this.loadBalancerClassesArray.at(index) as FormGroup;
+    const configGroup = formGroup?.get('config') as FormGroup;
+    configGroup?.get('floatingSubnetTags')?.patchValue(tags);
+    this._updateLoadBalancerClasses();
   }
 
   // Tree node expansion/collapse methods
@@ -525,9 +612,7 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
     return this._expandedClasses.has(index);
   }
 
-  // Check if we can add a new LoadBalancer class
   canAddLoadBalancerClass(): boolean {
-    // Check if the last LoadBalancer class has a name
     if (this.loadBalancerClassesArray.length === 0) {
       return true;
     }
@@ -539,208 +624,153 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
     return !!name && name.trim().length > 0;
   }
 
-  private _updateLoadBalancerClassInCluster(
-    index: number,
-    updates: Partial<LoadBalancerClass> & {[key: string]: any}
-  ): void {
-    const cluster = this._clusterSpecService.cluster;
-    const openstack = cluster.spec.cloud.openstack;
 
-    openstack.loadBalancerClasses = openstack.loadBalancerClasses || [];
-    const loadBalancerClasses = openstack.loadBalancerClasses;
-
-    // Ensure the array has enough elements
-    if (!loadBalancerClasses[index]) {
-      loadBalancerClasses[index] = {name: '', config: {}};
-    }
-
-    // Update name and config in a simple, maintainable way
-    Object.entries(updates).forEach(([key, value]) => {
-      if (key === 'name') {
-        loadBalancerClasses[index].name = value;
-      } else {
-        if (!loadBalancerClasses[index].config) {
-          loadBalancerClasses[index].config = {};
-        }
-        loadBalancerClasses[index].config[key] = value;
-      }
-    });
-
-    // Trigger change detection and notify parent
-    this._clusterSpecService.cluster = {...cluster};
-    this._onChange(this._getCurrentLoadBalancerClasses());
-  }
-
-  private _getCurrentLoadBalancerClasses(): LoadBalancerClass[] {
-    const loadBalancerClasses = this._clusterSpecService.cluster.spec.cloud.openstack.loadBalancerClasses || [];
-    return loadBalancerClasses
-      .filter(lbClass => lbClass.name && lbClass.name.trim())
-      .map(lbClass => ({
-        name: lbClass.name,
-        config: {...lbClass.config},
-      }));
-  }
 
   private _clearAllData(): void {
-    this.loadBalancerClassStates.forEach(state => {
-      state.networks = [];
-      state.subnets = [];
-      state.memberSubnets = [];
-      state.floatingNetworks = [];
-      state.floatingSubnets = [];
-      state.floatingSubnetTags = [];
-      state.networksLabel = NetworkState.Empty;
-      state.subnetsLabel = SubnetState.Empty;
-      state.memberSubnetsLabel = MemberSubnetState.Empty;
-      state.floatingNetworksLabel = FloatingNetworkState.Empty;
-      state.floatingSubnetsLabel = FloatingSubnetState.Empty;
+    this._sharedNetworkState.networks = [];
+    this._sharedNetworkState.floatingNetworks = [];
+    this._sharedNetworkState.networksLoading = false;
+    this._sharedNetworkState.floatingNetworksLoading = false;
+    
+    this._loadBalancerClassStates.forEach(classState => {
+      classState.subnets = [];
+      classState.memberSubnets = [];
+      classState.floatingSubnets = [];
+      classState.floatingSubnetTags = [];
+      classState.subnetsLoading = false;
+      classState.memberSubnetsLoading = false;
+      classState.floatingSubnetsLoading = false;
     });
   }
 
-  private _setupNetworkChangeListener(index: number): void {
-    const networkChangeSubject = this._networkChangeSubjects.get(index);
-    if (!networkChangeSubject) return;
-
-    networkChangeSubject
-      .pipe(debounceTime(this._debounceTime))
-      .pipe(distinctUntilChanged())
-      .pipe(filter(networkId => !!networkId))
+  private _initNetworkSetup(): void {
+    this._floatingNetworkLoadSubject
       .pipe(
-        switchMap(networkId => {
-          // Set loading states
-          const state = this.loadBalancerClassStates.get(index);
-          if (state) {
-            state.subnetsLabel = SubnetState.Loading;
-            state.memberSubnetsLabel = MemberSubnetState.Loading;
-          }
-
-          // Load both regular subnets and member subnets in parallel
-          return merge(
-            this._subnetIDListObservable(networkId).pipe(map(subnets => ({type: 'subnets', subnets}))),
-            this._memberSubnetListObservable(networkId).pipe(map(subnets => ({type: 'memberSubnets', subnets})))
-          );
-        })
+        tap(() => this._sharedNetworkState.floatingNetworksLoading = true),
+        switchMap(() => this._floatingNetworkListObservable()),
+        takeUntil(this._unsubscribe)
       )
-      .pipe(takeUntil(this._unsubscribe))
       .subscribe({
-        next: result => {
-          if (result.type === 'subnets') {
-            this._loadSubnetsForClass(index, result.subnets);
-          } else if (result.type === 'memberSubnets') {
-            this._loadMemberSubnetsForClass(index, result.subnets);
-          }
+        next: networks => {
+          this._sharedNetworkState.floatingNetworks = networks;
+          this._sharedNetworkState.floatingNetworksLoading = false;
         },
         error: () => {
-          const state = this.loadBalancerClassStates.get(index);
-          if (state) {
-            state.subnetsLabel = SubnetState.Empty;
-            state.memberSubnetsLabel = MemberSubnetState.Empty;
-          }
+          this._sharedNetworkState.floatingNetworks = [];
+          this._sharedNetworkState.floatingNetworksLoading = false;
+        },
+      });
+
+      this._networkLoadSubject
+      .pipe(
+        tap(() => this._sharedNetworkState.networksLoading = true),
+        switchMap(() => this._networkListObservable()),
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: networks => {
+          this._sharedNetworkState.networks = networks.filter(network => !network.external);
+          this._sharedNetworkState.networksLoading = false;
+        },
+        error: () => {
+          this._sharedNetworkState.networks = [];
+          this._sharedNetworkState.networksLoading = false;
         },
       });
   }
 
-  private _setupFloatingNetworkChangeListener(index: number): void {
-    const floatingNetworkChangeSubject = this._floatingNetworkChangeSubjects.get(index);
-    if (!floatingNetworkChangeSubject) return;
-
-    floatingNetworkChangeSubject
-      .pipe(debounceTime(this._debounceTime))
-      .pipe(distinctUntilChanged())
-      .pipe(filter(floatingNetworkId => !!floatingNetworkId))
-      .pipe(
-        switchMap(floatingNetworkId => {
-          // Set loading state
-          const state = this.loadBalancerClassStates.get(index);
-          if (state) {
-            state.floatingSubnetsLabel = FloatingSubnetState.Loading;
-          }
-          return this._floatingSubnetListObservable(floatingNetworkId);
-        })
-      )
-      .pipe(takeUntil(this._unsubscribe))
-      .subscribe({
-        next: subnets => this._loadFloatingSubnetsForClass(index, subnets),
-        error: () => {
-          const state = this.loadBalancerClassStates.get(index);
-          if (state) {
-            state.floatingSubnetsLabel = FloatingSubnetState.Empty;
-          }
-        },
-      });
-  }
-
-  private _loadNetworksForAllClasses(): void {
-    // Set loading state for all classes
-    this.loadBalancerClassStates.forEach(state => {
-      state.networksLabel = NetworkState.Loading;
-    });
-
-    this._networkListObservable().subscribe({
-      next: networks => {
-        const filteredNetworks = networks.filter(network => !network.external);
-        this.loadBalancerClassStates.forEach(state => {
-          state.networks = filteredNetworks;
-          state.networksLabel = !_.isEmpty(filteredNetworks) ? NetworkState.Ready : NetworkState.Empty;
+  private _setupNetworkChangeListener(index: number): Subject<string> {
+    let trigger = this._subnetLoadSubject.get(index);
+    if (!trigger) {
+      trigger = new Subject<string>();
+      this._subnetLoadSubject.set(index, trigger);
+      
+      trigger
+        .pipe(
+          tap(() => {
+            const classState = this._loadBalancerClassStates.get(index);
+            if (classState) {
+              classState.subnetsLoading = true;
+              classState.memberSubnetsLoading = true;
+            }
+          }),
+          switchMap(networkId => 
+            merge(
+              this._subnetIDListObservable(networkId).pipe(map(subnets => ({type: 'subnets', subnets}))),
+              this._memberSubnetListObservable(networkId).pipe(map(subnets => ({type: 'memberSubnets', subnets})))
+            )
+          ),
+          takeUntil(this._unsubscribe)
+        )
+        .subscribe({
+          next: result => {
+            const classState = this._loadBalancerClassStates.get(index);
+            if (!classState) return;
+            
+            if (result.type === 'subnets') {
+              classState.subnets = result.subnets;
+              classState.subnetsLoading = false;
+            } else if (result.type === 'memberSubnets') {
+              classState.memberSubnets = result.subnets;
+              classState.memberSubnetsLoading = false;
+            }
+          },
+          error: () => {
+            const classState = this._loadBalancerClassStates.get(index);
+            if (classState) {
+              classState.subnets = [];
+              classState.memberSubnets = [];
+              classState.subnetsLoading = false;
+              classState.memberSubnetsLoading = false;
+            }
+          },
         });
-      },
-      error: () => {
-        this.loadBalancerClassStates.forEach(state => {
-          state.networksLabel = NetworkState.Empty;
-        });
-      },
-    });
-  }
-
-  private _loadFloatingNetworksForAllClasses(): void {
-    // Set loading state for all classes
-    this.loadBalancerClassStates.forEach(state => {
-      state.floatingNetworksLabel = FloatingNetworkState.Loading;
-    });
-
-    this._floatingNetworkListObservable().subscribe({
-      next: networks => {
-        console.log('Floating networks loaded:', networks);
-        this.loadBalancerClassStates.forEach(state => {
-          state.floatingNetworks = networks;
-          state.floatingNetworksLabel = !_.isEmpty(networks) ? FloatingNetworkState.Ready : FloatingNetworkState.Empty;
-        });
-      },
-      error: error => {
-        console.error('Error loading floating networks:', error);
-        this.loadBalancerClassStates.forEach(state => {
-          state.floatingNetworksLabel = FloatingNetworkState.Empty;
-        });
-      },
-    });
-  }
-
-  private _loadSubnetsForClass(index: number, subnets: OpenstackSubnet[]): void {
-    const state = this.loadBalancerClassStates.get(index);
-    if (state) {
-      state.subnets = subnets;
-      state.subnetsLabel = !_.isEmpty(subnets) ? SubnetState.Ready : SubnetState.Empty;
     }
+    return trigger;
   }
 
-  private _loadMemberSubnetsForClass(index: number, subnets: OpenstackSubnet[]): void {
-    const state = this.loadBalancerClassStates.get(index);
-    if (state) {
-      state.memberSubnets = subnets;
-      state.memberSubnetsLabel = !_.isEmpty(subnets) ? MemberSubnetState.Ready : MemberSubnetState.Empty;
+  private _setupFloatingNetworkChangeListener(index: number): Subject<string> {
+    let trigger = this._floatingSubnetLoadSubject.get(index);
+    if (!trigger) {
+      trigger = new Subject<string>();
+      this._floatingSubnetLoadSubject.set(index, trigger);
+      
+      // Set up floating subnet loading stream for this class
+      trigger
+        .pipe(
+          tap(() => {
+            const classState = this._loadBalancerClassStates.get(index);
+            if (classState) {
+              classState.floatingSubnetsLoading = true;
+            }
+          }),
+          switchMap(floatingNetworkId => this._floatingSubnetListObservable(floatingNetworkId)),
+          takeUntil(this._unsubscribe)
+        )
+        .subscribe({
+          next: subnets => {
+            const classState = this._loadBalancerClassStates.get(index);
+            if (classState) {
+              classState.floatingSubnets = subnets;
+              classState.floatingSubnetsLoading = false;
+              // Extract unique tags from all subnets
+              const allTags = subnets.flatMap(subnet => subnet.tags || []);
+              classState.floatingSubnetTags = [...new Set(allTags)];
+            }
+          },
+          error: () => {
+            const classState = this._loadBalancerClassStates.get(index);
+            if (classState) {
+              classState.floatingSubnets = [];
+              classState.floatingSubnetTags = [];
+              classState.floatingSubnetsLoading = false;
+            }
+          },
+        });
     }
+    return trigger;
   }
 
-  private _loadFloatingSubnetsForClass(index: number, subnets: OpenstackSubnet[]): void {
-    const state = this.loadBalancerClassStates.get(index);
-    if (state) {
-      state.floatingSubnets = subnets;
-      state.floatingSubnetsLabel = !_.isEmpty(subnets) ? FloatingSubnetState.Ready : FloatingSubnetState.Empty;
-      // Extract unique tags from all subnets
-      const allTags = subnets.flatMap(subnet => subnet.tags || []);
-      state.floatingSubnetTags = [...new Set(allTags)];
-    }
-  }
 
   private _hasRequiredCredentials(): boolean {
     switch (this._credentialsTypeService.credentialsType) {
@@ -828,7 +858,6 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
   }
 
   private _clearCredentials(): void {
-    console.log('Clearing credentials and all load balancer classes...');
     this._domain = '';
     this._username = '';
     this._password = '';
@@ -843,32 +872,15 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
   }
 
   private _clearAllLoadBalancerClasses(): void {
-    console.log('Clearing all load balancer classes from form and cluster spec...');
-
-    // Clear the cluster spec
-    if (this._clusterSpecService.cluster.spec.cloud.openstack.loadBalancerClasses) {
-      this._clusterSpecService.cluster.spec.cloud.openstack.loadBalancerClasses = [];
-      this._clusterSpecService.cluster = {...this._clusterSpecService.cluster};
-    }
-
-    // Clear the form array
     while (this.loadBalancerClassesArray.length !== 0) {
       this.loadBalancerClassesArray.removeAt(0);
     }
 
     // Clear all states
-    this.loadBalancerClassStates.clear();
-    this._networkChangeSubjects.clear();
-    this._floatingNetworkChangeSubjects.clear();
-
-    // Clear tree state
+    this._loadBalancerClassStates.clear();
+    this._clearAllData();
     this._expandedClasses.clear();
-
-    // Notify parent form of changes
-    this._onChange([]);
-
-    // Reset to initial state - no load balancer classes
-    console.log('All load balancer classes cleared successfully');
+    this._updateLoadBalancerClasses();
   }
 
   private _networkListObservable(): Observable<OpenstackNetwork[]> {
@@ -900,25 +912,21 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
       .projectID(this._clusterSpecService.cluster.spec.cloud.openstack.projectID)
       .applicationCredentialID(this._clusterSpecService.cluster.spec.cloud.openstack.applicationCredentialID)
       .applicationCredentialPassword(this._clusterSpecService.cluster.spec.cloud.openstack.applicationCredentialSecret)
-      .networks() // Use networks() API instead of floatingNetworks() - same as basic component
+      .networks()
       .pipe(
         map(networks => {
-          // Filter for external networks (floating networks) - same logic as basic component
-          const floatingNetworks = networks.filter(network => network.external === true);
-          console.log('Floating networks (external networks):', floatingNetworks);
-
-          // TODO: Remove this after testing
-          // Add hardcoded network value to the list for testing
-          const networksWithTestData = [
-            ...floatingNetworks,
+          // Append mock data to networks coming from backend
+          // Todo: will be removed
+          const mockNetworks = [
             {
               id: '45d48cb4-73a7-4504-b06b-3f9c53576a05',
-              name: 'ext-net-1 (Khizer)',
+              name: 'ext-net-1 (MOCK)',
               external: true,
             },
           ];
-          console.log('Floating networks after hardcoded addition:', networksWithTestData);
-          return _.sortBy(networksWithTestData, n => n.name.toLowerCase());
+          const allNetworks = [...networks, ...mockNetworks];
+          const floatingNetworks = allNetworks.filter(network => network.external === true);
+          return _.sortBy(floatingNetworks, n => n.name?.toLowerCase() ?? '');
         })
       )
       .pipe(
