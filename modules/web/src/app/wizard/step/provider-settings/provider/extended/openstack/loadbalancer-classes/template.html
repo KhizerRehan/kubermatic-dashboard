@@ -24,10 +24,11 @@ limitations under the License.
     <div class="km-loadbalancer-tree-container" formArrayName="loadBalancerClasses">
       <div *ngFor="let lbClassControl of loadBalancerClassesArray.controls; let i = index">
         <km-loadbalancer-class 
-                             [form]="lbClassControl"
+                             [formGroup]="lbClassControl"
                              [index]="i"
                              [canRemove]="canRemove()"
-                             (remove)="removeLoadBalancerClass(i)">
+                             (remove)="removeLoadBalancerClass(i)"
+                             (configValueChange)="onConfigValueChange(i, $event)">
         </km-loadbalancer-class>
       </div>
     </div>

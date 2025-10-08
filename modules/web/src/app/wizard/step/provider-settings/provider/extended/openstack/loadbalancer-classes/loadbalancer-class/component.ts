@@ -23,11 +23,16 @@ import {
   Output,
 } from '@angular/core';
 import {
+  AbstractControl,
+  ControlValueAccessor,
+  FormBuilder,
   FormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator,
 } from '@angular/forms';
-import {LoadBalancerClass} from '@shared/entity/cluster';
+import {LoadBalancerClass, LoadBalancerClassConfig} from '@shared/entity/cluster';
 import {OpenstackNetwork, OpenstackSubnet} from '@shared/entity/provider/openstack';
 import {EMPTY, Observable, onErrorResumeNext, Subject, merge} from 'rxjs';
 import {takeUntil, tap, filter, catchError, map, debounceTime} from 'rxjs/operators';
@@ -36,7 +41,6 @@ import {PresetsService} from '@core/services/wizard/presets';
 import {NodeProvider} from '@shared/model/NodeProviderConstants';
 import {CredentialsType, OpenstackCredentialsTypeService} from '../../service';
 import _ from 'lodash';
-import {ComboboxControls} from '@app/shared/components/combobox/component';
 
 // Enums for state labels
 enum NetworkStateLabel {
@@ -94,12 +98,14 @@ enum FloatingSubnetStateByNameLabel {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class LoadBalancerClassComponent implements OnInit, OnDestroy {
-  @Input() form!: FormGroup; 
+export class LoadBalancerClassComponent implements OnInit, OnDestroy, ControlValueAccessor, Validator {
   @Input() index: number;
   @Input() canRemove = true;
   @Output() remove = new EventEmitter<void>();
+  @Output() loadBalancerClassChange = new EventEmitter<LoadBalancerClass>();
+  @Output() configValueChange = new EventEmitter<{key: string, value: any}>();
 
+  form: FormGroup;
   expanded = false;
 
   private onChange: (value: LoadBalancerClass) => LoadBalancerClass;
@@ -136,18 +142,14 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly _presets: PresetsService,
+    private readonly _builder: FormBuilder,
     private readonly _clusterSpecService: ClusterSpecService,
     private readonly _credentialsTypeService: OpenstackCredentialsTypeService
-  ) {
-    // this._initForm();
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.initForm();
     this._initNetworkSetup();
-
-    this.form.valueChanges.pipe(takeUntil(this._unsubscribe)).subscribe(() => {
-      this.emitChanges();
-    });
   }
 
   ngOnDestroy(): void {
@@ -155,108 +157,100 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
     this._unsubscribe.complete();
   }
 
-  // writeValue(value: LoadBalancerClass): void {
-  //   if (value) {
-  //     this._updateFormWithLoadBalancerClass(value);
-  //   }
-  // }
+  initForm(): void {
+    this.form = this._builder.group({
+      name: '',
+      config: this._builder.group({
+        floatingNetworkID: '',
+        floatingSubnetID: '',
+        floatingSubnet: '',
+        floatingSubnetTags: [],
+        networkID: '',
+        subnetID: '',
+        memberSubnetID: '',
+      }),
+    });
+  }
 
-  // registerOnChange(fn: any): void {
-  //   this.onChange = fn;
-  // }
-
-  // registerOnTouched(fn: any): void {
-  //   this.onTouched = fn;
-  //   this.form.statusChanges.pipe(takeUntil(this._unsubscribe)).subscribe(this.onTouched);
-  // }
-
-  private emitChanges(): void {
-    const formValue = this._getFormValue();
-    console.log('Child Value Changed', formValue);
-
-    if (this.onChange) {
-      this.onChange(formValue);
+  writeValue(value: LoadBalancerClass): void {
+    if (value) {
+      this._updateFormWithLoadBalancerClass(value);
     }
-    this.onTouched();
   }
 
-  // setDisabledState?(isDisabled: boolean): void {
-  //   isDisabled ? this.form.disable() : this.form.enable();
-  // }
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+    this.form.valueChanges.pipe(takeUntil(this._unsubscribe)).subscribe(this.onChange);
+  }
 
-  // validate(_: AbstractControl): ValidationErrors | null {
-  //   return this.form.valid ? null : {invalid: true};
-  // }
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+    this.form.statusChanges.pipe(takeUntil(this._unsubscribe)).subscribe(this.onTouched);
+  }
 
-  private _getFormValue(): LoadBalancerClass {
-    const formValue = this.form.value;
-    return {
-      name: formValue.name || '',
-      config: {
-        floatingNetworkID: this._extractComboboxValue(formValue.config?.floatingNetworkID) || '',
-        floatingSubnetID: this._extractComboboxValue(formValue.config?.floatingSubnetID) || '',
-        floatingSubnet: this._extractComboboxValue(formValue.config?.floatingSubnet) || '',
-        floatingSubnetTags: this._extractComboboxValue(formValue.config?.floatingSubnetTags) || '',
-        networkID: this._extractComboboxValue(formValue.config?.networkID) || '',
-        subnetID: this._extractComboboxValue(formValue.config?.subnetID) || '',
-        memberSubnetID: this._extractComboboxValue(formValue.config?.memberSubnetID) || '',
-      },
+  setDisabledState?(isDisabled: boolean): void {
+    isDisabled ? this.form.disable() : this.form.enable();
+  }
+
+  validate(_: AbstractControl): ValidationErrors | null {
+    return this.form.valid ? null : {invalid: true};
+  }
+
+  private _updateFormWithLoadBalancerClass(value: LoadBalancerClass): void {
+    let floatingSubnetTagsArray: string[] = [];
+    const floatingSubnetTags = value.config?.floatingSubnetTags || '';
+    if (typeof floatingSubnetTags === 'string' && floatingSubnetTags.trim()) {
+      floatingSubnetTagsArray = floatingSubnetTags
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(Boolean);
+    } else if (Array.isArray(floatingSubnetTags)) {
+      floatingSubnetTagsArray = floatingSubnetTags;
+    }
+
+    // Ensure all config values are strings, not null
+    const config: LoadBalancerClassConfig = {
+      floatingNetworkID: value.config?.floatingNetworkID || '',
+      floatingSubnetID: value.config?.floatingSubnetID || '',
+      floatingSubnet: value.config?.floatingSubnet || '',
+      floatingSubnetTags: floatingSubnetTagsArray.join(','),
+      networkID: value.config?.networkID || '',
+      subnetID: value.config?.subnetID || '',
+      memberSubnetID: value.config?.memberSubnetID || '',
     };
+
+    this.loadBalancerClassChange.emit({
+      name: value.name || '',
+      config,
+    });
+
+    if (this.index === 0 || value.name) {
+      this.expanded = true;
+    }
   }
 
-  // Form handling methods
-  // private _updateFormWithLoadBalancerClass(value: LoadBalancerClass): void {
-  //   // Convert string floatingSubnetTags to array if needed
-  //   let floatingSubnetTagsArray: string[] = [];
-  //   const floatingSubnetTags = value.config?.floatingSubnetTags || '';
-  //   if (typeof floatingSubnetTags === 'string' && floatingSubnetTags.trim()) {
-  //     floatingSubnetTagsArray = floatingSubnetTags
-  //       .split(',')
-  //       .map(tag => tag.trim())
-  //       .filter(Boolean);
-  //   } else if (Array.isArray(floatingSubnetTags)) {
-  //     floatingSubnetTagsArray = floatingSubnetTags;
-  //   }
-
-  //   // Ensure all config values are strings, not null
-  //   const config = {
-  //     floatingNetworkID: value.config?.floatingNetworkID || '',
-  //     floatingSubnetID: value.config?.floatingSubnetID || '',
-  //     floatingSubnet: value.config?.floatingSubnet || '',
-  //     floatingSubnetTags: floatingSubnetTagsArray,
-  //     networkID: value.config?.networkID || '',
-  //     subnetID: value.config?.subnetID || '',
-  //     memberSubnetID: value.config?.memberSubnetID || '',
-  //   };
-
-  //   this.form.patchValue(
-  //     {
-  //       name: value.name || '',
-  //       config,
-  //     },
-  //     {emitEvent: false}
-  //   );
-
-  //   // If this is the first class or has a name, expand it
-  //   if (this.index === 0 || value.name) {
-  //     this.expanded = true;
-  //   }
-  // }
-
-  // UI event handlers
   toggleExpansion(): void {
     this.expanded = !this.expanded;
   }
 
   onNetworkChange(networkId: string): void {
+    // Emit the value change to parent
+    this.configValueChange.emit({ key: 'networkID', value: networkId || '' });
+    
+    // Still update local form for validation and UI state
     this.form.get('config.networkID').patchValue(networkId || '');
 
     if (!networkId) {
       // Clear related subnet values when network is cleared
+      this.configValueChange.emit({ key: 'subnetID', value: '' });
+      this.configValueChange.emit({ key: 'memberSubnetID', value: '' });
+      
+      // Update local form
       this.Config.patchValue({
         subnetID: '',
         memberSubnetID: '',
       });
+      
       this.subnets = [];
       this.memberSubnets = [];
     } else {
@@ -266,15 +260,24 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
   }
 
   onFloatingNetworkChange(floatingNetworkId: string): void {
+    // Emit the value change to parent
+    this.configValueChange.emit({ key: 'floatingNetworkID', value: floatingNetworkId || '' });
+    
+    // Still update local form for validation and UI state
     this.form.get('config.floatingNetworkID').patchValue(floatingNetworkId || '');
 
     if (!floatingNetworkId) {
-      // Clear related floating subnet values when floating network is cleared
+      this.configValueChange.emit({ key: 'floatingSubnetID', value: '' });
+      this.configValueChange.emit({ key: 'floatingSubnet', value: '' });
+      this.configValueChange.emit({ key: 'floatingSubnetTags', value: [] });
+      
+      // Update local form
       this.Config.patchValue({
         floatingSubnetID: '',
         floatingSubnet: '',
         floatingSubnetTags: [],
       });
+      
       this.floatingSubnets = [];
       this.floatingSubnetTags = [];
     } else {
@@ -291,25 +294,10 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
     return this.form.get('config') as FormGroup;
   }
 
-  onFloatingSubnetIDChange(floatingSubnetId: string): void {
-    this.Config.get('floatingSubnetID').patchValue(floatingSubnetId || '');
+  onChangeValue(key: string,value: string): void {
+    this.configValueChange.emit({ key, value });
   }
 
-  onFloatingSubnetChange(floatingSubnet: string): void {
-    this.Config.get('floatingSubnet').patchValue(floatingSubnet || '');
-  }
-
-  onSubnetIDChange(subnetId: string): void {
-    this.Config.get('subnetID').patchValue(subnetId || '');
-  }
-
-  onMemberSubnetIDChange(memberSubnetId: string): void {
-    this.Config.get('memberSubnetID').patchValue(memberSubnetId || '');
-  }
-
-  onFloatingSubnetTagsChange(tags: string[]): void {
-    this.Config.get('floatingSubnetTags').patchValue(tags || []);
-  }
 
   // Display name formatters
   getNetworkDisplayName(id: string): string {
@@ -375,15 +363,6 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
       : FloatingSubnetStateByNameLabel.Empty;
   }
 
-  // Helper methods to extract values from combobox
-  private _extractComboboxValue(value: any): string {
-    if (!value) return '';
-    if (typeof value === 'string') return value;
-    if (typeof value === 'object' && value[ComboboxControls.Select]) {
-      return value[ComboboxControls.Select] || '';
-    }
-    return '';
-  }
 
   private _initNetworkSetup(): void {
     // Setup preset handling

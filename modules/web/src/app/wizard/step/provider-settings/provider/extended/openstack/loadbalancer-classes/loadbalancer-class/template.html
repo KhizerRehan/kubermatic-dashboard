@@ -103,7 +103,7 @@ limitations under the License.
                  formControlName="floatingSubnetID"
                  [label]="getFloatingSubnetsLabel()"
                  [valueFormatter]="getFloatingSubnetDisplayName.bind(this)"
-                 (changed)="onFloatingSubnetIDChange($event)"
+                 (changed)="onChangeValue('floatingSubnetID', $event)"
                  inputLabel="Select floating subnet..."
                  filterBy="name"
                  selectBy="id">
@@ -117,7 +117,7 @@ limitations under the License.
                  formControlName="floatingSubnet"
                  [label]="getFloatingSubnetsLabelByName()"
                  [valueFormatter]="getFloatingSubnetDisplayName.bind(this)"
-                 (changed)="onFloatingSubnetChange($event)"
+                 (changed)="onChangeValue('floatingSubnet', $event)"
                  inputLabel="Select floating subnet..."
                  filterBy="name"
                  selectBy="name">
@@ -130,7 +130,7 @@ limitations under the License.
                   multiple
                   panelClass="km-multiple-values-dropdown"
                   disableOptionCentering
-                  (selectionChange)="onFloatingSubnetTagsChange($event.value)">
+                  (selectionChange)="onChangeValue('floatingSubnetTags', $event.value)">
           <mat-option *ngFor="let tag of floatingSubnetTags"
                     [value]="tag">
             {{tag}}
@@ -160,7 +160,7 @@ limitations under the License.
                  formControlName="subnetID"
                  [label]="getSubnetsLabel()"
                  [valueFormatter]="getSubnetDisplayName.bind(this)"
-                 (changed)="onSubnetIDChange($event)"
+                 (changed)="onChangeValue('subnetID', $event)"
                  inputLabel="Select subnet..."
                  filterBy="name"
                  selectBy="id">
@@ -174,7 +174,7 @@ limitations under the License.
                  formControlName="memberSubnetID"
                  [label]="getMemberSubnetsLabel()"
                  [valueFormatter]="getMemberSubnetDisplayName.bind(this)"
-                 (changed)="onMemberSubnetIDChange($event)"
+                 (changed)="onChangeValue('memberSubnetID', $event)"
                  inputLabel="Select member subnet..."
                  filterBy="name"
                  selectBy="id">
