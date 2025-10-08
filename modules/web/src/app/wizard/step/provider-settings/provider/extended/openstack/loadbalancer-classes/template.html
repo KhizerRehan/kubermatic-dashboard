@@ -21,15 +21,15 @@ limitations under the License.
         fxLayoutGap="15px">
 
     <!-- LoadBalancer Classes -->
-    <div class="km-loadbalancer-tree-container">
-      {{loadBalancerClasses.length}}
-      <km-loadbalancer-class *ngFor="let lbClass of loadBalancerClasses; let i = index;"
-                             [loadBalancerClass]="lbClass"
+    <div class="km-loadbalancer-tree-container" formArrayName="loadBalancerClasses">
+      <div *ngFor="let lbClassControl of loadBalancerClassesArray.controls; let i = index">
+        <km-loadbalancer-class 
+                             [form]="lbClassControl"
                              [index]="i"
                              [canRemove]="canRemove()"
-                             (loadBalancerClassChange)="onLoadBalancerClassChange(i, $event)"
                              (remove)="removeLoadBalancerClass(i)">
-      </km-loadbalancer-class>
+        </km-loadbalancer-class>
+      </div>
     </div>
 
     <!-- Add button -->

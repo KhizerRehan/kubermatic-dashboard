@@ -14,20 +14,19 @@
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
+  forwardRef,
   Input,
   OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
 import {
-  FormBuilder,
   FormGroup,
-  Validators,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import {ComboboxControls} from '@shared/components/combobox/component';
 import {LoadBalancerClass} from '@shared/entity/cluster';
 import {OpenstackNetwork, OpenstackSubnet} from '@shared/entity/provider/openstack';
 import {EMPTY, Observable, onErrorResumeNext, Subject, merge} from 'rxjs';
@@ -37,6 +36,7 @@ import {PresetsService} from '@core/services/wizard/presets';
 import {NodeProvider} from '@shared/model/NodeProviderConstants';
 import {CredentialsType, OpenstackCredentialsTypeService} from '../../service';
 import _ from 'lodash';
+import {ComboboxControls} from '@app/shared/components/combobox/component';
 
 // Enums for state labels
 enum NetworkStateLabel {
@@ -80,22 +80,31 @@ enum FloatingSubnetStateByNameLabel {
   templateUrl: './template.html',
   styleUrls: ['./style.scss'],
   providers: [
-    OpenstackCredentialsTypeService,
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => LoadBalancerClassComponent),
+      multi: true,
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => LoadBalancerClassComponent),
+      multi: true,
+    },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
 export class LoadBalancerClassComponent implements OnInit, OnDestroy {
-  @Input() loadBalancerClass: LoadBalancerClass;
+  @Input() form!: FormGroup; 
   @Input() index: number;
   @Input() canRemove = true;
-  @Output() loadBalancerClassChange = new EventEmitter<LoadBalancerClass>();
   @Output() remove = new EventEmitter<void>();
 
-  form: FormGroup;
   expanded = false;
 
-  // Networks and subnets
+  private onChange: (value: LoadBalancerClass) => LoadBalancerClass;
+  private onTouched = () => {};
+
   floatingNetworks: OpenstackNetwork[] = [];
   floatingSubnets: OpenstackSubnet[] = [];
   floatingSubnetTags: string[] = [];
@@ -104,20 +113,15 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
   subnets: OpenstackSubnet[] = [];
   memberSubnets: OpenstackSubnet[] = [];
 
-  // Loading states
   floatingNetworksLoading = false;
   floatingSubnetsLoading = false;
   networksLoading = false;
   subnetsLoading = false;
   memberSubnetsLoading = false;
 
-  // Component state
   disabled = false;
-
-  // Preset state
   isPresetSelected = false;
 
-  // Credential tracking
   private _domain = '';
   private _username = '';
   private _password = '';
@@ -131,24 +135,19 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
   private readonly _unsubscribe = new Subject<void>();
 
   constructor(
-    private readonly _builder: FormBuilder,
-    private readonly _cdr: ChangeDetectorRef,
-    private readonly _clusterSpecService: ClusterSpecService,
     private readonly _presets: PresetsService,
+    private readonly _clusterSpecService: ClusterSpecService,
     private readonly _credentialsTypeService: OpenstackCredentialsTypeService
   ) {
-    this._initForm();
+    // this._initForm();
   }
 
   ngOnInit(): void {
-    this._setupNetworkSelectionListeners();
-    this._setupCredentialWatchers();
     this._initNetworkSetup();
-    
-    // Initialize form with input data
-    if (this.loadBalancerClass) {
-      this._updateFormWithLoadBalancerClass(this.loadBalancerClass);
-    }
+
+    this.form.valueChanges.pipe(takeUntil(this._unsubscribe)).subscribe(() => {
+      this.emitChanges();
+    });
   }
 
   ngOnDestroy(): void {
@@ -156,126 +155,160 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
     this._unsubscribe.complete();
   }
 
-  // Form handling methods
-  private _updateFormWithLoadBalancerClass(value: LoadBalancerClass): void {
-    // Convert string floatingSubnetTags to array if needed
-    let floatingSubnetTagsArray: string[] = [];
-    const floatingSubnetTags = value.config?.floatingSubnetTags || '';
-    if (typeof floatingSubnetTags === 'string' && floatingSubnetTags.trim()) {
-      floatingSubnetTagsArray = floatingSubnetTags.split(',').map(tag => tag.trim()).filter(Boolean);
-    } else if (Array.isArray(floatingSubnetTags)) {
-      floatingSubnetTagsArray = floatingSubnetTags;
+  // writeValue(value: LoadBalancerClass): void {
+  //   if (value) {
+  //     this._updateFormWithLoadBalancerClass(value);
+  //   }
+  // }
+
+  // registerOnChange(fn: any): void {
+  //   this.onChange = fn;
+  // }
+
+  // registerOnTouched(fn: any): void {
+  //   this.onTouched = fn;
+  //   this.form.statusChanges.pipe(takeUntil(this._unsubscribe)).subscribe(this.onTouched);
+  // }
+
+  private emitChanges(): void {
+    const formValue = this._getFormValue();
+    console.log('Child Value Changed', formValue);
+
+    if (this.onChange) {
+      this.onChange(formValue);
     }
-
-    // Ensure all config values are strings, not null
-    const config = {
-      floatingNetworkID: value.config?.floatingNetworkID || '',
-      floatingSubnetID: value.config?.floatingSubnetID || '',
-      floatingSubnet: value.config?.floatingSubnet || '',
-      floatingSubnetTags: floatingSubnetTagsArray,
-      networkID: value.config?.networkID || '',
-      subnetID: value.config?.subnetID || '',
-      memberSubnetID: value.config?.memberSubnetID || '',
-    };
-
-    this.form.patchValue({
-      name: value.name || '',
-      config,
-    }, {emitEvent: false});
-
-    // If this is the first class or has a name, expand it
-    if (this.index === 0 || value.name) {
-      this.expanded = true;
-    }
-
-    this._cdr.markForCheck();
+    this.onTouched();
   }
 
-  private _emitLoadBalancerClassChange(): void {
+  // setDisabledState?(isDisabled: boolean): void {
+  //   isDisabled ? this.form.disable() : this.form.enable();
+  // }
+
+  // validate(_: AbstractControl): ValidationErrors | null {
+  //   return this.form.valid ? null : {invalid: true};
+  // }
+
+  private _getFormValue(): LoadBalancerClass {
     const formValue = this.form.value;
-    const loadBalancerClass: LoadBalancerClass = {
+    return {
       name: formValue.name || '',
       config: {
-        floatingNetworkID: this._extractComboboxValue(formValue.config?.floatingNetworkID),
-        floatingSubnetID: this._extractComboboxValue(formValue.config?.floatingSubnetID),
-        floatingSubnet: this._extractComboboxValue(formValue.config?.floatingSubnet),
-        floatingSubnetTags: Array.isArray(formValue.config?.floatingSubnetTags)
-          ? formValue.config.floatingSubnetTags.join(',')
-          : formValue.config?.floatingSubnetTags || '',
-        networkID: this._extractComboboxValue(formValue.config?.networkID),
-        subnetID: this._extractComboboxValue(formValue.config?.subnetID),
-        memberSubnetID: this._extractComboboxValue(formValue.config?.memberSubnetID),
+        floatingNetworkID: this._extractComboboxValue(formValue.config?.floatingNetworkID) || '',
+        floatingSubnetID: this._extractComboboxValue(formValue.config?.floatingSubnetID) || '',
+        floatingSubnet: this._extractComboboxValue(formValue.config?.floatingSubnet) || '',
+        floatingSubnetTags: this._extractComboboxValue(formValue.config?.floatingSubnetTags) || '',
+        networkID: this._extractComboboxValue(formValue.config?.networkID) || '',
+        subnetID: this._extractComboboxValue(formValue.config?.subnetID) || '',
+        memberSubnetID: this._extractComboboxValue(formValue.config?.memberSubnetID) || '',
       },
     };
-    this.loadBalancerClassChange.emit(loadBalancerClass);
   }
+
+  // Form handling methods
+  // private _updateFormWithLoadBalancerClass(value: LoadBalancerClass): void {
+  //   // Convert string floatingSubnetTags to array if needed
+  //   let floatingSubnetTagsArray: string[] = [];
+  //   const floatingSubnetTags = value.config?.floatingSubnetTags || '';
+  //   if (typeof floatingSubnetTags === 'string' && floatingSubnetTags.trim()) {
+  //     floatingSubnetTagsArray = floatingSubnetTags
+  //       .split(',')
+  //       .map(tag => tag.trim())
+  //       .filter(Boolean);
+  //   } else if (Array.isArray(floatingSubnetTags)) {
+  //     floatingSubnetTagsArray = floatingSubnetTags;
+  //   }
+
+  //   // Ensure all config values are strings, not null
+  //   const config = {
+  //     floatingNetworkID: value.config?.floatingNetworkID || '',
+  //     floatingSubnetID: value.config?.floatingSubnetID || '',
+  //     floatingSubnet: value.config?.floatingSubnet || '',
+  //     floatingSubnetTags: floatingSubnetTagsArray,
+  //     networkID: value.config?.networkID || '',
+  //     subnetID: value.config?.subnetID || '',
+  //     memberSubnetID: value.config?.memberSubnetID || '',
+  //   };
+
+  //   this.form.patchValue(
+  //     {
+  //       name: value.name || '',
+  //       config,
+  //     },
+  //     {emitEvent: false}
+  //   );
+
+  //   // If this is the first class or has a name, expand it
+  //   if (this.index === 0 || value.name) {
+  //     this.expanded = true;
+  //   }
+  // }
 
   // UI event handlers
   toggleExpansion(): void {
     this.expanded = !this.expanded;
-    this._cdr.markForCheck();
   }
 
   onNetworkChange(networkId: string): void {
     this.form.get('config.networkID').patchValue(networkId || '');
-    
+
     if (!networkId) {
       // Clear related subnet values when network is cleared
-      this.form.get('config.subnetID').patchValue('');
-      this.form.get('config.memberSubnetID').patchValue('');
+      this.Config.patchValue({
+        subnetID: '',
+        memberSubnetID: '',
+      });
       this.subnets = [];
       this.memberSubnets = [];
     } else {
       // Load subnets for the selected network
       this._loadSubnetsForNetwork(networkId);
     }
-
-    this._emitLoadBalancerClassChange();
-    this._cdr.markForCheck();
   }
 
   onFloatingNetworkChange(floatingNetworkId: string): void {
     this.form.get('config.floatingNetworkID').patchValue(floatingNetworkId || '');
-    
+
     if (!floatingNetworkId) {
       // Clear related floating subnet values when floating network is cleared
-      this.form.get('config.floatingSubnetID').patchValue('');
-      this.form.get('config.floatingSubnet').patchValue('');
-      this.form.get('config.floatingSubnetTags').patchValue([]);
+      this.Config.patchValue({
+        floatingSubnetID: '',
+        floatingSubnet: '',
+        floatingSubnetTags: [],
+      });
       this.floatingSubnets = [];
       this.floatingSubnetTags = [];
     } else {
       // Load floating subnets for the selected network
       this._loadFloatingSubnetsForNetwork(floatingNetworkId);
     }
+  }
 
-    this._emitLoadBalancerClassChange();
-    this._cdr.markForCheck();
+  get LoadBalancerClass(): LoadBalancerClass {
+    return this.form.value as LoadBalancerClass;
+  }
+
+  get Config(): FormGroup {
+    return this.form.get('config') as FormGroup;
   }
 
   onFloatingSubnetIDChange(floatingSubnetId: string): void {
-    this.form.get('config.floatingSubnetID').patchValue(floatingSubnetId || '');
-    this._emitLoadBalancerClassChange();
+    this.Config.get('floatingSubnetID').patchValue(floatingSubnetId || '');
   }
 
   onFloatingSubnetChange(floatingSubnet: string): void {
-    this.form.get('config.floatingSubnet').patchValue(floatingSubnet || '');
-    this._emitLoadBalancerClassChange();
+    this.Config.get('floatingSubnet').patchValue(floatingSubnet || '');
   }
 
   onSubnetIDChange(subnetId: string): void {
-    this.form.get('config.subnetID').patchValue(subnetId || '');
-    this._emitLoadBalancerClassChange();
+    this.Config.get('subnetID').patchValue(subnetId || '');
   }
 
   onMemberSubnetIDChange(memberSubnetId: string): void {
-    this.form.get('config.memberSubnetID').patchValue(memberSubnetId || '');
-    this._emitLoadBalancerClassChange();
+    this.Config.get('memberSubnetID').patchValue(memberSubnetId || '');
   }
 
   onFloatingSubnetTagsChange(tags: string[]): void {
-    this.form.get('config.floatingSubnetTags').patchValue(tags || []);
-    this._emitLoadBalancerClassChange();
+    this.Config.get('floatingSubnetTags').patchValue(tags || []);
   }
 
   // Display name formatters
@@ -337,7 +370,9 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
 
   getFloatingSubnetsLabelByName(): string {
     if (this.floatingSubnetsLoading) return FloatingSubnetStateByNameLabel.Loading;
-    return this.floatingSubnets.length > 0 ? FloatingSubnetStateByNameLabel.Ready : FloatingSubnetStateByNameLabel.Empty;
+    return this.floatingSubnets.length > 0
+      ? FloatingSubnetStateByNameLabel.Ready
+      : FloatingSubnetStateByNameLabel.Empty;
   }
 
   // Helper methods to extract values from combobox
@@ -348,27 +383,6 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
       return value[ComboboxControls.Select] || '';
     }
     return '';
-  }
-
-  // Private methods
-  private _initForm(): void {
-    this.form = this._builder.group({
-      name: ['', [Validators.required, Validators.minLength(1)]],
-      config: this._builder.group({
-        floatingNetworkID: [''],
-        floatingSubnetID: [''],
-        floatingSubnet: [''],
-        floatingSubnetTags: [[]],
-        networkID: [''],
-        subnetID: [''],
-        memberSubnetID: [''],
-      }),
-    });
-
-    // Subscribe to form changes to emit to parent
-    this.form.valueChanges.pipe(takeUntil(this._unsubscribe)).subscribe(() => {
-      this._emitLoadBalancerClassChange();
-    });
   }
 
   private _initNetworkSetup(): void {
@@ -418,12 +432,10 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
         next: networks => {
           this.networks = networks.filter(network => !network.external);
           this.networksLoading = false;
-          this._cdr.markForCheck();
         },
         error: () => {
           this.networks = [];
           this.networksLoading = false;
-          this._cdr.markForCheck();
         },
       });
   }
@@ -436,12 +448,10 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
         next: networks => {
           this.floatingNetworks = networks;
           this.floatingNetworksLoading = false;
-          this._cdr.markForCheck();
         },
         error: () => {
           this.floatingNetworks = [];
           this.floatingNetworksLoading = false;
-          this._cdr.markForCheck();
         },
       });
   }
@@ -449,7 +459,7 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
   private _loadSubnetsForNetwork(networkId: string): void {
     this.subnetsLoading = true;
     this.memberSubnetsLoading = true;
-    
+
     merge(
       this._subnetIDListObservable(networkId).pipe(map(subnets => ({type: 'subnets', subnets}))),
       this._memberSubnetListObservable(networkId).pipe(map(subnets => ({type: 'memberSubnets', subnets})))
@@ -464,21 +474,19 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
             this.memberSubnets = result.subnets;
             this.memberSubnetsLoading = false;
           }
-          this._cdr.markForCheck();
         },
         error: () => {
           this.subnets = [];
           this.memberSubnets = [];
           this.subnetsLoading = false;
           this.memberSubnetsLoading = false;
-          this._cdr.markForCheck();
         },
       });
   }
 
   private _loadFloatingSubnetsForNetwork(floatingNetworkId: string): void {
     this.floatingSubnetsLoading = true;
-    
+
     this._floatingSubnetListObservable(floatingNetworkId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
@@ -488,24 +496,13 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
           // Extract unique tags from all subnets
           const allTags = subnets.flatMap(subnet => subnet.tags || []);
           this.floatingSubnetTags = [...new Set(allTags)];
-          this._cdr.markForCheck();
         },
         error: () => {
           this.floatingSubnets = [];
           this.floatingSubnetTags = [];
           this.floatingSubnetsLoading = false;
-          this._cdr.markForCheck();
         },
       });
-  }
-
-  private _setupNetworkSelectionListeners(): void {
-    // These are handled by the onNetworkChange and onFloatingNetworkChange methods
-    // which are called from the template when selections change
-  }
-
-  private _setupCredentialWatchers(): void {
-    // This is now handled in _initNetworkSetup()
   }
 
   private _clearAllData(): void {
@@ -520,7 +517,6 @@ export class LoadBalancerClassComponent implements OnInit, OnDestroy {
     this.subnetsLoading = false;
     this.memberSubnetsLoading = false;
     this.floatingSubnetsLoading = false;
-    this._cdr.markForCheck();
   }
 
   private _hasRequiredCredentials(): boolean {

@@ -14,15 +14,20 @@
 
 import {Component, forwardRef, OnDestroy, OnInit} from '@angular/core';
 import {
+  AbstractControl,
+  ControlValueAccessor,
   FormArray,
   FormBuilder,
-  FormControl,
+  FormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator,
 } from '@angular/forms';
+import { ComboboxControls } from '@app/shared/components/combobox/component';
 import {LoadBalancerClass} from '@shared/entity/cluster';
-import {BaseFormValidator} from '@shared/validators/base-form.validator';
 import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'km-wizard-openstack-loadbalancer-classes',
@@ -42,27 +47,26 @@ import {Subject} from 'rxjs';
   ],
   standalone: false,
 })
-export class LoadBalancerClassesComponent extends BaseFormValidator implements OnInit, OnDestroy {
-  loadBalancerClasses: LoadBalancerClass[] = [];
+export class LoadBalancerClassesComponent implements OnInit, OnDestroy, ControlValueAccessor, Validator {
+  form: FormGroup;
   protected _unsubscribe = new Subject<void>();
+  private onChange: (value: LoadBalancerClass[]) => LoadBalancerClass[];
+  private onTouched = () => {};
 
   constructor(
-    private readonly _builder: FormBuilder
-  ) {
-    super('LoadBalancer Classes');
+    private readonly _builder: FormBuilder,
+  ) {}
+
+  get loadBalancerClassesArray(): FormArray<FormGroup> {
+    return this.form.get('loadBalancerClasses') as FormArray<FormGroup>;
   }
 
-  get loadBalancerClassesArray(): FormArray {
-    return this.form.get('loadBalancerClasses') as FormArray;
+  get loadBalancerClasses(): LoadBalancerClass[] {
+    return this.loadBalancerClassesArray.value || [];
   }
 
   ngOnInit(): void {
     this.initForm();
-    
-    // Add initial LoadBalancer class if none exist
-    if (this.loadBalancerClasses.length === 0) {
-      this.addLoadBalancerClass();
-    }
   }
 
   ngOnDestroy(): void {
@@ -70,90 +74,150 @@ export class LoadBalancerClassesComponent extends BaseFormValidator implements O
     this._unsubscribe.complete();
   }
 
+  initForm(): void {
+    this.form = this._builder.group({
+      loadBalancerClasses: this._builder.array<FormGroup>([]),
+    });
+
+    this.form.valueChanges.pipe(takeUntil(this._unsubscribe)).subscribe(() => {
+      this.emitChanges();
+    });
+  }
+
   addLoadBalancerClass(): void {
-    const index = this.loadBalancerClasses.length;
-    const defaultLoadBalancerClass: LoadBalancerClass = {
-      name: `Default-LoadBalancer-Class-${index + 1}`,
-      config: {
+    const lbClassForm = this._builder.group({
+      name: '',
+      config: this._builder.group({
         floatingNetworkID: '',
         floatingSubnetID: '',
         floatingSubnet: '',
-        floatingSubnetTags: '',
+        floatingSubnetTags: [],
         networkID: '',
         subnetID: '',
         memberSubnetID: '',
-      },
-    };
-    
-    this.loadBalancerClasses.push(defaultLoadBalancerClass);
-    
-    // Add a FormControl to the FormArray for validation
-    const classControl = new FormControl(defaultLoadBalancerClass);
-    this.loadBalancerClassesArray.push(classControl);
+      }),
+    });
+
+    // Add the group to the FormArray
+    this.loadBalancerClassesArray.push(lbClassForm);
   }
 
   removeLoadBalancerClass(index: number): void {
-    this.loadBalancerClasses.splice(index, 1);
     this.loadBalancerClassesArray.removeAt(index);
   }
 
+  validate(_: AbstractControl): ValidationErrors | null {
+    return this.form.valid ? null : {invalid: true};
+  }
+
+  writeValue(value: any): void {
+    if (value) {
+      this.setLoadBalancerClasses(value);
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    isDisabled ? this.form.disable() : this.form.enable();
+  }
+
   onLoadBalancerClassChange(index: number, updatedClass: LoadBalancerClass): void {
-    this.loadBalancerClasses[index] = updatedClass;
-    
-    // Update the corresponding FormControl
     const control = this.loadBalancerClassesArray.at(index);
     if (control) {
-      control.setValue(updatedClass);
+      control.setValue(updatedClass, {emitEvent: false});
     }
-    
-    // Emit changes to parent
+
     this.emitChanges();
   }
 
   canRemove(): boolean {
-    return this.loadBalancerClasses.length > 1;
+    return this.loadBalancerClassesArray.length > 0;
   }
 
   canAddLoadBalancerClass(): boolean {
     return true;
   }
 
-  // Override BaseFormValidator's writeValue to handle LoadBalancerClass[] input
-  writeValue(value: LoadBalancerClass[]): void {
-    if (value && Array.isArray(value)) {
-      this.loadBalancerClasses = [...value];
-      this.syncFormArrayWithData();
-    } else {
-      this.loadBalancerClasses = [];
-      if (this.loadBalancerClasses.length === 0) {
-        this.addLoadBalancerClass();
-      }
-    }
-  }
-
-  // Override BaseFormValidator's registerOnChange to emit LoadBalancerClass[]
-  registerOnChange(fn: any): void {
-    this.onValueChange = fn;
-    // We'll call fn(this.loadBalancerClasses) whenever data changes
-  }
-
-  private syncFormArrayWithData(): void {
+  private setLoadBalancerClasses(loadBalancerClasses: LoadBalancerClass[]): void {
     this.loadBalancerClassesArray.clear();
-    this.loadBalancerClasses.forEach(lbClass => {
-      const control = new FormControl(lbClass);
-      this.loadBalancerClassesArray.push(control);
+
+    if (!loadBalancerClasses || loadBalancerClasses.length === 0) {
+      return;
+    }
+
+    loadBalancerClasses.forEach(lbClass => {
+      const lbClassForm = this._builder.group({
+        name: lbClass.name || '',
+        config: this._builder.group({
+          floatingNetworkID: lbClass.config?.floatingNetworkID || '',
+          floatingSubnetID: lbClass.config?.floatingSubnetID || '',
+          floatingSubnet: lbClass.config?.floatingSubnet || '',
+          floatingSubnetTags: this.parseFloatingSubnetTags(lbClass.config?.floatingSubnetTags),
+          networkID: lbClass.config?.networkID || '',
+          subnetID: lbClass.config?.subnetID || '',
+          memberSubnetID: lbClass.config?.memberSubnetID || '',
+        }),
+      });
+      this.loadBalancerClassesArray.push(lbClassForm);
     });
+  }
+
+  private parseFloatingSubnetTags(tags: string | string[]): string[] {
+    if (Array.isArray(tags)) {
+      return tags;
+    }
+    if (typeof tags === 'string' && tags.trim()) {
+      return tags
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(Boolean);
+    }
+    return [];
   }
 
   private emitChanges(): void {
-    if (this.onValueChange) {
-      this.onValueChange(this.loadBalancerClasses);
+    if (this.onChange) {
+      const mappeedLoadBalancerClasses = this.loadBalancerClasses.map(lbClass => {
+        return this._getFormValue(lbClass);
+      });
+
+      console.log('Parent Value Changed', mappeedLoadBalancerClasses);
+
+      this.onChange(mappeedLoadBalancerClasses);
     }
+    this.onTouched();
   }
 
-  private initForm(): void {
-    this.form = this._builder.group({
-      loadBalancerClasses: this._builder.array([]),
-    });
+
+  private _getFormValue(lbClass: LoadBalancerClass): LoadBalancerClass {    
+    return {
+      name: lbClass.name || '',
+      config: {
+        floatingNetworkID: this._extractComboboxValue(lbClass.config?.floatingNetworkID) || '',
+        floatingSubnetID: this._extractComboboxValue(lbClass.config?.floatingSubnetID) || '',
+        floatingSubnet: this._extractComboboxValue(lbClass.config?.floatingSubnet) || '',
+        floatingSubnetTags: this._extractComboboxValue(lbClass.config?.floatingSubnetTags) || '',
+        networkID: this._extractComboboxValue(lbClass.config?.networkID) || '',
+        subnetID: this._extractComboboxValue(lbClass.config?.subnetID) || '',
+        memberSubnetID: this._extractComboboxValue(lbClass.config?.memberSubnetID) || '',
+      },
+    };
   }
+
+  private _extractComboboxValue(value: any): string {
+    if (!value) return '';
+    if (typeof value === 'string') return value;
+    if (typeof value === 'object' && value[ComboboxControls.Select]) {
+      return value[ComboboxControls.Select] || '';
+    }
+    return '';
+  }
+  
 }
