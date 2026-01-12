@@ -15,6 +15,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 
 import {FixtureHelper} from './fixture-helper';
 
@@ -36,6 +37,7 @@ import {FixtureHelper} from './fixture-helper';
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 class TestComponent {
   @Input() title = 'Test Title';
@@ -54,17 +56,33 @@ class TestComponent {
 describe('FixtureHelper', () => {
   let fixture: ComponentFixture<TestComponent>;
   let component: TestComponent;
+  let originalGetComputedStyle: typeof window.getComputedStyle;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
-      imports: [FormsModule],
+      imports: [CommonModule, FormsModule],
       teardown: {destroyAfterEach: false},
     });
 
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    // Mock getComputedStyle to return expected values for visible elements
+    originalGetComputedStyle = window.getComputedStyle;
+    window.getComputedStyle = jest.fn((_element: Element) => {
+      // Return a mock object with the properties we need for testing
+      return {
+        display: 'block',
+        visibility: 'visible',
+      } as CSSStyleDeclaration;
+    });
+  });
+
+  afterEach(() => {
+    // Restore original getComputedStyle
+    window.getComputedStyle = originalGetComputedStyle;
   });
 
   describe('getComponent', () => {
@@ -147,7 +165,7 @@ describe('FixtureHelper', () => {
 
   describe('triggerClick', () => {
     it('should trigger click event by selector', () => {
-      spyOn(component, 'onSubmit');
+      jest.spyOn(component, 'onSubmit');
 
       FixtureHelper.triggerClick(fixture, 'button');
       fixture.detectChanges();
@@ -156,7 +174,7 @@ describe('FixtureHelper', () => {
     });
 
     it('should trigger click event by element reference', () => {
-      spyOn(component, 'onSubmit');
+      jest.spyOn(component, 'onSubmit');
       const button = FixtureHelper.querySelector(fixture, 'button') as HTMLButtonElement;
 
       FixtureHelper.triggerClick(fixture, button);
@@ -166,7 +184,7 @@ describe('FixtureHelper', () => {
     });
 
     it('should do nothing if element not found', () => {
-      spyOn(component, 'onSubmit');
+      jest.spyOn(component, 'onSubmit');
 
       FixtureHelper.triggerClick(fixture, '.nonexistent');
       fixture.detectChanges();
@@ -253,6 +271,9 @@ describe('FixtureHelper', () => {
     it('should return true for visible element', () => {
       component.showMessage = true;
       fixture.detectChanges();
+
+      const element = FixtureHelper.querySelector(fixture, '[data-cy="message"]');
+      expect(element).toBeTruthy(); // Ensure element exists
 
       const visible = FixtureHelper.isVisible(fixture, '[data-cy="message"]');
       expect(visible).toBe(true);

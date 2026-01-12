@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {Component} from '@angular/core';
+import {TestBed} from '@angular/core/testing';
+import {Component, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -24,6 +24,7 @@ import {TestBedSetup} from './test-bed-setup';
 @Component({
   selector: 'test-component',
   template: '<div>Test Component</div>',
+  standalone: false,
 })
 class TestComponent {}
 
@@ -77,7 +78,7 @@ describe('TestBedSetup', () => {
         providers: [{provide: 'TestService', useValue: mockService}],
       });
 
-      const service = TestBed.inject('TestService' as any);
+      const service = TestBed.inject('TestService' as any) as {getValue: () => string};
       expect(service.getValue()).toBe('test');
     });
   });
@@ -100,7 +101,7 @@ describe('TestBedSetup', () => {
         providers: [{provide: 'MockService', useValue: mockService}],
       });
 
-      const service = TestBed.inject('MockService' as any);
+      const service = TestBed.inject('MockService' as any) as {getValue: () => string};
       expect(service.getValue()).toBe('mocked');
     });
 
@@ -144,7 +145,7 @@ describe('TestBedSetup', () => {
         providers: [{provide: 'DialogService', useValue: mockDialogService}],
       });
 
-      const service = TestBed.inject('DialogService' as any);
+      const service = TestBed.inject('DialogService' as any) as {isOpen: boolean};
       expect(service.isOpen).toBe(false);
     });
   });
@@ -153,20 +154,28 @@ describe('TestBedSetup', () => {
     @Component({
       selector: 'test-feature-component',
       template: '<div>Feature Component</div>',
+      standalone: false,
     })
     class FeatureComponent {}
 
     @Component({
       selector: 'app-root',
       template: '<test-feature-component></test-feature-component>',
+      standalone: false,
     })
     class FeatureRootComponent {}
+
+    @NgModule({
+      declarations: [FeatureComponent, FeatureRootComponent],
+      exports: [FeatureComponent, FeatureRootComponent],
+    })
+    class TestFeatureModule {}
 
     // Create a minimal test module
     const createTestModule = () => {
       return TestBedSetup.configureFeatureModule({
-        featureModule: FeatureRootComponent as any, // Using component as placeholder for module
-        declarations: [FeatureComponent],
+        featureModule: TestFeatureModule,
+        declarations: [],
       });
     };
 
@@ -184,8 +193,8 @@ describe('TestBedSetup', () => {
 
     it('should allow additional imports alongside feature module', () => {
       TestBedSetup.configureFeatureModule({
-        featureModule: FeatureRootComponent as any,
-        declarations: [FeatureComponent],
+        featureModule: TestFeatureModule,
+        declarations: [],
         additionalImports: [HttpClientModule],
       });
 
@@ -213,7 +222,7 @@ describe('TestBedSetup', () => {
         providers: [{provide: 'Service', useValue: mockService}],
       });
 
-      const service = TestBedSetup.injectService('Service' as any);
+      const service = TestBedSetup.injectService('Service' as any) as {getValue: () => string};
       expect(service.getValue()).toBe('injected');
     });
 
@@ -233,7 +242,6 @@ describe('TestBedSetup', () => {
       });
 
       const fixture = TestBed.createComponent(TestComponent);
-      const component = TestBedSetup.injectService(TestComponent as any);
 
       // Just verify fixture was created successfully
       expect(fixture.componentInstance).toBeTruthy();
@@ -247,7 +255,7 @@ describe('TestBedSetup', () => {
         providers: [{provide: 'DataService', useValue: mockService}],
       });
 
-      const service = TestBedSetup.injectService('DataService' as any);
+      const service = TestBedSetup.injectService('DataService' as any) as {data: string};
       expect(service.data).toBe('test');
     });
   });

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Observable, Subject, throwError, NEVER, of} from 'rxjs';
-import {delay} from 'rxjs/operators';
+import {delay, switchMap} from 'rxjs/operators';
 
 /**
  * Helper class for creating mock observables in tests.
@@ -89,7 +89,12 @@ export class MockObservableBuilder {
    * ```
    */
   static error<T>(error: Error | any, delayMs: number = 0): Observable<T> {
-    return delayMs > 0 ? of(null).pipe(delay(delayMs), throwError(() => error)) : throwError(() => error);
+    return delayMs > 0
+      ? of(null).pipe(
+          delay(delayMs),
+          switchMap(() => throwError(() => error))
+        )
+      : throwError(() => error);
   }
 
   /**
@@ -149,48 +154,29 @@ export class MockObservableBuilder {
   }
 
   /**
-   * Creates an observable that emits array of items one by one.
+   * Creates an observable that emits an array of items as a single value.
    *
-   * Useful for mocking APIs that return lists where each item needs to be
-   * processed individually, or for testing accumulation of streamed data.
+   * Useful for mocking APIs that return lists/arrays as complete collections,
+   * which is the most common pattern for REST APIs returning collections.
    *
    * @template T - Type of items in array
-   * @param {T[]} items - Array of items to emit
-   * @param {number} [delayMs=0] - Optional delay in milliseconds between each emission
-   * @returns {Observable<T>} Observable that emits each item then completes
+   * @param {T[]} items - Array of items to emit as a single value
+   * @param {number} [delayMs=0] - Optional delay in milliseconds before emission
+   * @returns {Observable<T[]>} Observable that emits the array then completes
    *
    * @example
    * ```typescript
-   * // Emit array items
+   * // Emit array as single value
    * const items$ = MockObservableBuilder.successArray(['a', 'b', 'c']);
-   * const results: string[] = [];
-   * items$.subscribe(item => results.push(item));
-   * // results = ['a', 'b', 'c']
+   * items$.subscribe(items => console.log(items));
+   * // Logs: ['a', 'b', 'c']
    *
-   * // With delay between items
+   * // With delay
    * const delayedItems$ = MockObservableBuilder.successArray([1, 2, 3], 100);
-   * // Each item emitted 100ms apart
+   * // Array emitted after 100ms delay
    * ```
    */
-  static successArray<T>(items: T[], delayMs: number = 0): Observable<T> {
-    if (items.length === 0) {
-      return of();
-    }
-    return new Observable(subscriber => {
-      let index = 0;
-      const emit = () => {
-        if (index < items.length) {
-          subscriber.next(items[index++]);
-          if (delayMs > 0 && index < items.length) {
-            setTimeout(emit, delayMs);
-          } else if (index < items.length) {
-            emit();
-          } else {
-            subscriber.complete();
-          }
-        }
-      };
-      emit();
-    });
+  static successArray<T>(items: T[], delayMs: number = 0): Observable<T[]> {
+    return delayMs > 0 ? of(items).pipe(delay(delayMs)) : of(items);
   }
 }

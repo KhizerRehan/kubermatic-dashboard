@@ -13,10 +13,9 @@
 // limitations under the License.
 
 import {HttpClientModule} from '@angular/common/http';
-import {NgModule, Type} from '@angular/core';
+import {Type} from '@angular/core';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserModule} from '@angular/platform-browser';
-import {MatDialog} from '@angular/material/dialog';
 import {TestBed} from '@angular/core/testing';
 
 /**
@@ -86,7 +85,7 @@ export class TestBedSetup {
       imports: [BrowserModule, NoopAnimationsModule, ...(config.imports || [])],
       declarations: config.declarations || [],
       providers: config.providers || [],
-      teardown: config.teardown || {destroyAfterEach: false},
+      teardown: config.teardown ? {destroyAfterEach: config.teardown.destroyAfterEach || false} : {destroyAfterEach: false},
     };
 
     return TestBed.configureTestingModule(testBedConfig);
@@ -136,7 +135,7 @@ export class TestBedSetup {
       imports: [BrowserModule, HttpClientModule, NoopAnimationsModule, ...(config.imports || [])],
       declarations: config.declarations || [],
       providers: config.providers || [],
-      teardown: config.teardown || {destroyAfterEach: false},
+      teardown: config.teardown ? {destroyAfterEach: config.teardown.destroyAfterEach || false} : {destroyAfterEach: false},
     };
 
     return TestBed.configureTestingModule(testBedConfig);
@@ -183,7 +182,7 @@ export class TestBedSetup {
       imports: [BrowserModule, HttpClientModule, NoopAnimationsModule, ...(config.imports || [])],
       declarations: config.declarations || [],
       providers: config.providers || [],
-      teardown: config.teardown || {destroyAfterEach: false},
+      teardown: config.teardown ? {destroyAfterEach: config.teardown.destroyAfterEach || false} : {destroyAfterEach: false},
     };
 
     return TestBed.configureTestingModule(testBedConfig);
@@ -236,7 +235,7 @@ export class TestBedSetup {
       ],
       declarations: config.declarations || [],
       providers: config.providers || [],
-      teardown: config.teardown || {destroyAfterEach: false},
+      teardown: config.teardown ? {destroyAfterEach: config.teardown.destroyAfterEach || false} : {destroyAfterEach: false},
     };
 
     return TestBed.configureTestingModule(testBedConfig);
