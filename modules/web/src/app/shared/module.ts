@@ -82,6 +82,8 @@ import {CustomCredentialsComponent} from '@shared/components/external-cluster-cr
 import {EKSCredentialsComponent} from '@shared/components/external-cluster-credentials/provider/eks/component';
 import {GKECredentialsComponent} from '@shared/components/external-cluster-credentials/provider/gke/component';
 import {MachineFlavorFilterComponent} from '@shared/components/machine-flavor-filter/component';
+import {MachineTypeSelectorComponent} from '@shared/components/machine-type-selector/component';
+import {MachineTypeSelectorDemoComponent} from '@shared/components/machine-type-selector-demo/component';
 import {NumberStepperComponent} from '@shared/components/number-stepper/component';
 import {PaginationPageSizeComponent} from '@shared/components/pagination-page-size/component';
 import {PropertyHealthComponent} from '@shared/components/property-health/component';
@@ -271,6 +273,8 @@ const components = [
   TerminalToolBarComponent,
   TerminalStatusBarComponent,
   MachineFlavorFilterComponent,
+  MachineTypeSelectorComponent,
+  MachineTypeSelectorDemoComponent,
   PaginationPageSizeComponent,
   AnnouncementBannerComponent,
   AnnouncementsDialogComponent,

@@ -20,6 +20,7 @@ import {DynamicModule} from '@app/dynamic/module-registry';
 import {Observable} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import {DigitaloceanSizes, Optimized, Standard} from '@shared/entity/provider/digitalocean';
+import {MachineTypeOption} from '@shared/components/machine-type-selector/component';
 import {BaseFormValidator} from '@shared/validators/base-form.validator';
 import {ResourceQuotaCalculationPayload} from '@shared/entity/quota';
 import {QuotaCalculationService} from '@dynamic/enterprise/quotas/services/quota-calculation';
@@ -66,6 +67,7 @@ export class DigitalOceanBasicNodeDataComponent extends BaseFormValidator implem
 
   selectedSize = '';
   sizeLabel = SizeState.Empty;
+  machineTypeOptions: MachineTypeOption[] = [];
 
   get sizeTypes(): string[] {
     return Object.values(SizeTypes);
@@ -146,6 +148,19 @@ export class DigitalOceanBasicNodeDataComponent extends BaseFormValidator implem
 
   private _setDefaultSize(sizes: DigitaloceanSizes): void {
     this._sizes = sizes;
+
+    // Convert DigitalOcean sizes to MachineTypeOption format
+    const allSizes = [...(this._sizes.optimized || []), ...(this._sizes.standard || [])];
+    this.machineTypeOptions = allSizes.map(size => ({
+      name: size.slug,
+      prettyName: size.slug,
+      vcpus: size.vcpus,
+      memory: size.memory / 1024, // Convert MB to GB
+      gpus: 0, // DigitalOcean doesn't have GPU instances in the provided data
+      price: size.price_monthly,
+      description: `${size.memory / 1024} GB RAM, ${size.vcpus} CPU${size.vcpus !== 1 ? 's' : ''}, $${size.price_monthly} per month`,
+    }));
+
     this.selectedSize = this._nodeDataService.nodeData.spec.cloud.digitalocean.size;
 
     if (!this.selectedSize && this._sizes && this._sizes.standard && this._sizes.standard.length > 0) {

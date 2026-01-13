@@ -1,0 +1,59 @@
+// Copyright 2026 The Kubermatic Kubernetes Platform contributors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+@use 'sass:map';
+
+@mixin theme-machine-type-selector-component($colors) {
+  .km-machine-type-selector {
+    &-panel {
+      background-color: map.get($colors, background-card);
+    }
+
+    &-search {
+      background-color: map.get($colors, background);
+      border-bottom-color: map.get($colors, divider);
+    }
+
+    &-tabs {
+      .mat-mdc-tab-header {
+        border-bottom: 1px solid map.get($colors, divider);
+      }
+
+      .mat-mdc-tab-label-container {
+        .mat-mdc-tab {
+          &:hover:not(.mdc-tab--active) {
+            background-color: map.get($colors, background-hover);
+          }
+        }
+
+        .mdc-tab--active {
+          background-color: map.get($colors, background-card);
+        }
+      }
+
+      .mat-ink-bar {
+        background-color: map.get($colors, primary);
+      }
+    }
+
+    &-tab-count {
+      color: map.get($colors, text-secondary);
+    }
+
+    &-footer {
+      background-color: rgba(map.get($colors, indicator-green), 0.08);
+      border-top-color: map.get($colors, divider);
+    }
+  }
+}

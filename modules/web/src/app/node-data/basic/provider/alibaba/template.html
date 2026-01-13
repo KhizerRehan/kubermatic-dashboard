@@ -41,21 +41,13 @@ limitations under the License.
                        required />
   </div>
 
-  <km-combobox #instanceTypeCombobox
-               [required]="true"
-               [grouped]="false"
-               [selected]="selectedInstanceType"
-               [options]="instanceTypes"
-               [formControlName]="Controls.InstanceType"
-               [valueFormatter]="getInstanceDisplayNameByID.bind(this)"
-               (changed)="onInstanceTypeChange($event)"
-               [label]="instanceTypeLabel"
-               inputLabel="Select instance type..."
-               filterBy="id">
-    <div *option="let instanceType">
-      {{getInstanceDisplayName(instanceType)}}
-    </div>
-  </km-combobox>
+  <km-machine-type-selector [options]="machineTypeOptions"
+                            [label]="instanceTypeLabel"
+                            [required]="true"
+                            [showGpuFilter]="true"
+                            [formControlName]="Controls.InstanceType"
+                            (selectionChange)="onInstanceTypeChange($event)">
+  </km-machine-type-selector>
 
   <km-autocomplete label="VSwitch ID"
                    [formControlName]="Controls.VSwitchID"

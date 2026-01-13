@@ -1,0 +1,4052 @@
+[
+    {
+        "name": "a1.large",
+        "pretty_name": "A1 Large",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.0582,
+        "architecture": "arm64"
+    },
+    {
+        "name": "a1.xlarge",
+        "pretty_name": "A1 Extra Large",
+        "memory": 8,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.1164,
+        "architecture": "arm64"
+    },
+    {
+        "name": "a1.2xlarge",
+        "pretty_name": "A1 Double Extra Large",
+        "memory": 16,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.2328,
+        "architecture": "arm64"
+    },
+    {
+        "name": "a1.4xlarge",
+        "pretty_name": "A1 Quadruple Extra Large",
+        "memory": 32,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.4656,
+        "architecture": "arm64"
+    },
+    {
+        "name": "a1.metal",
+        "pretty_name": "A1 Metal",
+        "memory": 32,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.466,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c3.large",
+        "pretty_name": "C3 High-CPU Large",
+        "memory": 3.75,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.129,
+        "architecture": "x64"
+    },
+    {
+        "name": "c3.xlarge",
+        "pretty_name": "C3 High-CPU Extra Large",
+        "memory": 7.5,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.258,
+        "architecture": "x64"
+    },
+    {
+        "name": "c3.2xlarge",
+        "pretty_name": "C3 High-CPU Double Extra Large",
+        "memory": 15,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.516,
+        "architecture": "x64"
+    },
+    {
+        "name": "c3.4xlarge",
+        "pretty_name": "C3 High-CPU Quadruple Extra Large",
+        "memory": 30,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.032,
+        "architecture": "x64"
+    },
+    {
+        "name": "c3.8xlarge",
+        "pretty_name": "C3 High-CPU Eight Extra Large",
+        "memory": 60,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.064,
+        "architecture": "x64"
+    },
+    {
+        "name": "c4.large",
+        "pretty_name": "C4 High-CPU Large",
+        "memory": 3.75,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.114,
+        "architecture": "x64"
+    },
+    {
+        "name": "c4.xlarge",
+        "pretty_name": "C4 High-CPU Extra Large",
+        "memory": 7.5,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.227,
+        "architecture": "x64"
+    },
+    {
+        "name": "c4.2xlarge",
+        "pretty_name": "C4 High-CPU Double Extra Large",
+        "memory": 15,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.454,
+        "architecture": "x64"
+    },
+    {
+        "name": "c4.4xlarge",
+        "pretty_name": "C4 High-CPU Quadruple Extra Large",
+        "memory": 30,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.909,
+        "architecture": "x64"
+    },
+    {
+        "name": "c4.8xlarge",
+        "pretty_name": "C4 High-CPU Eight Extra Large",
+        "memory": 60,
+        "vcpus": 36,
+        "gpus": 0,
+        "price": 1.817,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5.large",
+        "pretty_name": "C5 High-CPU Large",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.097,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5.xlarge",
+        "pretty_name": "C5 High-CPU Extra Large",
+        "memory": 8,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.194,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5.2xlarge",
+        "pretty_name": "C5 High-CPU Double Extra Large",
+        "memory": 16,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.388,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5.4xlarge",
+        "pretty_name": "C5 High-CPU Quadruple Extra Large",
+        "memory": 32,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.776,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5.9xlarge",
+        "pretty_name": "C5 High-CPU 9xlarge",
+        "memory": 72,
+        "vcpus": 36,
+        "gpus": 0,
+        "price": 1.746,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5.12xlarge",
+        "pretty_name": "C5 High-CPU 12xlarge",
+        "memory": 96,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.328,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5.18xlarge",
+        "pretty_name": "C5 High-CPU 18xlarge",
+        "memory": 144,
+        "vcpus": 72,
+        "gpus": 0,
+        "price": 3.492,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5.24xlarge",
+        "pretty_name": "C5 High-CPU 24xlarge",
+        "memory": 192,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 4.656,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5.metal",
+        "pretty_name": "C5 High-CPU Metal",
+        "memory": 192,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 4.656,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5a.large",
+        "pretty_name": "C5A Large",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.087,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5a.xlarge",
+        "pretty_name": "C5A Extra Large",
+        "memory": 8,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.174,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5a.2xlarge",
+        "pretty_name": "C5A Double Extra Large",
+        "memory": 16,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.348,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5a.4xlarge",
+        "pretty_name": "C5A Quadruple Extra Large",
+        "memory": 32,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.696,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5a.8xlarge",
+        "pretty_name": "C5A Eight Extra Large",
+        "memory": 64,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.392,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5a.12xlarge",
+        "pretty_name": "C5A 12xlarge",
+        "memory": 96,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.088,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5a.16xlarge",
+        "pretty_name": "C5A 16xlarge",
+        "memory": 128,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 2.784,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5a.24xlarge",
+        "pretty_name": "C5A 24xlarge",
+        "memory": 192,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 4.176,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5ad.large",
+        "pretty_name": "C5AD Large",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.1,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5ad.xlarge",
+        "pretty_name": "C5AD Extra Large",
+        "memory": 8,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.2,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5ad.2xlarge",
+        "pretty_name": "C5AD Double Extra Large",
+        "memory": 16,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.4,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5ad.4xlarge",
+        "pretty_name": "C5AD Quadruple Extra Large",
+        "memory": 32,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.8,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5ad.8xlarge",
+        "pretty_name": "C5AD Eight Extra Large",
+        "memory": 64,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.6,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5ad.12xlarge",
+        "pretty_name": "C5AD 12xlarge",
+        "memory": 96,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.4,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5ad.16xlarge",
+        "pretty_name": "C5AD 16xlarge",
+        "memory": 128,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 3.2,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5ad.24xlarge",
+        "pretty_name": "C5AD 24xlarge",
+        "memory": 192,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 4.8,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5d.large",
+        "pretty_name": "C5 High-CPU Large",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.111,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5d.xlarge",
+        "pretty_name": "C5 High-CPU Extra Large",
+        "memory": 8,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.222,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5d.2xlarge",
+        "pretty_name": "C5 High-CPU Double Extra Large",
+        "memory": 16,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.444,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5d.4xlarge",
+        "pretty_name": "C5 High-CPU Quadruple Extra Large",
+        "memory": 32,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.888,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5d.9xlarge",
+        "pretty_name": "C5 High-CPU 9xlarge",
+        "memory": 72,
+        "vcpus": 36,
+        "gpus": 0,
+        "price": 1.998,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5d.12xlarge",
+        "pretty_name": "C5 High-CPU 12xlarge",
+        "memory": 96,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.664,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5d.18xlarge",
+        "pretty_name": "C5 High-CPU 18xlarge",
+        "memory": 144,
+        "vcpus": 72,
+        "gpus": 0,
+        "price": 3.996,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5d.24xlarge",
+        "pretty_name": "C5 High-CPU 24xlarge",
+        "memory": 192,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 5.328,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5d.metal",
+        "pretty_name": "C5 High-CPU Metal",
+        "memory": 192,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 5.328,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5n.large",
+        "pretty_name": "C5N Large",
+        "memory": 5.25,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.123,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5n.xlarge",
+        "pretty_name": "C5N Extra Large",
+        "memory": 10.5,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.246,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5n.2xlarge",
+        "pretty_name": "C5N Double Extra Large",
+        "memory": 21,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.492,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5n.4xlarge",
+        "pretty_name": "C5N Quadruple Extra Large",
+        "memory": 42,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.984,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5n.9xlarge",
+        "pretty_name": "C5N 9xlarge",
+        "memory": 96,
+        "vcpus": 36,
+        "gpus": 0,
+        "price": 2.214,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5n.18xlarge",
+        "pretty_name": "C5N 18xlarge",
+        "memory": 192,
+        "vcpus": 72,
+        "gpus": 0,
+        "price": 4.428,
+        "architecture": "x64"
+    },
+    {
+        "name": "c5n.metal",
+        "pretty_name": "C5N Metal",
+        "memory": 192,
+        "vcpus": 72,
+        "gpus": 0,
+        "price": 4.428,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6a.large",
+        "pretty_name": "C6A Large",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.0873,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6a.xlarge",
+        "pretty_name": "C6A Extra Large",
+        "memory": 8,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.1746,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6a.2xlarge",
+        "pretty_name": "C6A Double Extra Large",
+        "memory": 16,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.3492,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6a.4xlarge",
+        "pretty_name": "C6A Quadruple Extra Large",
+        "memory": 32,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.6984,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6a.8xlarge",
+        "pretty_name": "C6A Eight Extra Large",
+        "memory": 64,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.3968,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6a.12xlarge",
+        "pretty_name": "C6A 12xlarge",
+        "memory": 96,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.0952,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6a.16xlarge",
+        "pretty_name": "C6A 16xlarge",
+        "memory": 128,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 2.7936,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6a.24xlarge",
+        "pretty_name": "C6A 24xlarge",
+        "memory": 192,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 4.1904,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6a.32xlarge",
+        "pretty_name": "C6A 32xlarge",
+        "memory": 256,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 5.5872,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6a.48xlarge",
+        "pretty_name": "C6A 48xlarge",
+        "memory": 384,
+        "vcpus": 192,
+        "gpus": 0,
+        "price": 8.3808,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6a.metal",
+        "pretty_name": "C6A Metal",
+        "memory": 384,
+        "vcpus": 192,
+        "gpus": 0,
+        "price": 8.3808,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6g.large",
+        "pretty_name": "C6G Large",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.0776,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6g.xlarge",
+        "pretty_name": "C6G Extra Large",
+        "memory": 8,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.1552,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6g.2xlarge",
+        "pretty_name": "C6G Double Extra Large",
+        "memory": 16,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.3104,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6g.4xlarge",
+        "pretty_name": "C6G Quadruple Extra Large",
+        "memory": 32,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.6208,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6g.8xlarge",
+        "pretty_name": "C6G Eight Extra Large",
+        "memory": 64,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.2416,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6g.12xlarge",
+        "pretty_name": "C6G 12xlarge",
+        "memory": 96,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 1.8624,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6g.16xlarge",
+        "pretty_name": "C6G 16xlarge",
+        "memory": 128,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 2.4832,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6g.metal",
+        "pretty_name": "C6G Metal",
+        "memory": 128,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 2.4832,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gd.large",
+        "pretty_name": "C6GD Large",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.089,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gd.xlarge",
+        "pretty_name": "C6GD Extra Large",
+        "memory": 8,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.178,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gd.2xlarge",
+        "pretty_name": "C6GD Double Extra Large",
+        "memory": 16,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.356,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gd.4xlarge",
+        "pretty_name": "C6GD Quadruple Extra Large",
+        "memory": 32,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.712,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gd.8xlarge",
+        "pretty_name": "C6GD Eight Extra Large",
+        "memory": 64,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.424,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gd.12xlarge",
+        "pretty_name": "C6GD 12xlarge",
+        "memory": 96,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.136,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gd.16xlarge",
+        "pretty_name": "C6GD 16xlarge",
+        "memory": 128,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 2.848,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gd.metal",
+        "pretty_name": "C6GD Metal",
+        "memory": 128,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 2.848,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gn.large",
+        "pretty_name": "C6GN Large",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.0986,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gn.xlarge",
+        "pretty_name": "C6GN Extra Large",
+        "memory": 8,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.1972,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gn.2xlarge",
+        "pretty_name": "C6GN Double Extra Large",
+        "memory": 16,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.3944,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gn.4xlarge",
+        "pretty_name": "C6GN Quadruple Extra Large",
+        "memory": 32,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.7888,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gn.8xlarge",
+        "pretty_name": "C6GN Eight Extra Large",
+        "memory": 64,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.5776,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gn.12xlarge",
+        "pretty_name": "C6GN 12xlarge",
+        "memory": 96,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.3664,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6gn.16xlarge",
+        "pretty_name": "C6GN 16xlarge",
+        "memory": 128,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 3.1552,
+        "architecture": "arm64"
+    },
+    {
+        "name": "c6i.large",
+        "pretty_name": "C6I Large",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.097,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6i.xlarge",
+        "pretty_name": "C6I Extra Large",
+        "memory": 8,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.194,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6i.2xlarge",
+        "pretty_name": "C6I Double Extra Large",
+        "memory": 16,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.388,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6i.4xlarge",
+        "pretty_name": "C6I Quadruple Extra Large",
+        "memory": 32,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.776,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6i.8xlarge",
+        "pretty_name": "C6I Eight Extra Large",
+        "memory": 64,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.552,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6i.12xlarge",
+        "pretty_name": "C6I 12xlarge",
+        "memory": 96,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.328,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6i.16xlarge",
+        "pretty_name": "C6I 16xlarge",
+        "memory": 128,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 3.104,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6i.24xlarge",
+        "pretty_name": "C6I 24xlarge",
+        "memory": 192,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 4.656,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6i.32xlarge",
+        "pretty_name": "C6I 32xlarge",
+        "memory": 256,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 6.208,
+        "architecture": "x64"
+    },
+    {
+        "name": "c6i.metal",
+        "pretty_name": "C6I Metal",
+        "memory": 256,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 6.208,
+        "architecture": "x64"
+    },
+    {
+        "name": "d2.xlarge",
+        "pretty_name": "D2 Extra Large",
+        "memory": 30.5,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.794,
+        "architecture": "x64"
+    },
+    {
+        "name": "d2.2xlarge",
+        "pretty_name": "D2 Double Extra Large",
+        "memory": 61,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 1.588,
+        "architecture": "x64"
+    },
+    {
+        "name": "d2.4xlarge",
+        "pretty_name": "D2 Quadruple Extra Large",
+        "memory": 122,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 3.176,
+        "architecture": "x64"
+    },
+    {
+        "name": "d2.8xlarge",
+        "pretty_name": "D2 Eight Extra Large",
+        "memory": 244,
+        "vcpus": 36,
+        "gpus": 0,
+        "price": 6.352,
+        "architecture": "x64"
+    },
+    {
+        "name": "d3.xlarge",
+        "pretty_name": "D3 Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.658,
+        "architecture": "x64"
+    },
+    {
+        "name": "d3.2xlarge",
+        "pretty_name": "D3 Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 1.316,
+        "architecture": "x64"
+    },
+    {
+        "name": "d3.4xlarge",
+        "pretty_name": "D3 Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 2.632,
+        "architecture": "x64"
+    },
+    {
+        "name": "d3.8xlarge",
+        "pretty_name": "D3 Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 5.26448,
+        "architecture": "x64"
+    },
+    {
+        "name": "f1.2xlarge",
+        "pretty_name": "F1 Double Extra Large",
+        "memory": 122,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 1.734,
+        "architecture": "x64"
+    },
+    {
+        "name": "f1.4xlarge",
+        "pretty_name": "F1 Quadruple Extra Large",
+        "memory": 244,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 3.468,
+        "architecture": "x64"
+    },
+    {
+        "name": "g2.2xlarge",
+        "pretty_name": "G2 Double Extra Large",
+        "memory": 15,
+        "vcpus": 8,
+        "gpus": 1,
+        "price": 0.772,
+        "architecture": "x64"
+    },
+    {
+        "name": "g2.8xlarge",
+        "pretty_name": "G2 Eight Extra Large",
+        "memory": 60,
+        "vcpus": 32,
+        "gpus": 4,
+        "price": 3.088,
+        "architecture": "x64"
+    },
+    {
+        "name": "g3.4xlarge",
+        "pretty_name": "G3 Graphics GPU Quadruple Extra Large",
+        "memory": 122,
+        "vcpus": 16,
+        "gpus": 1,
+        "price": 1.425,
+        "architecture": "x64"
+    },
+    {
+        "name": "g3.8xlarge",
+        "pretty_name": "G3 Graphics GPU Eight Extra Large",
+        "memory": 244,
+        "vcpus": 32,
+        "gpus": 2,
+        "price": 2.85,
+        "architecture": "x64"
+    },
+    {
+        "name": "g3.16xlarge",
+        "pretty_name": "G3 Graphics GPU 16xlarge",
+        "memory": 488,
+        "vcpus": 64,
+        "gpus": 4,
+        "price": 5.7,
+        "architecture": "x64"
+    },
+    {
+        "name": "g3s.xlarge",
+        "pretty_name": "G3S Extra Large",
+        "memory": 30.5,
+        "vcpus": 4,
+        "gpus": 1,
+        "price": 0.938,
+        "architecture": "x64"
+    },
+    {
+        "name": "g4ad.xlarge",
+        "pretty_name": "G4AD Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 1,
+        "price": 0.47327,
+        "architecture": "x64"
+    },
+    {
+        "name": "g4ad.2xlarge",
+        "pretty_name": "G4AD Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 1,
+        "price": 0.67662,
+        "architecture": "x64"
+    },
+    {
+        "name": "g4ad.4xlarge",
+        "pretty_name": "G4AD Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 1,
+        "price": 1.084,
+        "architecture": "x64"
+    },
+    {
+        "name": "g4ad.8xlarge",
+        "pretty_name": "G4AD Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 2,
+        "price": 2.168,
+        "architecture": "x64"
+    },
+    {
+        "name": "g4ad.16xlarge",
+        "pretty_name": "G4AD 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 4,
+        "price": 4.336,
+        "architecture": "x64"
+    },
+    {
+        "name": "g4dn.xlarge",
+        "pretty_name": "G4DN Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 1,
+        "price": 0.658,
+        "architecture": "x64"
+    },
+    {
+        "name": "g4dn.2xlarge",
+        "pretty_name": "G4DN Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 1,
+        "price": 0.94,
+        "architecture": "x64"
+    },
+    {
+        "name": "g4dn.4xlarge",
+        "pretty_name": "G4DN Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 1,
+        "price": 1.505,
+        "architecture": "x64"
+    },
+    {
+        "name": "g4dn.8xlarge",
+        "pretty_name": "G4DN Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 1,
+        "price": 2.72,
+        "architecture": "x64"
+    },
+    {
+        "name": "g4dn.12xlarge",
+        "pretty_name": "G4DN 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 4,
+        "price": 4.89,
+        "architecture": "x64"
+    },
+    {
+        "name": "g4dn.16xlarge",
+        "pretty_name": "G4DN 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 1,
+        "price": 5.44,
+        "architecture": "x64"
+    },
+    {
+        "name": "g4dn.metal",
+        "pretty_name": "G4DN Metal",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 8,
+        "price": 9.78,
+        "architecture": "x64"
+    },
+    {
+        "name": "g5.xlarge",
+        "pretty_name": "G5 Graphics and Machine Learning GPU Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 1,
+        "price": 1.258,
+        "architecture": "x64"
+    },
+    {
+        "name": "g5.2xlarge",
+        "pretty_name": "G5 Graphics and Machine Learning GPU Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 1,
+        "price": 1.5156,
+        "architecture": "x64"
+    },
+    {
+        "name": "g5.4xlarge",
+        "pretty_name": "G5 Graphics and Machine Learning GPU Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 1,
+        "price": 2.03081,
+        "architecture": "x64"
+    },
+    {
+        "name": "g5.8xlarge",
+        "pretty_name": "G5 Graphics and Machine Learning GPU Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 1,
+        "price": 3.06122,
+        "architecture": "x64"
+    },
+    {
+        "name": "g5.12xlarge",
+        "pretty_name": "G5 Graphics and Machine Learning GPU 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 4,
+        "price": 7.09282,
+        "architecture": "x64"
+    },
+    {
+        "name": "g5.16xlarge",
+        "pretty_name": "G5 Graphics and Machine Learning GPU 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 1,
+        "price": 5.12204,
+        "architecture": "x64"
+    },
+    {
+        "name": "g5.24xlarge",
+        "pretty_name": "G5 Graphics and Machine Learning GPU 24xlarge",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 4,
+        "price": 10.18405,
+        "architecture": "x64"
+    },
+    {
+        "name": "g5.48xlarge",
+        "pretty_name": "G5 Graphics and Machine Learning GPU 48xlarge",
+        "memory": 768,
+        "vcpus": 192,
+        "gpus": 8,
+        "price": 20.3681,
+        "architecture": "x64"
+    },
+    {
+        "name": "i2.xlarge",
+        "pretty_name": "I2 Extra Large",
+        "memory": 30.5,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 1.013,
+        "architecture": "x64"
+    },
+    {
+        "name": "i2.2xlarge",
+        "pretty_name": "I2 Double Extra Large",
+        "memory": 61,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 2.026,
+        "architecture": "x64"
+    },
+    {
+        "name": "i2.4xlarge",
+        "pretty_name": "I2 Quadruple Extra Large",
+        "memory": 122,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 4.051,
+        "architecture": "x64"
+    },
+    {
+        "name": "i2.8xlarge",
+        "pretty_name": "I2 Eight Extra Large",
+        "memory": 244,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 8.102,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3.large",
+        "pretty_name": "I3 High I/O Large",
+        "memory": 15.25,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.186,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3.xlarge",
+        "pretty_name": "I3 High I/O Extra Large",
+        "memory": 30.5,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.372,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3.2xlarge",
+        "pretty_name": "I3 High I/O Double Extra Large",
+        "memory": 61,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.744,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3.4xlarge",
+        "pretty_name": "I3 High I/O Quadruple Extra Large",
+        "memory": 122,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.488,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3.8xlarge",
+        "pretty_name": "I3 High I/O Eight Extra Large",
+        "memory": 244,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.976,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3.16xlarge",
+        "pretty_name": "I3 High I/O 16xlarge",
+        "memory": 488,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 5.952,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3.metal",
+        "pretty_name": "I3 High I/O Metal",
+        "memory": 512,
+        "vcpus": 72,
+        "gpus": 0,
+        "price": 5.952,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3en.large",
+        "pretty_name": "I3EN Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.27,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3en.xlarge",
+        "pretty_name": "I3EN Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.54,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3en.2xlarge",
+        "pretty_name": "I3EN Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 1.08,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3en.3xlarge",
+        "pretty_name": "I3EN 3xlarge",
+        "memory": 96,
+        "vcpus": 12,
+        "gpus": 0,
+        "price": 1.62,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3en.6xlarge",
+        "pretty_name": "I3EN 6xlarge",
+        "memory": 192,
+        "vcpus": 24,
+        "gpus": 0,
+        "price": 3.24,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3en.12xlarge",
+        "pretty_name": "I3EN 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 6.48,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3en.24xlarge",
+        "pretty_name": "I3EN 24xlarge",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 12.96,
+        "architecture": "x64"
+    },
+    {
+        "name": "i3en.metal",
+        "pretty_name": "I3EN Metal",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 12.96,
+        "architecture": "x64"
+    },
+    {
+        "name": "i4i.large",
+        "pretty_name": "I4I Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.205,
+        "architecture": "x64"
+    },
+    {
+        "name": "i4i.xlarge",
+        "pretty_name": "I4I Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.409,
+        "architecture": "x64"
+    },
+    {
+        "name": "i4i.2xlarge",
+        "pretty_name": "I4I Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.818,
+        "architecture": "x64"
+    },
+    {
+        "name": "i4i.4xlarge",
+        "pretty_name": "I4I Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.637,
+        "architecture": "x64"
+    },
+    {
+        "name": "i4i.8xlarge",
+        "pretty_name": "I4I Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 3.274,
+        "architecture": "x64"
+    },
+    {
+        "name": "i4i.16xlarge",
+        "pretty_name": "I4I 16xlarge",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 6.547,
+        "architecture": "x64"
+    },
+    {
+        "name": "i4i.32xlarge",
+        "pretty_name": "I4I 32xlarge",
+        "memory": 1024,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 13.0944,
+        "architecture": "x64"
+    },
+    {
+        "name": "i4i.metal",
+        "pretty_name": "I4I Metal",
+        "memory": 1024,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 13.094,
+        "architecture": "x64"
+    },
+    {
+        "name": "im4gn.large",
+        "pretty_name": "IM4GN Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.21688,
+        "architecture": "arm64"
+    },
+    {
+        "name": "im4gn.xlarge",
+        "pretty_name": "IM4GN Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.43375,
+        "architecture": "arm64"
+    },
+    {
+        "name": "im4gn.2xlarge",
+        "pretty_name": "IM4GN Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.8675,
+        "architecture": "arm64"
+    },
+    {
+        "name": "im4gn.4xlarge",
+        "pretty_name": "IM4GN Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.73501,
+        "architecture": "arm64"
+    },
+    {
+        "name": "im4gn.8xlarge",
+        "pretty_name": "IM4GN Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 3.47002,
+        "architecture": "arm64"
+    },
+    {
+        "name": "im4gn.16xlarge",
+        "pretty_name": "IM4GN 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 6.94003,
+        "architecture": "arm64"
+    },
+    {
+        "name": "inf1.xlarge",
+        "pretty_name": "INF1 Extra Large",
+        "memory": 8,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.285,
+        "architecture": "x64"
+    },
+    {
+        "name": "inf1.2xlarge",
+        "pretty_name": "INF1 Double Extra Large",
+        "memory": 16,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.453,
+        "architecture": "x64"
+    },
+    {
+        "name": "inf1.6xlarge",
+        "pretty_name": "INF1 6xlarge",
+        "memory": 48,
+        "vcpus": 24,
+        "gpus": 0,
+        "price": 1.475,
+        "architecture": "x64"
+    },
+    {
+        "name": "inf1.24xlarge",
+        "pretty_name": "INF1 24xlarge",
+        "memory": 192,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 5.902,
+        "architecture": "x64"
+    },
+    {
+        "name": "is4gen.large",
+        "pretty_name": "IS4GEN Large",
+        "memory": 12,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.34425,
+        "architecture": "arm64"
+    },
+    {
+        "name": "is4gen.xlarge",
+        "pretty_name": "IS4GEN Extra Large",
+        "memory": 24,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.6885,
+        "architecture": "arm64"
+    },
+    {
+        "name": "is4gen.2xlarge",
+        "pretty_name": "IS4GEN Double Extra Large",
+        "memory": 48,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 1.377,
+        "architecture": "arm64"
+    },
+    {
+        "name": "is4gen.4xlarge",
+        "pretty_name": "IS4GEN Quadruple Extra Large",
+        "memory": 96,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 2.754,
+        "architecture": "arm64"
+    },
+    {
+        "name": "is4gen.8xlarge",
+        "pretty_name": "IS4GEN Eight Extra Large",
+        "memory": 192,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 5.508,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m3.large",
+        "pretty_name": "M3 General Purpose Large",
+        "memory": 7.5,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.158,
+        "architecture": "x64"
+    },
+    {
+        "name": "m3.xlarge",
+        "pretty_name": "M3 General Purpose Extra Large",
+        "memory": 15,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.315,
+        "architecture": "x64"
+    },
+    {
+        "name": "m3.2xlarge",
+        "pretty_name": "M3 General Purpose Double Extra Large",
+        "memory": 30,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.632,
+        "architecture": "x64"
+    },
+    {
+        "name": "m4.large",
+        "pretty_name": "M4 General Purpose Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.12,
+        "architecture": "x64"
+    },
+    {
+        "name": "m4.xlarge",
+        "pretty_name": "M4 General Purpose Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.24,
+        "architecture": "x64"
+    },
+    {
+        "name": "m4.2xlarge",
+        "pretty_name": "M4 General Purpose Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.48,
+        "architecture": "x64"
+    },
+    {
+        "name": "m4.4xlarge",
+        "pretty_name": "M4 General Purpose Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.96,
+        "architecture": "x64"
+    },
+    {
+        "name": "m4.10xlarge",
+        "pretty_name": "M4 General Purpose Deca Extra Large",
+        "memory": 160,
+        "vcpus": 40,
+        "gpus": 0,
+        "price": 2.4,
+        "architecture": "x64"
+    },
+    {
+        "name": "m4.16xlarge",
+        "pretty_name": "M4 General Purpose 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 3.84,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5.large",
+        "pretty_name": "M5 General Purpose Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.115,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5.xlarge",
+        "pretty_name": "M5 General Purpose Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.23,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5.2xlarge",
+        "pretty_name": "M5 General Purpose Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.46,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5.4xlarge",
+        "pretty_name": "M5 General Purpose Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.92,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5.8xlarge",
+        "pretty_name": "M5 General Purpose Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.84,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5.12xlarge",
+        "pretty_name": "M5 General Purpose 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.76,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5.16xlarge",
+        "pretty_name": "M5 General Purpose 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 3.68,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5.24xlarge",
+        "pretty_name": "M5 General Purpose 24xlarge",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 5.52,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5.metal",
+        "pretty_name": "M5 General Purpose Metal",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 5.52,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5a.large",
+        "pretty_name": "M5A Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.104,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5a.xlarge",
+        "pretty_name": "M5A Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.208,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5a.2xlarge",
+        "pretty_name": "M5A Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.416,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5a.4xlarge",
+        "pretty_name": "M5A Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.832,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5a.8xlarge",
+        "pretty_name": "M5A Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.664,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5a.12xlarge",
+        "pretty_name": "M5A 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.496,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5a.16xlarge",
+        "pretty_name": "M5A 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 3.328,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5a.24xlarge",
+        "pretty_name": "M5A 24xlarge",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 4.992,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5ad.large",
+        "pretty_name": "M5AD Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.125,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5ad.xlarge",
+        "pretty_name": "M5AD Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.25,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5ad.2xlarge",
+        "pretty_name": "M5AD Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.5,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5ad.4xlarge",
+        "pretty_name": "M5AD Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5ad.8xlarge",
+        "pretty_name": "M5AD Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5ad.12xlarge",
+        "pretty_name": "M5AD 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 3,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5ad.16xlarge",
+        "pretty_name": "M5AD 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 4,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5ad.24xlarge",
+        "pretty_name": "M5AD 24xlarge",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 6,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5d.large",
+        "pretty_name": "M5 General Purpose Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.136,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5d.xlarge",
+        "pretty_name": "M5 General Purpose Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.272,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5d.2xlarge",
+        "pretty_name": "M5 General Purpose Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.544,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5d.4xlarge",
+        "pretty_name": "M5 General Purpose Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.088,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5d.8xlarge",
+        "pretty_name": "M5 General Purpose Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.176,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5d.12xlarge",
+        "pretty_name": "M5 General Purpose 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 3.264,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5d.16xlarge",
+        "pretty_name": "M5 General Purpose 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 4.352,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5d.24xlarge",
+        "pretty_name": "M5 General Purpose 24xlarge",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 6.528,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5d.metal",
+        "pretty_name": "M5 General Purpose Metal",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 6.528,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5dn.large",
+        "pretty_name": "M5DN Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.162,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5dn.xlarge",
+        "pretty_name": "M5DN Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.324,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5dn.2xlarge",
+        "pretty_name": "M5DN Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.648,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5dn.4xlarge",
+        "pretty_name": "M5DN Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.296,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5dn.8xlarge",
+        "pretty_name": "M5DN Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.592,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5dn.12xlarge",
+        "pretty_name": "M5DN 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 3.888,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5dn.16xlarge",
+        "pretty_name": "M5DN 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 5.184,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5dn.24xlarge",
+        "pretty_name": "M5DN 24xlarge",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 7.776,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5dn.metal",
+        "pretty_name": "M5DN Metal",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 7.776,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5n.large",
+        "pretty_name": "M5N Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.141,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5n.xlarge",
+        "pretty_name": "M5N Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.282,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5n.2xlarge",
+        "pretty_name": "M5N Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.564,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5n.4xlarge",
+        "pretty_name": "M5N Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.128,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5n.8xlarge",
+        "pretty_name": "M5N Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.256,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5n.12xlarge",
+        "pretty_name": "M5N 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 3.384,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5n.16xlarge",
+        "pretty_name": "M5N 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 4.512,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5n.24xlarge",
+        "pretty_name": "M5N 24xlarge",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 6.768,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5n.metal",
+        "pretty_name": "M5N Metal",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 6.768,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5zn.large",
+        "pretty_name": "M5ZN Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.1979,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5zn.xlarge",
+        "pretty_name": "M5ZN Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.3957,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5zn.2xlarge",
+        "pretty_name": "M5ZN Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.7914,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5zn.3xlarge",
+        "pretty_name": "M5ZN 3xlarge",
+        "memory": 48,
+        "vcpus": 12,
+        "gpus": 0,
+        "price": 1.1872,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5zn.6xlarge",
+        "pretty_name": "M5ZN 6xlarge",
+        "memory": 96,
+        "vcpus": 24,
+        "gpus": 0,
+        "price": 2.3743,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5zn.12xlarge",
+        "pretty_name": "M5ZN 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 4.7486,
+        "architecture": "x64"
+    },
+    {
+        "name": "m5zn.metal",
+        "pretty_name": "M5ZN Metal",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 4.7486,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6a.large",
+        "pretty_name": "M6A Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.1035,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6a.xlarge",
+        "pretty_name": "M6A Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.207,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6a.2xlarge",
+        "pretty_name": "M6A Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.414,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6a.4xlarge",
+        "pretty_name": "M6A Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.828,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6a.8xlarge",
+        "pretty_name": "M6A Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.656,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6a.12xlarge",
+        "pretty_name": "M6A 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.484,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6a.16xlarge",
+        "pretty_name": "M6A 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 3.312,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6a.24xlarge",
+        "pretty_name": "M6A 24xlarge",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 4.968,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6a.32xlarge",
+        "pretty_name": "M6A 32xlarge",
+        "memory": 512,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 6.624,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6a.48xlarge",
+        "pretty_name": "M6A 48xlarge",
+        "memory": 768,
+        "vcpus": 192,
+        "gpus": 0,
+        "price": 9.936,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6a.metal",
+        "pretty_name": "M6A Metal",
+        "memory": 768,
+        "vcpus": 192,
+        "gpus": 0,
+        "price": 9.936,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6g.large",
+        "pretty_name": "M6G Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.092,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6g.xlarge",
+        "pretty_name": "M6G Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.184,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6g.2xlarge",
+        "pretty_name": "M6G Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.368,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6g.4xlarge",
+        "pretty_name": "M6G Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.736,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6g.8xlarge",
+        "pretty_name": "M6G Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.472,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6g.12xlarge",
+        "pretty_name": "M6G 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.208,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6g.16xlarge",
+        "pretty_name": "M6G 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 2.944,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6g.metal",
+        "pretty_name": "M6G Metal",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 2.944,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6gd.large",
+        "pretty_name": "M6GD Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.109,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6gd.xlarge",
+        "pretty_name": "M6GD Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.218,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6gd.2xlarge",
+        "pretty_name": "M6GD Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.436,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6gd.4xlarge",
+        "pretty_name": "M6GD Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.872,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6gd.8xlarge",
+        "pretty_name": "M6GD Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.744,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6gd.12xlarge",
+        "pretty_name": "M6GD 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.616,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6gd.16xlarge",
+        "pretty_name": "M6GD 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 3.488,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6gd.metal",
+        "pretty_name": "M6GD Metal",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 3.488,
+        "architecture": "arm64"
+    },
+    {
+        "name": "m6i.large",
+        "pretty_name": "M6I Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.115,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6i.xlarge",
+        "pretty_name": "M6I Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.23,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6i.2xlarge",
+        "pretty_name": "M6I Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.46,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6i.4xlarge",
+        "pretty_name": "M6I Quadruple Extra Large",
+        "memory": 64,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.92,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6i.8xlarge",
+        "pretty_name": "M6I Eight Extra Large",
+        "memory": 128,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.84,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6i.12xlarge",
+        "pretty_name": "M6I 12xlarge",
+        "memory": 192,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.76,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6i.16xlarge",
+        "pretty_name": "M6I 16xlarge",
+        "memory": 256,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 3.68,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6i.24xlarge",
+        "pretty_name": "M6I 24xlarge",
+        "memory": 384,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 5.52,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6i.32xlarge",
+        "pretty_name": "M6I 32xlarge",
+        "memory": 512,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 7.36,
+        "architecture": "x64"
+    },
+    {
+        "name": "m6i.metal",
+        "pretty_name": "M6I Metal",
+        "memory": 512,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 7.36,
+        "architecture": "x64"
+    },
+    {
+        "name": "p2.xlarge",
+        "pretty_name": "P2 General Purpose GPU Extra Large",
+        "memory": 61,
+        "vcpus": 4,
+        "gpus": 1,
+        "price": 1.326,
+        "architecture": "x64"
+    },
+    {
+        "name": "p2.8xlarge",
+        "pretty_name": "P2 General Purpose GPU Eight Extra Large",
+        "memory": 488,
+        "vcpus": 32,
+        "gpus": 8,
+        "price": 10.608,
+        "architecture": "x64"
+    },
+    {
+        "name": "p2.16xlarge",
+        "pretty_name": "P2 General Purpose GPU 16xlarge",
+        "memory": 732,
+        "vcpus": 64,
+        "gpus": 16,
+        "price": 21.216,
+        "architecture": "x64"
+    },
+    {
+        "name": "p3.2xlarge",
+        "pretty_name": "P3 High Performance GPU Double Extra Large",
+        "memory": 61,
+        "vcpus": 8,
+        "gpus": 1,
+        "price": 3.823,
+        "architecture": "x64"
+    },
+    {
+        "name": "p3.8xlarge",
+        "pretty_name": "P3 High Performance GPU Eight Extra Large",
+        "memory": 244,
+        "vcpus": 32,
+        "gpus": 4,
+        "price": 15.292,
+        "architecture": "x64"
+    },
+    {
+        "name": "p3.16xlarge",
+        "pretty_name": "P3 High Performance GPU 16xlarge",
+        "memory": 488,
+        "vcpus": 64,
+        "gpus": 8,
+        "price": 30.584,
+        "architecture": "x64"
+    },
+    {
+        "name": "p4d.24xlarge",
+        "pretty_name": "P4D Highest Performance GPU 24xlarge",
+        "memory": 1152,
+        "vcpus": 96,
+        "gpus": 8,
+        "price": 40.94475,
+        "architecture": "x64"
+    },
+    {
+        "name": "r3.large",
+        "pretty_name": "R3 High-Memory Large",
+        "memory": 15.25,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.2,
+        "architecture": "x64"
+    },
+    {
+        "name": "r3.xlarge",
+        "pretty_name": "R3 High-Memory Extra Large",
+        "memory": 30.5,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.4,
+        "architecture": "x64"
+    },
+    {
+        "name": "r3.2xlarge",
+        "pretty_name": "R3 High-Memory Double Extra Large",
+        "memory": 61,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.8,
+        "architecture": "x64"
+    },
+    {
+        "name": "r3.4xlarge",
+        "pretty_name": "R3 High-Memory Quadruple Extra Large",
+        "memory": 122,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.6,
+        "architecture": "x64"
+    },
+    {
+        "name": "r3.8xlarge",
+        "pretty_name": "R3 High-Memory Eight Extra Large",
+        "memory": 244,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 3.201,
+        "architecture": "x64"
+    },
+    {
+        "name": "r4.large",
+        "pretty_name": "R4 High-Memory Large",
+        "memory": 15.25,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.16005,
+        "architecture": "x64"
+    },
+    {
+        "name": "r4.xlarge",
+        "pretty_name": "R4 High-Memory Extra Large",
+        "memory": 30.5,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.3201,
+        "architecture": "x64"
+    },
+    {
+        "name": "r4.2xlarge",
+        "pretty_name": "R4 High-Memory Double Extra Large",
+        "memory": 61,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.6402,
+        "architecture": "x64"
+    },
+    {
+        "name": "r4.4xlarge",
+        "pretty_name": "R4 High-Memory Quadruple Extra Large",
+        "memory": 122,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.2804,
+        "architecture": "x64"
+    },
+    {
+        "name": "r4.8xlarge",
+        "pretty_name": "R4 High-Memory Eight Extra Large",
+        "memory": 244,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.5608,
+        "architecture": "x64"
+    },
+    {
+        "name": "r4.16xlarge",
+        "pretty_name": "R4 High-Memory 16xlarge",
+        "memory": 488,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 5.1216,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5.large",
+        "pretty_name": "R5 Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.152,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5.xlarge",
+        "pretty_name": "R5 Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.304,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5.2xlarge",
+        "pretty_name": "R5 Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.608,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5.4xlarge",
+        "pretty_name": "R5 Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.216,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5.8xlarge",
+        "pretty_name": "R5 Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.432,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5.12xlarge",
+        "pretty_name": "R5 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 3.648,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5.16xlarge",
+        "pretty_name": "R5 16xlarge",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 4.864,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5.24xlarge",
+        "pretty_name": "R5 24xlarge",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 7.296,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5.metal",
+        "pretty_name": "R5 Metal",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 7.296,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5a.large",
+        "pretty_name": "R5A Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.137,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5a.xlarge",
+        "pretty_name": "R5A Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.274,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5a.2xlarge",
+        "pretty_name": "R5A Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.548,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5a.4xlarge",
+        "pretty_name": "R5A Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.096,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5a.8xlarge",
+        "pretty_name": "R5A Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.192,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5a.12xlarge",
+        "pretty_name": "R5A 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 3.288,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5a.16xlarge",
+        "pretty_name": "R5A 16xlarge",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 4.384,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5a.24xlarge",
+        "pretty_name": "R5A 24xlarge",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 6.576,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5ad.large",
+        "pretty_name": "R5AD Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.158,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5ad.xlarge",
+        "pretty_name": "R5AD Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.316,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5ad.2xlarge",
+        "pretty_name": "R5AD Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.632,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5ad.4xlarge",
+        "pretty_name": "R5AD Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.264,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5ad.8xlarge",
+        "pretty_name": "R5AD Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.528,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5ad.12xlarge",
+        "pretty_name": "R5AD 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 3.792,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5ad.16xlarge",
+        "pretty_name": "R5AD 16xlarge",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 5.056,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5ad.24xlarge",
+        "pretty_name": "R5AD 24xlarge",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 7.584,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5b.large",
+        "pretty_name": "R5B Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.178,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5b.xlarge",
+        "pretty_name": "R5B Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.356,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5b.2xlarge",
+        "pretty_name": "R5B Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.712,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5b.4xlarge",
+        "pretty_name": "R5B Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.424,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5b.8xlarge",
+        "pretty_name": "R5B Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.848,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5b.12xlarge",
+        "pretty_name": "R5B 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 4.272,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5b.16xlarge",
+        "pretty_name": "R5B 16xlarge",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 5.696,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5b.24xlarge",
+        "pretty_name": "R5B 24xlarge",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 8.544,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5b.metal",
+        "pretty_name": "R5B Metal",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 8.544,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5d.large",
+        "pretty_name": "R5D Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.173,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5d.xlarge",
+        "pretty_name": "R5D Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.346,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5d.2xlarge",
+        "pretty_name": "R5D Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.692,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5d.4xlarge",
+        "pretty_name": "R5D Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.384,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5d.8xlarge",
+        "pretty_name": "R5D Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.768,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5d.12xlarge",
+        "pretty_name": "R5D 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 4.152,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5d.16xlarge",
+        "pretty_name": "R5D 16xlarge",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 5.536,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5d.24xlarge",
+        "pretty_name": "R5D 24xlarge",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 8.304,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5d.metal",
+        "pretty_name": "R5D Metal",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 8.304,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5dn.large",
+        "pretty_name": "R5DN Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.199,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5dn.xlarge",
+        "pretty_name": "R5DN Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.398,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5dn.2xlarge",
+        "pretty_name": "R5DN Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.796,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5dn.4xlarge",
+        "pretty_name": "R5DN Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.592,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5dn.8xlarge",
+        "pretty_name": "R5DN Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 3.184,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5dn.12xlarge",
+        "pretty_name": "R5DN 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 4.776,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5dn.16xlarge",
+        "pretty_name": "R5DN 16xlarge",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 6.368,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5dn.24xlarge",
+        "pretty_name": "R5DN 24xlarge",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 9.552,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5dn.metal",
+        "pretty_name": "R5DN Metal",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 9.552,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5n.large",
+        "pretty_name": "R5N Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.178,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5n.xlarge",
+        "pretty_name": "R5N Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.356,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5n.2xlarge",
+        "pretty_name": "R5N Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.712,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5n.4xlarge",
+        "pretty_name": "R5N Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.424,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5n.8xlarge",
+        "pretty_name": "R5N Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.848,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5n.12xlarge",
+        "pretty_name": "R5N 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 4.272,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5n.16xlarge",
+        "pretty_name": "R5N 16xlarge",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 5.696,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5n.24xlarge",
+        "pretty_name": "R5N 24xlarge",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 8.544,
+        "architecture": "x64"
+    },
+    {
+        "name": "r5n.metal",
+        "pretty_name": "R5N Metal",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 8.544,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6a.large",
+        "pretty_name": "R6A Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.1368,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6a.xlarge",
+        "pretty_name": "R6A Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.2736,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6a.2xlarge",
+        "pretty_name": "R6A Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.5472,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6a.4xlarge",
+        "pretty_name": "R6A Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.0944,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6a.8xlarge",
+        "pretty_name": "R6A Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.1888,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6a.12xlarge",
+        "pretty_name": "R6A 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 3.2832,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6a.16xlarge",
+        "pretty_name": "R6A 16xlarge",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 4.3776,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6a.24xlarge",
+        "pretty_name": "R6A 24xlarge",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 6.5664,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6a.32xlarge",
+        "pretty_name": "R6A 32xlarge",
+        "memory": 1024,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 8.7552,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6a.48xlarge",
+        "pretty_name": "R6A 48xlarge",
+        "memory": 1536,
+        "vcpus": 192,
+        "gpus": 0,
+        "price": 13.1328,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6a.metal",
+        "pretty_name": "R6A Metal",
+        "memory": 1536,
+        "vcpus": 192,
+        "gpus": 0,
+        "price": 13.1328,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6g.large",
+        "pretty_name": "R6G Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.1216,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6g.xlarge",
+        "pretty_name": "R6G Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.2432,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6g.2xlarge",
+        "pretty_name": "R6G Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.4864,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6g.4xlarge",
+        "pretty_name": "R6G Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 0.9728,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6g.8xlarge",
+        "pretty_name": "R6G Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 1.9456,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6g.12xlarge",
+        "pretty_name": "R6G 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 2.9184,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6g.16xlarge",
+        "pretty_name": "R6G 16xlarge",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 3.8912,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6g.metal",
+        "pretty_name": "R6G Metal",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 3.8912,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6gd.large",
+        "pretty_name": "R6GD Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.138,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6gd.xlarge",
+        "pretty_name": "R6GD Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.276,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6gd.2xlarge",
+        "pretty_name": "R6GD Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.552,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6gd.4xlarge",
+        "pretty_name": "R6GD Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.104,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6gd.8xlarge",
+        "pretty_name": "R6GD Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.208,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6gd.12xlarge",
+        "pretty_name": "R6GD 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 3.312,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6gd.16xlarge",
+        "pretty_name": "R6GD 16xlarge",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 4.416,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6gd.metal",
+        "pretty_name": "R6GD Metal",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 4.416,
+        "architecture": "arm64"
+    },
+    {
+        "name": "r6i.large",
+        "pretty_name": "R6I Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.152,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6i.xlarge",
+        "pretty_name": "R6I Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.304,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6i.2xlarge",
+        "pretty_name": "R6I Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.608,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6i.4xlarge",
+        "pretty_name": "R6I Quadruple Extra Large",
+        "memory": 128,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 1.216,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6i.8xlarge",
+        "pretty_name": "R6I Eight Extra Large",
+        "memory": 256,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 2.432,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6i.12xlarge",
+        "pretty_name": "R6I 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 3.648,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6i.16xlarge",
+        "pretty_name": "R6I 16xlarge",
+        "memory": 512,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 4.864,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6i.24xlarge",
+        "pretty_name": "R6I 24xlarge",
+        "memory": 768,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 7.296,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6i.32xlarge",
+        "pretty_name": "R6I 32xlarge",
+        "memory": 1024,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 9.728,
+        "architecture": "x64"
+    },
+    {
+        "name": "r6i.metal",
+        "pretty_name": "R6I Metal",
+        "memory": 1024,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 9.728,
+        "architecture": "x64"
+    },
+    {
+        "name": "t2.medium",
+        "pretty_name": "T2 Medium",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.0536,
+        "architecture": "x64"
+    },
+    {
+        "name": "t2.large",
+        "pretty_name": "T2 Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.1072,
+        "architecture": "x64"
+    },
+    {
+        "name": "t2.xlarge",
+        "pretty_name": "T2 Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.2144,
+        "architecture": "x64"
+    },
+    {
+        "name": "t2.2xlarge",
+        "pretty_name": "T2 Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.4288,
+        "architecture": "x64"
+    },
+    {
+        "name": "t3.small",
+        "pretty_name": "T3 Small",
+        "memory": 2,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.024,
+        "architecture": "x64"
+    },
+    {
+        "name": "t3.medium",
+        "pretty_name": "T3 Medium",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.048,
+        "architecture": "x64"
+    },
+    {
+        "name": "t3.large",
+        "pretty_name": "T3 Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.096,
+        "architecture": "x64"
+    },
+    {
+        "name": "t3.xlarge",
+        "pretty_name": "T3 Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.192,
+        "architecture": "x64"
+    },
+    {
+        "name": "t3.2xlarge",
+        "pretty_name": "T3 Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.384,
+        "architecture": "x64"
+    },
+    {
+        "name": "t3a.small",
+        "pretty_name": "T3A Small",
+        "memory": 2,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.0216,
+        "architecture": "x64"
+    },
+    {
+        "name": "t3a.medium",
+        "pretty_name": "T3A Medium",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.0432,
+        "architecture": "x64"
+    },
+    {
+        "name": "t3a.large",
+        "pretty_name": "T3A Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.0864,
+        "architecture": "x64"
+    },
+    {
+        "name": "t3a.xlarge",
+        "pretty_name": "T3A Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.1728,
+        "architecture": "x64"
+    },
+    {
+        "name": "t3a.2xlarge",
+        "pretty_name": "T3A Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.3456,
+        "architecture": "x64"
+    },
+    {
+        "name": "t4g.small",
+        "pretty_name": "T4G Small",
+        "memory": 2,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.0192,
+        "architecture": "arm64"
+    },
+    {
+        "name": "t4g.medium",
+        "pretty_name": "T4G Medium",
+        "memory": 4,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.0384,
+        "architecture": "arm64"
+    },
+    {
+        "name": "t4g.large",
+        "pretty_name": "T4G Large",
+        "memory": 8,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.0768,
+        "architecture": "arm64"
+    },
+    {
+        "name": "t4g.xlarge",
+        "pretty_name": "T4G Extra Large",
+        "memory": 16,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.1536,
+        "architecture": "arm64"
+    },
+    {
+        "name": "t4g.2xlarge",
+        "pretty_name": "T4G Double Extra Large",
+        "memory": 32,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.3072,
+        "architecture": "arm64"
+    },
+    {
+        "name": "u-12tb1.112xlarge",
+        "pretty_name": "U-12TB1 112xlarge",
+        "memory": 12288,
+        "vcpus": 448,
+        "gpus": 0,
+        "price": 131.733,
+        "architecture": "x64"
+    },
+    {
+        "name": "u-3tb1.56xlarge",
+        "pretty_name": "U-3TB1 56xlarge",
+        "memory": 3072,
+        "vcpus": 224,
+        "gpus": 0,
+        "price": 32.9335,
+        "architecture": "x64"
+    },
+    {
+        "name": "u-6tb1.56xlarge",
+        "pretty_name": "U-6TB1 56xlarge",
+        "memory": 6144,
+        "vcpus": 224,
+        "gpus": 0,
+        "price": 55.9796,
+        "architecture": "x64"
+    },
+    {
+        "name": "u-6tb1.112xlarge",
+        "pretty_name": "U-6TB1 112xlarge",
+        "memory": 6144,
+        "vcpus": 448,
+        "gpus": 0,
+        "price": 65.867,
+        "architecture": "x64"
+    },
+    {
+        "name": "u-9tb1.112xlarge",
+        "pretty_name": "U-9TB1 112xlarge",
+        "memory": 9216,
+        "vcpus": 448,
+        "gpus": 0,
+        "price": 98.8,
+        "architecture": "x64"
+    },
+    {
+        "name": "x1.16xlarge",
+        "pretty_name": "X1 Extra High-Memory 16xlarge",
+        "memory": 976,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 9.337,
+        "architecture": "x64"
+    },
+    {
+        "name": "x1.32xlarge",
+        "pretty_name": "X1 Extra High-Memory 32xlarge",
+        "memory": 1952,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 18.674,
+        "architecture": "x64"
+    },
+    {
+        "name": "x1e.xlarge",
+        "pretty_name": "X1E Extra Large",
+        "memory": 122,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 1.167,
+        "architecture": "x64"
+    },
+    {
+        "name": "x1e.2xlarge",
+        "pretty_name": "X1E Double Extra Large",
+        "memory": 244,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 2.334,
+        "architecture": "x64"
+    },
+    {
+        "name": "x1e.4xlarge",
+        "pretty_name": "X1E Quadruple Extra Large",
+        "memory": 488,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 4.668,
+        "architecture": "x64"
+    },
+    {
+        "name": "x1e.8xlarge",
+        "pretty_name": "X1E Eight Extra Large",
+        "memory": 976,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 9.336,
+        "architecture": "x64"
+    },
+    {
+        "name": "x1e.16xlarge",
+        "pretty_name": "X1E 16xlarge",
+        "memory": 1952,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 18.672,
+        "architecture": "x64"
+    },
+    {
+        "name": "x1e.32xlarge",
+        "pretty_name": "X1E 32xlarge",
+        "memory": 3904,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 37.344,
+        "architecture": "x64"
+    },
+    {
+        "name": "x2idn.16xlarge",
+        "pretty_name": "X2IDN 16xlarge",
+        "memory": 1024,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 9.337,
+        "architecture": "x64"
+    },
+    {
+        "name": "x2idn.24xlarge",
+        "pretty_name": "X2IDN 24xlarge",
+        "memory": 1536,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 14.0055,
+        "architecture": "x64"
+    },
+    {
+        "name": "x2idn.32xlarge",
+        "pretty_name": "X2IDN 32xlarge",
+        "memory": 2048,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 18.674,
+        "architecture": "x64"
+    },
+    {
+        "name": "x2idn.metal",
+        "pretty_name": "X2IDN Metal",
+        "memory": 2048,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 18.674,
+        "architecture": "x64"
+    },
+    {
+        "name": "x2iedn.xlarge",
+        "pretty_name": "X2IEDN Extra Large",
+        "memory": 128,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 1.16713,
+        "architecture": "x64"
+    },
+    {
+        "name": "x2iedn.2xlarge",
+        "pretty_name": "X2IEDN Double Extra Large",
+        "memory": 256,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 2.33425,
+        "architecture": "x64"
+    },
+    {
+        "name": "x2iedn.4xlarge",
+        "pretty_name": "X2IEDN Quadruple Extra Large",
+        "memory": 512,
+        "vcpus": 16,
+        "gpus": 0,
+        "price": 4.6685,
+        "architecture": "x64"
+    },
+    {
+        "name": "x2iedn.8xlarge",
+        "pretty_name": "X2IEDN Eight Extra Large",
+        "memory": 1024,
+        "vcpus": 32,
+        "gpus": 0,
+        "price": 9.337,
+        "architecture": "x64"
+    },
+    {
+        "name": "x2iedn.16xlarge",
+        "pretty_name": "X2IEDN 16xlarge",
+        "memory": 2048,
+        "vcpus": 64,
+        "gpus": 0,
+        "price": 18.674,
+        "architecture": "x64"
+    },
+    {
+        "name": "x2iedn.24xlarge",
+        "pretty_name": "X2IEDN 24xlarge",
+        "memory": 3072,
+        "vcpus": 96,
+        "gpus": 0,
+        "price": 28.011,
+        "architecture": "x64"
+    },
+    {
+        "name": "x2iedn.32xlarge",
+        "pretty_name": "X2IEDN 32xlarge",
+        "memory": 4096,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 37.348,
+        "architecture": "x64"
+    },
+    {
+        "name": "x2iedn.metal",
+        "pretty_name": "X2IEDN Metal",
+        "memory": 4096,
+        "vcpus": 128,
+        "gpus": 0,
+        "price": 37.348,
+        "architecture": "x64"
+    },
+    {
+        "name": "z1d.large",
+        "pretty_name": "Z1D Large",
+        "memory": 16,
+        "vcpus": 2,
+        "gpus": 0,
+        "price": 0.225,
+        "architecture": "x64"
+    },
+    {
+        "name": "z1d.xlarge",
+        "pretty_name": "Z1D Extra Large",
+        "memory": 32,
+        "vcpus": 4,
+        "gpus": 0,
+        "price": 0.45,
+        "architecture": "x64"
+    },
+    {
+        "name": "z1d.2xlarge",
+        "pretty_name": "Z1D Double Extra Large",
+        "memory": 64,
+        "vcpus": 8,
+        "gpus": 0,
+        "price": 0.9,
+        "architecture": "x64"
+    },
+    {
+        "name": "z1d.3xlarge",
+        "pretty_name": "Z1D 3xlarge",
+        "memory": 96,
+        "vcpus": 12,
+        "gpus": 0,
+        "price": 1.35,
+        "architecture": "x64"
+    },
+    {
+        "name": "z1d.6xlarge",
+        "pretty_name": "Z1D 6xlarge",
+        "memory": 192,
+        "vcpus": 24,
+        "gpus": 0,
+        "price": 2.7,
+        "architecture": "x64"
+    },
+    {
+        "name": "z1d.12xlarge",
+        "pretty_name": "Z1D 12xlarge",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 5.4,
+        "architecture": "x64"
+    },
+    {
+        "name": "z1d.metal",
+        "pretty_name": "Z1D Metal",
+        "memory": 384,
+        "vcpus": 48,
+        "gpus": 0,
+        "price": 5.4,
+        "architecture": "x64"
+    }
+]

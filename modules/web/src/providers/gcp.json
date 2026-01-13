@@ -1,0 +1,2426 @@
+[
+    {
+        "name": "a3-edgegpu-8g",
+        "description": "Accelerator Optimized: 8 NVIDIA H100 GPU, 208 vCPUs, 1872GB RAM",
+        "memory": 1916928,
+        "vcpus": 208
+    },
+    {
+        "name": "a3-edgegpu-8g-nolssd",
+        "description": "Accelerator Optimized: 8 NVIDIA H100 GPU, 208 vCPUs, 1872GB RAM, No LocalSSD",
+        "memory": 1916928,
+        "vcpus": 208
+    },
+    {
+        "name": "c2-standard-16",
+        "description": "Compute Optimized: 16 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "c2-standard-30",
+        "description": "Compute Optimized: 30 vCPUs, 120 GB RAM",
+        "memory": 122880,
+        "vcpus": 30
+    },
+    {
+        "name": "c2-standard-4",
+        "description": "Compute Optimized: 4 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "c2-standard-60",
+        "description": "Compute Optimized: 60 vCPUs, 240 GB RAM",
+        "memory": 245760,
+        "vcpus": 60
+    },
+    {
+        "name": "c2-standard-8",
+        "description": "Compute Optimized: 8 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "c2d-highcpu-112",
+        "description": "112 vCPUs, 224 GB RAM",
+        "memory": 229376,
+        "vcpus": 112
+    },
+    {
+        "name": "c2d-highcpu-16",
+        "description": "16 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 16
+    },
+    {
+        "name": "c2d-highcpu-2",
+        "description": "2 vCPUs, 4 GB RAM",
+        "memory": 4096,
+        "vcpus": 2
+    },
+    {
+        "name": "c2d-highcpu-32",
+        "description": "32 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 32
+    },
+    {
+        "name": "c2d-highcpu-4",
+        "description": "4 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 4
+    },
+    {
+        "name": "c2d-highcpu-56",
+        "description": "56 vCPUs, 112 GB RAM",
+        "memory": 114688,
+        "vcpus": 56
+    },
+    {
+        "name": "c2d-highcpu-8",
+        "description": "8 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 8
+    },
+    {
+        "name": "c2d-highmem-112",
+        "description": "112 vCPUs, 896 GB RAM",
+        "memory": 917504,
+        "vcpus": 112
+    },
+    {
+        "name": "c2d-highmem-16",
+        "description": "16 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 16
+    },
+    {
+        "name": "c2d-highmem-2",
+        "description": "2 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 2
+    },
+    {
+        "name": "c2d-highmem-32",
+        "description": "32 vCPUs, 256 GB RAM",
+        "memory": 262144,
+        "vcpus": 32
+    },
+    {
+        "name": "c2d-highmem-4",
+        "description": "4 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 4
+    },
+    {
+        "name": "c2d-highmem-56",
+        "description": "56 vCPUs, 448 GB RAM",
+        "memory": 458752,
+        "vcpus": 56
+    },
+    {
+        "name": "c2d-highmem-8",
+        "description": "8 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 8
+    },
+    {
+        "name": "c2d-standard-112",
+        "description": "112 vCPUs, 448 GB RAM",
+        "memory": 458752,
+        "vcpus": 112
+    },
+    {
+        "name": "c2d-standard-16",
+        "description": "16 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "c2d-standard-2",
+        "description": "2 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 2
+    },
+    {
+        "name": "c2d-standard-32",
+        "description": "32 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 32
+    },
+    {
+        "name": "c2d-standard-4",
+        "description": "4 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "c2d-standard-56",
+        "description": "56 vCPUs, 224 GB RAM",
+        "memory": 229376,
+        "vcpus": 56
+    },
+    {
+        "name": "c2d-standard-8",
+        "description": "8 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "c3-highcpu-176",
+        "description": "176 vCPUs, 352 GB RAM",
+        "memory": 360448,
+        "vcpus": 176
+    },
+    {
+        "name": "c3-highcpu-22",
+        "description": "22 vCPUs, 44 GB RAM",
+        "memory": 45056,
+        "vcpus": 22
+    },
+    {
+        "name": "c3-highcpu-4",
+        "description": "4 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 4
+    },
+    {
+        "name": "c3-highcpu-44",
+        "description": "44 vCPUs, 88 GB RAM",
+        "memory": 90112,
+        "vcpus": 44
+    },
+    {
+        "name": "c3-highcpu-8",
+        "description": "8 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 8
+    },
+    {
+        "name": "c3-highcpu-88",
+        "description": "88 vCPUs, 176 GB RAM",
+        "memory": 180224,
+        "vcpus": 88
+    },
+    {
+        "name": "c3-highmem-192-metal",
+        "description": "Compute Optimized Bare Metal: 192 vCPUs, 1.5 TB RAM",
+        "memory": 1572864,
+        "vcpus": 192
+    },
+    {
+        "name": "c3-standard-176",
+        "description": "176 vCPUs, 704 GB RAM",
+        "memory": 720896,
+        "vcpus": 176
+    },
+    {
+        "name": "c3-standard-176-lssd",
+        "description": "176 vCPUs, 704 GB RAM, 32 local SSDs",
+        "memory": 720896,
+        "vcpus": 176
+    },
+    {
+        "name": "c3-standard-22",
+        "description": "22 vCPUs, 88 GB RAM",
+        "memory": 90112,
+        "vcpus": 22
+    },
+    {
+        "name": "c3-standard-22-lssd",
+        "description": "22 vCPUs, 88 GB RAM, 4 local SSDs",
+        "memory": 90112,
+        "vcpus": 22
+    },
+    {
+        "name": "c3-standard-4",
+        "description": "4 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "c3-standard-4-lssd",
+        "description": "4 vCPUs, 16 GB RAM, 1 local SSD",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "c3-standard-44",
+        "description": "44 vCPUs, 176 GB RAM",
+        "memory": 180224,
+        "vcpus": 44
+    },
+    {
+        "name": "c3-standard-44-lssd",
+        "description": "44 vCPUs, 176 GB RAM, 8 local SSDs",
+        "memory": 180224,
+        "vcpus": 44
+    },
+    {
+        "name": "c3-standard-8",
+        "description": "8 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "c3-standard-8-lssd",
+        "description": "8 vCPUs, 32 GB RAM, 2 local SSDs",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "c3-standard-88",
+        "description": "88 vCPUs, 352 GB RAM",
+        "memory": 360448,
+        "vcpus": 88
+    },
+    {
+        "name": "c3-standard-88-lssd",
+        "description": "88 vCPUs, 352 GB RAM, 16 local SSDs",
+        "memory": 360448,
+        "vcpus": 88
+    },
+    {
+        "name": "c3d-highcpu-16",
+        "description": "16 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 16
+    },
+    {
+        "name": "c3d-highcpu-180",
+        "description": "180 vCPUs, 354 GB RAM",
+        "memory": 362496,
+        "vcpus": 180
+    },
+    {
+        "name": "c3d-highcpu-30",
+        "description": "30 vCPUs, 59 GB RAM",
+        "memory": 60416,
+        "vcpus": 30
+    },
+    {
+        "name": "c3d-highcpu-360",
+        "description": "360 vCPUs, 708 GB RAM",
+        "memory": 724992,
+        "vcpus": 360
+    },
+    {
+        "name": "c3d-highcpu-4",
+        "description": "4 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 4
+    },
+    {
+        "name": "c3d-highcpu-60",
+        "description": "60 vCPUs, 118 GB RAM",
+        "memory": 120832,
+        "vcpus": 60
+    },
+    {
+        "name": "c3d-highcpu-8",
+        "description": "8 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 8
+    },
+    {
+        "name": "c3d-highcpu-90",
+        "description": "90 vCPUs, 177 GB RAM",
+        "memory": 181248,
+        "vcpus": 90
+    },
+    {
+        "name": "c3d-highmem-16",
+        "description": "16 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 16
+    },
+    {
+        "name": "c3d-highmem-180",
+        "description": "180 vCPUs, 1440 GB RAM",
+        "memory": 1474560,
+        "vcpus": 180
+    },
+    {
+        "name": "c3d-highmem-30",
+        "description": "30 vCPUs, 240 GB RAM",
+        "memory": 245760,
+        "vcpus": 30
+    },
+    {
+        "name": "c3d-highmem-360",
+        "description": "360 vCPUs, 2880 GB RAM",
+        "memory": 2949120,
+        "vcpus": 360
+    },
+    {
+        "name": "c3d-highmem-4",
+        "description": "4 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 4
+    },
+    {
+        "name": "c3d-highmem-60",
+        "description": "60 vCPUs, 480 GB RAM",
+        "memory": 491520,
+        "vcpus": 60
+    },
+    {
+        "name": "c3d-highmem-8",
+        "description": "8 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 8
+    },
+    {
+        "name": "c3d-highmem-90",
+        "description": "90 vCPUs, 720 GB RAM",
+        "memory": 737280,
+        "vcpus": 90
+    },
+    {
+        "name": "c3d-standard-16",
+        "description": "16 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "c3d-standard-16-lssd",
+        "description": "16 vCPUs, 64 GB RAM, 1 local SSD",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "c3d-standard-180",
+        "description": "180 vCPUs, 720 GB RAM",
+        "memory": 737280,
+        "vcpus": 180
+    },
+    {
+        "name": "c3d-standard-180-lssd",
+        "description": "180 vCPUs, 720 GB RAM, 16 local SSDs",
+        "memory": 737280,
+        "vcpus": 180
+    },
+    {
+        "name": "c3d-standard-30",
+        "description": "30 vCPUs, 120 GB RAM",
+        "memory": 122880,
+        "vcpus": 30
+    },
+    {
+        "name": "c3d-standard-30-lssd",
+        "description": "30 vCPUs, 120 GB RAM, 2 local SSDs",
+        "memory": 122880,
+        "vcpus": 30
+    },
+    {
+        "name": "c3d-standard-360",
+        "description": "360 vCPUs, 1440 GB RAM",
+        "memory": 1474560,
+        "vcpus": 360
+    },
+    {
+        "name": "c3d-standard-360-lssd",
+        "description": "360 vCPUs, 1440 GB RAM, 32 local SSDs",
+        "memory": 1474560,
+        "vcpus": 360
+    },
+    {
+        "name": "c3d-standard-4",
+        "description": "4 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "c3d-standard-60",
+        "description": "60 vCPUs, 240 GB RAM",
+        "memory": 245760,
+        "vcpus": 60
+    },
+    {
+        "name": "c3d-standard-60-lssd",
+        "description": "60 vCPUs, 240 GB RAM, 4 local SSDs",
+        "memory": 245760,
+        "vcpus": 60
+    },
+    {
+        "name": "c3d-standard-8",
+        "description": "8 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "c3d-standard-8-lssd",
+        "description": "8 vCPUs, 32 GB RAM, 1 local SSD",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "c3d-standard-90",
+        "description": "90 vCPUs, 360 GB RAM",
+        "memory": 368640,
+        "vcpus": 90
+    },
+    {
+        "name": "c3d-standard-90-lssd",
+        "description": "90 vCPUs, 360 GB RAM, 8 local SSDs",
+        "memory": 368640,
+        "vcpus": 90
+    },
+    {
+        "name": "c4-highcpu-144",
+        "description": "144 vCPUs, 288 GB RAM",
+        "memory": 294912,
+        "vcpus": 144
+    },
+    {
+        "name": "c4-highcpu-16",
+        "description": "16 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 16
+    },
+    {
+        "name": "c4-highcpu-192",
+        "description": "192 vCPUs, 384 GB RAM",
+        "memory": 393216,
+        "vcpus": 192
+    },
+    {
+        "name": "c4-highcpu-2",
+        "description": "2 vCPUs, 4 GB RAM",
+        "memory": 4096,
+        "vcpus": 2
+    },
+    {
+        "name": "c4-highcpu-24",
+        "description": "24 vCPUs, 48 GB RAM",
+        "memory": 49152,
+        "vcpus": 24
+    },
+    {
+        "name": "c4-highcpu-288",
+        "description": "288 vCPUs, 576 GB RAM",
+        "memory": 589824,
+        "vcpus": 288
+    },
+    {
+        "name": "c4-highcpu-32",
+        "description": "32 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 32
+    },
+    {
+        "name": "c4-highcpu-4",
+        "description": "4 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 4
+    },
+    {
+        "name": "c4-highcpu-48",
+        "description": "48 vCPUs, 96 GB RAM",
+        "memory": 98304,
+        "vcpus": 48
+    },
+    {
+        "name": "c4-highcpu-8",
+        "description": "8 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 8
+    },
+    {
+        "name": "c4-highcpu-96",
+        "description": "96 vCPUs, 192 GB RAM",
+        "memory": 196608,
+        "vcpus": 96
+    },
+    {
+        "name": "c4-highmem-144",
+        "description": "144 vCPUs, 1116 GB RAM",
+        "memory": 1142784,
+        "vcpus": 144
+    },
+    {
+        "name": "c4-highmem-144-lssd",
+        "description": "144 vCPUs, 1116 GB RAM, 24 local SSDs",
+        "memory": 1142784,
+        "vcpus": 144
+    },
+    {
+        "name": "c4-highmem-16",
+        "description": "16 vCPUs, 124 GB RAM",
+        "memory": 126976,
+        "vcpus": 16
+    },
+    {
+        "name": "c4-highmem-16-lssd",
+        "description": "16 vCPUs, 124 GB RAM, 2 local SSDs",
+        "memory": 126976,
+        "vcpus": 16
+    },
+    {
+        "name": "c4-highmem-192",
+        "description": "192 vCPUs, 1488 GB RAM",
+        "memory": 1523712,
+        "vcpus": 192
+    },
+    {
+        "name": "c4-highmem-192-lssd",
+        "description": "192 vCPUs, 1488 GB RAM, 32 local SSDs",
+        "memory": 1523712,
+        "vcpus": 192
+    },
+    {
+        "name": "c4-highmem-2",
+        "description": "2 vCPUs, 15 GB RAM",
+        "memory": 15360,
+        "vcpus": 2
+    },
+    {
+        "name": "c4-highmem-24",
+        "description": "24 vCPUs, 186 GB RAM",
+        "memory": 190464,
+        "vcpus": 24
+    },
+    {
+        "name": "c4-highmem-24-lssd",
+        "description": "24 vCPUs, 186 GB RAM, 4 local SSDs",
+        "memory": 190464,
+        "vcpus": 24
+    },
+    {
+        "name": "c4-highmem-288",
+        "description": "288 vCPUs, 2232 GB RAM",
+        "memory": 2285568,
+        "vcpus": 288
+    },
+    {
+        "name": "c4-highmem-288-lssd",
+        "description": "288 vCPUs,  2232 GB RAM, 48 local SSDs",
+        "memory": 2285568,
+        "vcpus": 288
+    },
+    {
+        "name": "c4-highmem-32",
+        "description": "32 vCPUs, 248 GB RAM",
+        "memory": 253952,
+        "vcpus": 32
+    },
+    {
+        "name": "c4-highmem-32-lssd",
+        "description": "32 vCPUs, 248 GB RAM, 5 local SSDs",
+        "memory": 253952,
+        "vcpus": 32
+    },
+    {
+        "name": "c4-highmem-4",
+        "description": "4 vCPUs, 31 GB RAM",
+        "memory": 31744,
+        "vcpus": 4
+    },
+    {
+        "name": "c4-highmem-4-lssd",
+        "description": "4 vCPUs, 31 GB RAM, 1 local SSD",
+        "memory": 31744,
+        "vcpus": 4
+    },
+    {
+        "name": "c4-highmem-48",
+        "description": "48 vCPUs, 372 GB RAM",
+        "memory": 380928,
+        "vcpus": 48
+    },
+    {
+        "name": "c4-highmem-48-lssd",
+        "description": "48 vCPUs, 372 GB RAM, 8 local SSDs",
+        "memory": 380928,
+        "vcpus": 48
+    },
+    {
+        "name": "c4-highmem-8",
+        "description": "8 vCPUs, 62 GB RAM",
+        "memory": 63488,
+        "vcpus": 8
+    },
+    {
+        "name": "c4-highmem-8-lssd",
+        "description": "8 vCPUs, 62 GB RAM, 1 local SSD",
+        "memory": 63488,
+        "vcpus": 8
+    },
+    {
+        "name": "c4-highmem-96",
+        "description": "96 vCPUs, 744 GB RAM",
+        "memory": 761856,
+        "vcpus": 96
+    },
+    {
+        "name": "c4-highmem-96-lssd",
+        "description": "96 vCPUs, 744 GB RAM, 16 local SSDs",
+        "memory": 761856,
+        "vcpus": 96
+    },
+    {
+        "name": "c4-standard-144",
+        "description": "144 vCPUs, 540 GB RAM",
+        "memory": 552960,
+        "vcpus": 144
+    },
+    {
+        "name": "c4-standard-144-lssd",
+        "description": "144 vCPUs, 540 GB RAM, 24 local SSDs",
+        "memory": 552960,
+        "vcpus": 144
+    },
+    {
+        "name": "c4-standard-16",
+        "description": "16 vCPUs, 60 GB RAM",
+        "memory": 61440,
+        "vcpus": 16
+    },
+    {
+        "name": "c4-standard-16-lssd",
+        "description": "16 vCPUs, 60 GB RAM, 2 local SSDs",
+        "memory": 61440,
+        "vcpus": 16
+    },
+    {
+        "name": "c4-standard-192",
+        "description": "192 vCPUs, 720 GB RAM",
+        "memory": 737280,
+        "vcpus": 192
+    },
+    {
+        "name": "c4-standard-192-lssd",
+        "description": "192 vCPUs, 720 GB RAM, 32 local SSDs",
+        "memory": 737280,
+        "vcpus": 192
+    },
+    {
+        "name": "c4-standard-2",
+        "description": "2 vCPUs, 7 GB RAM",
+        "memory": 7168,
+        "vcpus": 2
+    },
+    {
+        "name": "c4-standard-24",
+        "description": "24 vCPUs, 90 GB RAM",
+        "memory": 92160,
+        "vcpus": 24
+    },
+    {
+        "name": "c4-standard-24-lssd",
+        "description": "24 vCPUs, 90 GB RAM, 4 local SSDs",
+        "memory": 92160,
+        "vcpus": 24
+    },
+    {
+        "name": "c4-standard-288",
+        "description": "288 vCPUs, 1080 GB RAM",
+        "memory": 1105920,
+        "vcpus": 288
+    },
+    {
+        "name": "c4-standard-288-lssd",
+        "description": "288 vCPUs, 1080 GB RAM, 48 local SSDs",
+        "memory": 1105920,
+        "vcpus": 288
+    },
+    {
+        "name": "c4-standard-32",
+        "description": "32 vCPUs, 120 GB RAM",
+        "memory": 122880,
+        "vcpus": 32
+    },
+    {
+        "name": "c4-standard-32-lssd",
+        "description": "32 vCPUs, 120 GB RAM, 5 local SSDs",
+        "memory": 122880,
+        "vcpus": 32
+    },
+    {
+        "name": "c4-standard-4",
+        "description": "4 vCPUs, 15 GB RAM",
+        "memory": 15360,
+        "vcpus": 4
+    },
+    {
+        "name": "c4-standard-4-lssd",
+        "description": "4 vCPUs, 15 GB RAM, 1 local SSD",
+        "memory": 15360,
+        "vcpus": 4
+    },
+    {
+        "name": "c4-standard-48",
+        "description": "48 vCPUs, 180 GB RAM",
+        "memory": 184320,
+        "vcpus": 48
+    },
+    {
+        "name": "c4-standard-48-lssd",
+        "description": "48 vCPUs, 180 GB RAM, 8 local SSDs",
+        "memory": 184320,
+        "vcpus": 48
+    },
+    {
+        "name": "c4-standard-8",
+        "description": "8 vCPUs, 30 GB RAM",
+        "memory": 30720,
+        "vcpus": 8
+    },
+    {
+        "name": "c4-standard-8-lssd",
+        "description": "8 vCPUs, 30 GB RAM, 1 local SSD",
+        "memory": 30720,
+        "vcpus": 8
+    },
+    {
+        "name": "c4-standard-96",
+        "description": "96 vCPUs, 360 GB RAM",
+        "memory": 368640,
+        "vcpus": 96
+    },
+    {
+        "name": "c4-standard-96-lssd",
+        "description": "96 vCPUs, 360 GB RAM, 16 local SSDs",
+        "memory": 368640,
+        "vcpus": 96
+    },
+    {
+        "name": "c4a-highcpu-16",
+        "description": "16 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 16
+    },
+    {
+        "name": "c4a-highcpu-2",
+        "description": "2 vCPUs, 4 GB RAM",
+        "memory": 4096,
+        "vcpus": 2
+    },
+    {
+        "name": "c4a-highcpu-32",
+        "description": "32 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 32
+    },
+    {
+        "name": "c4a-highcpu-4",
+        "description": "4 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 4
+    },
+    {
+        "name": "c4a-highcpu-48",
+        "description": "48 vCPUs, 96 GB RAM",
+        "memory": 98304,
+        "vcpus": 48
+    },
+    {
+        "name": "c4a-highcpu-64",
+        "description": "64 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 64
+    },
+    {
+        "name": "c4a-highcpu-72",
+        "description": "72 vCPUs, 144 GB RAM",
+        "memory": 147456,
+        "vcpus": 72
+    },
+    {
+        "name": "c4a-highcpu-8",
+        "description": "8 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 8
+    },
+    {
+        "name": "c4a-highmem-16",
+        "description": "16 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 16
+    },
+    {
+        "name": "c4a-highmem-16-lssd",
+        "description": "16 vCPUs, 128 GB RAM, 4 local SSD",
+        "memory": 131072,
+        "vcpus": 16
+    },
+    {
+        "name": "c4a-highmem-2",
+        "description": "2 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 2
+    },
+    {
+        "name": "c4a-highmem-32",
+        "description": "32 vCPUs, 256 GB RAM",
+        "memory": 262144,
+        "vcpus": 32
+    },
+    {
+        "name": "c4a-highmem-32-lssd",
+        "description": "32 vCPUs, 256 GB RAM, 6 local SSD",
+        "memory": 262144,
+        "vcpus": 32
+    },
+    {
+        "name": "c4a-highmem-4",
+        "description": "4 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 4
+    },
+    {
+        "name": "c4a-highmem-4-lssd",
+        "description": "4 vCPUs, 32 GB RAM, 1 local SSD",
+        "memory": 32768,
+        "vcpus": 4
+    },
+    {
+        "name": "c4a-highmem-48",
+        "description": "48 vCPUs, 384 GB RAM",
+        "memory": 393216,
+        "vcpus": 48
+    },
+    {
+        "name": "c4a-highmem-48-lssd",
+        "description": "48 vCPUs, 384 GB RAM, 10 local SSD",
+        "memory": 393216,
+        "vcpus": 48
+    },
+    {
+        "name": "c4a-highmem-64",
+        "description": "64 vCPUs, 512 GB RAM",
+        "memory": 524288,
+        "vcpus": 64
+    },
+    {
+        "name": "c4a-highmem-64-lssd",
+        "description": "64 vCPUs, 512 GB RAM, 14 local SSD",
+        "memory": 524288,
+        "vcpus": 64
+    },
+    {
+        "name": "c4a-highmem-72",
+        "description": "72 vCPUs, 576 GB RAM",
+        "memory": 589824,
+        "vcpus": 72
+    },
+    {
+        "name": "c4a-highmem-72-lssd",
+        "description": "72 vCPUs, 576 GB RAM, 16 local SSD",
+        "memory": 589824,
+        "vcpus": 72
+    },
+    {
+        "name": "c4a-highmem-8",
+        "description": "8 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 8
+    },
+    {
+        "name": "c4a-highmem-8-lssd",
+        "description": "8 vCPUs, 64 GB RAM, 2 local SSD",
+        "memory": 65536,
+        "vcpus": 8
+    },
+    {
+        "name": "c4a-standard-16",
+        "description": "16 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "c4a-standard-16-lssd",
+        "description": "16 vCPUs, 64 GB RAM, 4 local SSD",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "c4a-standard-2",
+        "description": "2 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 2
+    },
+    {
+        "name": "c4a-standard-32",
+        "description": "32 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 32
+    },
+    {
+        "name": "c4a-standard-32-lssd",
+        "description": "32 vCPUs, 128 GB RAM, 6 local SSD",
+        "memory": 131072,
+        "vcpus": 32
+    },
+    {
+        "name": "c4a-standard-4",
+        "description": "4 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "c4a-standard-4-lssd",
+        "description": "4 vCPUs, 16 GB RAM, 1 local SSD",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "c4a-standard-48",
+        "description": "48 vCPUs, 192 GB RAM",
+        "memory": 196608,
+        "vcpus": 48
+    },
+    {
+        "name": "c4a-standard-48-lssd",
+        "description": "48 vCPUs, 192 GB RAM, 10 local SSD",
+        "memory": 196608,
+        "vcpus": 48
+    },
+    {
+        "name": "c4a-standard-64",
+        "description": "64 vCPUs, 256 GB RAM",
+        "memory": 262144,
+        "vcpus": 64
+    },
+    {
+        "name": "c4a-standard-64-lssd",
+        "description": "64 vCPUs, 256 GB RAM, 14 local SSD",
+        "memory": 262144,
+        "vcpus": 64
+    },
+    {
+        "name": "c4a-standard-72",
+        "description": "72 vCPUs, 288 GB RAM",
+        "memory": 294912,
+        "vcpus": 72
+    },
+    {
+        "name": "c4a-standard-72-lssd",
+        "description": "72 vCPUs, 288 GB RAM, 16 local SSD",
+        "memory": 294912,
+        "vcpus": 72
+    },
+    {
+        "name": "c4a-standard-8",
+        "description": "8 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "c4a-standard-8-lssd",
+        "description": "8 vCPUs, 32 GB RAM, 2 local SSD",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "c4d-highcpu-16",
+        "description": "16 vCPUs, 30 GB RAM",
+        "memory": 30720,
+        "vcpus": 16
+    },
+    {
+        "name": "c4d-highcpu-192",
+        "description": "192 vCPUs, 360 GB RAM",
+        "memory": 368640,
+        "vcpus": 192
+    },
+    {
+        "name": "c4d-highcpu-2",
+        "description": "2 vCPUs, 3 GB RAM",
+        "memory": 3072,
+        "vcpus": 2
+    },
+    {
+        "name": "c4d-highcpu-32",
+        "description": "32 vCPUs, 60 GB RAM",
+        "memory": 61440,
+        "vcpus": 32
+    },
+    {
+        "name": "c4d-highcpu-384",
+        "description": "384 vCPUs, 720 GB RAM",
+        "memory": 737280,
+        "vcpus": 384
+    },
+    {
+        "name": "c4d-highcpu-4",
+        "description": "4 vCPUs, 7 GB RAM",
+        "memory": 7168,
+        "vcpus": 4
+    },
+    {
+        "name": "c4d-highcpu-48",
+        "description": "48 vCPUs, 90 GB RAM",
+        "memory": 92160,
+        "vcpus": 48
+    },
+    {
+        "name": "c4d-highcpu-64",
+        "description": "64 vCPUs, 120 GB RAM",
+        "memory": 122880,
+        "vcpus": 64
+    },
+    {
+        "name": "c4d-highcpu-8",
+        "description": "8 vCPUs, 15 GB RAM",
+        "memory": 15360,
+        "vcpus": 8
+    },
+    {
+        "name": "c4d-highcpu-96",
+        "description": "96 vCPUs, 180 GB RAM",
+        "memory": 184320,
+        "vcpus": 96
+    },
+    {
+        "name": "c4d-highmem-16",
+        "description": "16 vCPUs, 126 GB RAM",
+        "memory": 129024,
+        "vcpus": 16
+    },
+    {
+        "name": "c4d-highmem-192",
+        "description": "192 vCPUs, 1512 GB RAM",
+        "memory": 1548288,
+        "vcpus": 192
+    },
+    {
+        "name": "c4d-highmem-2",
+        "description": "2 vCPUs, 15 GB RAM",
+        "memory": 15360,
+        "vcpus": 2
+    },
+    {
+        "name": "c4d-highmem-32",
+        "description": "32 vCPUs, 252 GB RAM",
+        "memory": 258048,
+        "vcpus": 32
+    },
+    {
+        "name": "c4d-highmem-384",
+        "description": "384 vCPUs, 3024 GB RAM",
+        "memory": 3096576,
+        "vcpus": 384
+    },
+    {
+        "name": "c4d-highmem-4",
+        "description": "4 vCPUs, 31 GB RAM",
+        "memory": 31744,
+        "vcpus": 4
+    },
+    {
+        "name": "c4d-highmem-48",
+        "description": "48 vCPUs, 378 GB RAM",
+        "memory": 387072,
+        "vcpus": 48
+    },
+    {
+        "name": "c4d-highmem-64",
+        "description": "64 vCPUs, 504 GB RAM",
+        "memory": 516096,
+        "vcpus": 64
+    },
+    {
+        "name": "c4d-highmem-8",
+        "description": "8 vCPUs, 63 GB RAM",
+        "memory": 64512,
+        "vcpus": 8
+    },
+    {
+        "name": "c4d-highmem-96",
+        "description": "96 vCPUs, 756 GB RAM",
+        "memory": 774144,
+        "vcpus": 96
+    },
+    {
+        "name": "c4d-standard-16",
+        "description": "16 vCPUs, 62 GB RAM",
+        "memory": 63488,
+        "vcpus": 16
+    },
+    {
+        "name": "c4d-standard-192",
+        "description": "192 vCPUs, 744 GB RAM",
+        "memory": 761856,
+        "vcpus": 192
+    },
+    {
+        "name": "c4d-standard-2",
+        "description": "2 vCPUs, 7 GB RAM",
+        "memory": 7168,
+        "vcpus": 2
+    },
+    {
+        "name": "c4d-standard-32",
+        "description": "32 vCPUs, 124 GB RAM",
+        "memory": 126976,
+        "vcpus": 32
+    },
+    {
+        "name": "c4d-standard-384",
+        "description": "384 vCPUs, 1488 GB RAM",
+        "memory": 1523712,
+        "vcpus": 384
+    },
+    {
+        "name": "c4d-standard-4",
+        "description": "4 vCPUs, 15 GB RAM",
+        "memory": 15360,
+        "vcpus": 4
+    },
+    {
+        "name": "c4d-standard-48",
+        "description": "48 vCPUs, 186 GB RAM",
+        "memory": 190464,
+        "vcpus": 48
+    },
+    {
+        "name": "c4d-standard-64",
+        "description": "64 vCPUs, 248 GB RAM",
+        "memory": 253952,
+        "vcpus": 64
+    },
+    {
+        "name": "c4d-standard-8",
+        "description": "8 vCPUs, 31 GB RAM",
+        "memory": 31744,
+        "vcpus": 8
+    },
+    {
+        "name": "c4d-standard-96",
+        "description": "96 vCPUs, 372 GB RAM",
+        "memory": 380928,
+        "vcpus": 96
+    },
+    {
+        "name": "e2-highcpu-16",
+        "description": "Efficient Instance, 16 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 16
+    },
+    {
+        "name": "e2-highcpu-2",
+        "description": "Efficient Instance, 2 vCPUs, 2 GB RAM",
+        "memory": 2048,
+        "vcpus": 2
+    },
+    {
+        "name": "e2-highcpu-32",
+        "description": "Efficient Instance, 32 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 32
+    },
+    {
+        "name": "e2-highcpu-4",
+        "description": "Efficient Instance, 4 vCPUs, 4 GB RAM",
+        "memory": 4096,
+        "vcpus": 4
+    },
+    {
+        "name": "e2-highcpu-8",
+        "description": "Efficient Instance, 8 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 8
+    },
+    {
+        "name": "e2-highmem-16",
+        "description": "Efficient Instance, 16 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 16
+    },
+    {
+        "name": "e2-highmem-2",
+        "description": "Efficient Instance, 2 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 2
+    },
+    {
+        "name": "e2-highmem-4",
+        "description": "Efficient Instance, 4 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 4
+    },
+    {
+        "name": "e2-highmem-8",
+        "description": "Efficient Instance, 8 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 8
+    },
+    {
+        "name": "e2-medium",
+        "description": "Efficient Instance, 2 vCPU (1/2 shared physical core) and 4 GB RAM",
+        "memory": 4096,
+        "vcpus": 2
+    },
+    {
+        "name": "e2-small",
+        "description": "Efficient Instance, 2 vCPU (1/4 shared physical core) and 2 GB RAM",
+        "memory": 2048,
+        "vcpus": 2
+    },
+    {
+        "name": "e2-standard-16",
+        "description": "Efficient Instance, 16 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "e2-standard-2",
+        "description": "Efficient Instance, 2 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 2
+    },
+    {
+        "name": "e2-standard-32",
+        "description": "Efficient Instance, 32 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 32
+    },
+    {
+        "name": "e2-standard-4",
+        "description": "Efficient Instance, 4 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "e2-standard-8",
+        "description": "Efficient Instance, 8 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "g2-standard-12",
+        "description": "Graphics Optimized: 1 NVIDIA L4 GPU, 12 vCPUs, 48GB RAM",
+        "memory": 49152,
+        "vcpus": 12
+    },
+    {
+        "name": "g2-standard-16",
+        "description": "Graphics Optimized: 1 NVIDIA L4 GPU, 16 vCPUs, 64GB RAM",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "g2-standard-24",
+        "description": "Graphics Optimized: 2 NVIDIA L4 GPUs, 24 vCPUs, 96GB RAM",
+        "memory": 98304,
+        "vcpus": 24
+    },
+    {
+        "name": "g2-standard-32",
+        "description": "Graphics Optimized: 1 NVIDIA L4 GPU, 32 vCPUs, 128GB RAM",
+        "memory": 131072,
+        "vcpus": 32
+    },
+    {
+        "name": "g2-standard-4",
+        "description": "Graphics Optimized: 1 NVIDIA L4 GPU, 4 vCPUs, 16GB RAM",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "g2-standard-48",
+        "description": "Graphics Optimized: 4 NVIDIA L4 GPUs, 48 vCPUs, 192GB RAM",
+        "memory": 196608,
+        "vcpus": 48
+    },
+    {
+        "name": "g2-standard-8",
+        "description": "Graphics Optimized: 1 NVIDIA L4 GPU, 8 vCPUs, 32GB RAM",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "g2-standard-96",
+        "description": "Graphics Optimized: 8 NVIDIA L4 GPUs, 96 vCPUs, 384GB RAM",
+        "memory": 393216,
+        "vcpus": 96
+    },
+    {
+        "name": "m1-megamem-96",
+        "description": "96 vCPUs, 1.4 TB RAM",
+        "memory": 1468006,
+        "vcpus": 96
+    },
+    {
+        "name": "m1-ultramem-160",
+        "description": "160 vCPUs, 3844 GB RAM",
+        "memory": 3936256,
+        "vcpus": 160
+    },
+    {
+        "name": "m1-ultramem-40",
+        "description": "40 vCPUs, 961 GB RAM",
+        "memory": 984064,
+        "vcpus": 40
+    },
+    {
+        "name": "m1-ultramem-80",
+        "description": "80 vCPUs, 1922 GB RAM",
+        "memory": 1968128,
+        "vcpus": 80
+    },
+    {
+        "name": "m2-hypermem-416",
+        "description": "416 vCPUs, 8.625 TB RAM",
+        "memory": 9043968,
+        "vcpus": 416
+    },
+    {
+        "name": "m2-megamem-416",
+        "description": "416 vCPUs, 5.75 TB RAM",
+        "memory": 6029312,
+        "vcpus": 416
+    },
+    {
+        "name": "m2-ultramem-208",
+        "description": "208 vCPUs, 5.75 TB RAM",
+        "memory": 6029312,
+        "vcpus": 208
+    },
+    {
+        "name": "m2-ultramem-416",
+        "description": "416 vCPUs, 11.50 TB RAM",
+        "memory": 12058624,
+        "vcpus": 416
+    },
+    {
+        "name": "m3-megamem-128",
+        "description": "128 vCPUs, 1952 GB RAM",
+        "memory": 1998848,
+        "vcpus": 128
+    },
+    {
+        "name": "m3-megamem-64",
+        "description": "64 vCPUs, 976 GB RAM",
+        "memory": 999424,
+        "vcpus": 64
+    },
+    {
+        "name": "m3-ultramem-128",
+        "description": "128 vCPUs, 3904 GB RAM",
+        "memory": 3997696,
+        "vcpus": 128
+    },
+    {
+        "name": "m3-ultramem-32",
+        "description": "32 vCPUs, 976 GB RAM",
+        "memory": 999424,
+        "vcpus": 32
+    },
+    {
+        "name": "m3-ultramem-64",
+        "description": "64 vCPUs, 1952 GB RAM",
+        "memory": 1998848,
+        "vcpus": 64
+    },
+    {
+        "name": "m4-hypermem-16",
+        "description": "16 vCPUs, 248 GB RAM",
+        "memory": 253952,
+        "vcpus": 16
+    },
+    {
+        "name": "m4-hypermem-32",
+        "description": "32 vCPUs, 496 GB RAM",
+        "memory": 507904,
+        "vcpus": 32
+    },
+    {
+        "name": "m4-hypermem-64",
+        "description": "64 vCPUs, 992 GB RAM",
+        "memory": 1015808,
+        "vcpus": 64
+    },
+    {
+        "name": "m4-megamem-112",
+        "description": "112 vCPUs, 1488 GB RAM",
+        "memory": 1523712,
+        "vcpus": 112
+    },
+    {
+        "name": "m4-megamem-224",
+        "description": "224 vCPUs, 2976 GB RAM",
+        "memory": 3047424,
+        "vcpus": 224
+    },
+    {
+        "name": "m4-megamem-28",
+        "description": "28 vCPUs, 372 GB RAM",
+        "memory": 380928,
+        "vcpus": 28
+    },
+    {
+        "name": "m4-megamem-56",
+        "description": "56 vCPUs, 744 GB RAM",
+        "memory": 761856,
+        "vcpus": 56
+    },
+    {
+        "name": "m4-ultramem-112",
+        "description": "112 vCPUs, 2976 GB RAM",
+        "memory": 3047424,
+        "vcpus": 112
+    },
+    {
+        "name": "m4-ultramem-224",
+        "description": "224 vCPUs, 5952 GB RAM",
+        "memory": 6094848,
+        "vcpus": 224
+    },
+    {
+        "name": "m4-ultramem-56",
+        "description": "56 vCPUs, 1488 GB RAM",
+        "memory": 1523712,
+        "vcpus": 56
+    },
+    {
+        "name": "n1-highcpu-16",
+        "description": "16 vCPUs, 14.4 GB RAM",
+        "memory": 14746,
+        "vcpus": 16
+    },
+    {
+        "name": "n1-highcpu-32",
+        "description": "32 vCPUs, 28.8 GB RAM",
+        "memory": 29491,
+        "vcpus": 32
+    },
+    {
+        "name": "n1-highcpu-4",
+        "description": "4 vCPUs, 3.6 GB RAM",
+        "memory": 3686,
+        "vcpus": 4
+    },
+    {
+        "name": "n1-highcpu-64",
+        "description": "64 vCPUs, 57.6 GB RAM",
+        "memory": 58982,
+        "vcpus": 64
+    },
+    {
+        "name": "n1-highcpu-8",
+        "description": "8 vCPUs, 7.2 GB RAM",
+        "memory": 7373,
+        "vcpus": 8
+    },
+    {
+        "name": "n1-highcpu-96",
+        "description": "96 vCPUs, 86 GB RAM",
+        "memory": 88474,
+        "vcpus": 96
+    },
+    {
+        "name": "n1-highmem-16",
+        "description": "16 vCPUs, 104 GB RAM",
+        "memory": 106496,
+        "vcpus": 16
+    },
+    {
+        "name": "n1-highmem-2",
+        "description": "2 vCPUs, 13 GB RAM",
+        "memory": 13312,
+        "vcpus": 2
+    },
+    {
+        "name": "n1-highmem-32",
+        "description": "32 vCPUs, 208 GB RAM",
+        "memory": 212992,
+        "vcpus": 32
+    },
+    {
+        "name": "n1-highmem-4",
+        "description": "4 vCPUs, 26 GB RAM",
+        "memory": 26624,
+        "vcpus": 4
+    },
+    {
+        "name": "n1-highmem-64",
+        "description": "64 vCPUs, 416 GB RAM",
+        "memory": 425984,
+        "vcpus": 64
+    },
+    {
+        "name": "n1-highmem-8",
+        "description": "8 vCPUs, 52 GB RAM",
+        "memory": 53248,
+        "vcpus": 8
+    },
+    {
+        "name": "n1-highmem-96",
+        "description": "96 vCPUs, 624 GB RAM",
+        "memory": 638976,
+        "vcpus": 96
+    },
+    {
+        "name": "n1-megamem-96",
+        "description": "96 vCPUs, 1.4 TB RAM",
+        "memory": 1468006,
+        "vcpus": 96
+    },
+    {
+        "name": "n1-standard-16",
+        "description": "16 vCPUs, 60 GB RAM",
+        "memory": 61440,
+        "vcpus": 16
+    },
+    {
+        "name": "n1-standard-2",
+        "description": "2 vCPUs, 7.5 GB RAM",
+        "memory": 7680,
+        "vcpus": 2
+    },
+    {
+        "name": "n1-standard-32",
+        "description": "32 vCPUs, 120 GB RAM",
+        "memory": 122880,
+        "vcpus": 32
+    },
+    {
+        "name": "n1-standard-4",
+        "description": "4 vCPUs, 15 GB RAM",
+        "memory": 15360,
+        "vcpus": 4
+    },
+    {
+        "name": "n1-standard-64",
+        "description": "64 vCPUs, 240 GB RAM",
+        "memory": 245760,
+        "vcpus": 64
+    },
+    {
+        "name": "n1-standard-8",
+        "description": "8 vCPUs, 30 GB RAM",
+        "memory": 30720,
+        "vcpus": 8
+    },
+    {
+        "name": "n1-standard-96",
+        "description": "96 vCPUs, 360 GB RAM",
+        "memory": 368640,
+        "vcpus": 96
+    },
+    {
+        "name": "n1-ultramem-160",
+        "description": "160 vCPUs, 3844 GB RAM",
+        "memory": 3936256,
+        "vcpus": 160
+    },
+    {
+        "name": "n1-ultramem-40",
+        "description": "40 vCPUs, 961 GB RAM",
+        "memory": 984064,
+        "vcpus": 40
+    },
+    {
+        "name": "n1-ultramem-80",
+        "description": "80 vCPUs, 1922 GB RAM",
+        "memory": 1968128,
+        "vcpus": 80
+    },
+    {
+        "name": "n2-highcpu-16",
+        "description": "16 vCPUs 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 16
+    },
+    {
+        "name": "n2-highcpu-2",
+        "description": "2 vCPUs 2 GB RAM",
+        "memory": 2048,
+        "vcpus": 2
+    },
+    {
+        "name": "n2-highcpu-32",
+        "description": "32 vCPUs 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 32
+    },
+    {
+        "name": "n2-highcpu-4",
+        "description": "4 vCPUs 4 GB RAM",
+        "memory": 4096,
+        "vcpus": 4
+    },
+    {
+        "name": "n2-highcpu-48",
+        "description": "48 vCPUs 48 GB RAM",
+        "memory": 49152,
+        "vcpus": 48
+    },
+    {
+        "name": "n2-highcpu-64",
+        "description": "64 vCPUs 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 64
+    },
+    {
+        "name": "n2-highcpu-8",
+        "description": "8 vCPUs 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 8
+    },
+    {
+        "name": "n2-highcpu-80",
+        "description": "80 vCPUs 80 GB RAM",
+        "memory": 81920,
+        "vcpus": 80
+    },
+    {
+        "name": "n2-highcpu-96",
+        "description": "96 vCPUs 96 GB RAM",
+        "memory": 98304,
+        "vcpus": 96
+    },
+    {
+        "name": "n2-highmem-128",
+        "description": "128 vCPUs 864 GB RAM",
+        "memory": 884736,
+        "vcpus": 128
+    },
+    {
+        "name": "n2-highmem-16",
+        "description": "16 vCPUs 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 16
+    },
+    {
+        "name": "n2-highmem-2",
+        "description": "2 vCPUs 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 2
+    },
+    {
+        "name": "n2-highmem-32",
+        "description": "32 vCPUs 256 GB RAM",
+        "memory": 262144,
+        "vcpus": 32
+    },
+    {
+        "name": "n2-highmem-4",
+        "description": "4 vCPUs 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 4
+    },
+    {
+        "name": "n2-highmem-48",
+        "description": "48 vCPUs 384 GB RAM",
+        "memory": 393216,
+        "vcpus": 48
+    },
+    {
+        "name": "n2-highmem-64",
+        "description": "64 vCPUs 512 GB RAM",
+        "memory": 524288,
+        "vcpus": 64
+    },
+    {
+        "name": "n2-highmem-8",
+        "description": "8 vCPUs 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 8
+    },
+    {
+        "name": "n2-highmem-80",
+        "description": "80 vCPUs 640 GB RAM",
+        "memory": 655360,
+        "vcpus": 80
+    },
+    {
+        "name": "n2-highmem-96",
+        "description": "96 vCPUs 768 GB RAM",
+        "memory": 786432,
+        "vcpus": 96
+    },
+    {
+        "name": "n2-standard-128",
+        "description": "128 vCPUs 512 GB RAM",
+        "memory": 524288,
+        "vcpus": 128
+    },
+    {
+        "name": "n2-standard-16",
+        "description": "16 vCPUs 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "n2-standard-2",
+        "description": "2 vCPUs 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 2
+    },
+    {
+        "name": "n2-standard-32",
+        "description": "32 vCPUs 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 32
+    },
+    {
+        "name": "n2-standard-4",
+        "description": "4 vCPUs 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "n2-standard-48",
+        "description": "48 vCPUs 192 GB RAM",
+        "memory": 196608,
+        "vcpus": 48
+    },
+    {
+        "name": "n2-standard-64",
+        "description": "64 vCPUs 256 GB RAM",
+        "memory": 262144,
+        "vcpus": 64
+    },
+    {
+        "name": "n2-standard-8",
+        "description": "8 vCPUs 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "n2-standard-80",
+        "description": "80 vCPUs 320 GB RAM",
+        "memory": 327680,
+        "vcpus": 80
+    },
+    {
+        "name": "n2-standard-96",
+        "description": "96 vCPUs 384 GB RAM",
+        "memory": 393216,
+        "vcpus": 96
+    },
+    {
+        "name": "n2d-highcpu-128",
+        "description": "128 vCPUs 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 128
+    },
+    {
+        "name": "n2d-highcpu-16",
+        "description": "16 vCPUs 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 16
+    },
+    {
+        "name": "n2d-highcpu-2",
+        "description": "2 vCPUs 2 GB RAM",
+        "memory": 2048,
+        "vcpus": 2
+    },
+    {
+        "name": "n2d-highcpu-224",
+        "description": "224 vCPUs 224 GB RAM",
+        "memory": 229376,
+        "vcpus": 224
+    },
+    {
+        "name": "n2d-highcpu-32",
+        "description": "32 vCPUs 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 32
+    },
+    {
+        "name": "n2d-highcpu-4",
+        "description": "4 vCPUs 4 GB RAM",
+        "memory": 4096,
+        "vcpus": 4
+    },
+    {
+        "name": "n2d-highcpu-48",
+        "description": "48 vCPUs 48 GB RAM",
+        "memory": 49152,
+        "vcpus": 48
+    },
+    {
+        "name": "n2d-highcpu-64",
+        "description": "64 vCPUs 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 64
+    },
+    {
+        "name": "n2d-highcpu-8",
+        "description": "8 vCPUs 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 8
+    },
+    {
+        "name": "n2d-highcpu-80",
+        "description": "80 vCPUs 80 GB RAM",
+        "memory": 81920,
+        "vcpus": 80
+    },
+    {
+        "name": "n2d-highcpu-96",
+        "description": "96 vCPUs 96 GB RAM",
+        "memory": 98304,
+        "vcpus": 96
+    },
+    {
+        "name": "n2d-highmem-16",
+        "description": "16 vCPUs 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 16
+    },
+    {
+        "name": "n2d-highmem-2",
+        "description": "2 vCPUs 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 2
+    },
+    {
+        "name": "n2d-highmem-32",
+        "description": "32 vCPUs 256 GB RAM",
+        "memory": 262144,
+        "vcpus": 32
+    },
+    {
+        "name": "n2d-highmem-4",
+        "description": "4 vCPUs 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 4
+    },
+    {
+        "name": "n2d-highmem-48",
+        "description": "48 vCPUs 384 GB RAM",
+        "memory": 393216,
+        "vcpus": 48
+    },
+    {
+        "name": "n2d-highmem-64",
+        "description": "64 vCPUs 512 GB RAM",
+        "memory": 524288,
+        "vcpus": 64
+    },
+    {
+        "name": "n2d-highmem-8",
+        "description": "8 vCPUs 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 8
+    },
+    {
+        "name": "n2d-highmem-80",
+        "description": "80 vCPUs 640 GB RAM",
+        "memory": 655360,
+        "vcpus": 80
+    },
+    {
+        "name": "n2d-highmem-96",
+        "description": "96 vCPUs 768 GB RAM",
+        "memory": 786432,
+        "vcpus": 96
+    },
+    {
+        "name": "n2d-standard-128",
+        "description": "128 vCPUs 512 GB RAM",
+        "memory": 524288,
+        "vcpus": 128
+    },
+    {
+        "name": "n2d-standard-16",
+        "description": "16 vCPUs 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "n2d-standard-2",
+        "description": "2 vCPUs 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 2
+    },
+    {
+        "name": "n2d-standard-224",
+        "description": "224 vCPUs 896 GB RAM",
+        "memory": 917504,
+        "vcpus": 224
+    },
+    {
+        "name": "n2d-standard-32",
+        "description": "32 vCPUs 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 32
+    },
+    {
+        "name": "n2d-standard-4",
+        "description": "4 vCPUs 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "n2d-standard-48",
+        "description": "48 vCPUs 192 GB RAM",
+        "memory": 196608,
+        "vcpus": 48
+    },
+    {
+        "name": "n2d-standard-64",
+        "description": "64 vCPUs 256 GB RAM",
+        "memory": 262144,
+        "vcpus": 64
+    },
+    {
+        "name": "n2d-standard-8",
+        "description": "8 vCPUs 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "n2d-standard-80",
+        "description": "80 vCPUs 320 GB RAM",
+        "memory": 327680,
+        "vcpus": 80
+    },
+    {
+        "name": "n2d-standard-96",
+        "description": "96 vCPUs 384 GB RAM",
+        "memory": 393216,
+        "vcpus": 96
+    },
+    {
+        "name": "n4-highcpu-16",
+        "description": "16 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 16
+    },
+    {
+        "name": "n4-highcpu-2",
+        "description": "2 vCPUs, 4 GB RAM",
+        "memory": 4096,
+        "vcpus": 2
+    },
+    {
+        "name": "n4-highcpu-32",
+        "description": "32 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 32
+    },
+    {
+        "name": "n4-highcpu-4",
+        "description": "4 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 4
+    },
+    {
+        "name": "n4-highcpu-48",
+        "description": "48 vCPUs, 96 GB RAM",
+        "memory": 98304,
+        "vcpus": 48
+    },
+    {
+        "name": "n4-highcpu-64",
+        "description": "64 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 64
+    },
+    {
+        "name": "n4-highcpu-8",
+        "description": "8 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 8
+    },
+    {
+        "name": "n4-highcpu-80",
+        "description": "80 vCPUs, 160 GB RAM",
+        "memory": 163840,
+        "vcpus": 80
+    },
+    {
+        "name": "n4-highmem-16",
+        "description": "16 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 16
+    },
+    {
+        "name": "n4-highmem-2",
+        "description": "2 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 2
+    },
+    {
+        "name": "n4-highmem-32",
+        "description": "32 vCPUs, 256 GB RAM",
+        "memory": 262144,
+        "vcpus": 32
+    },
+    {
+        "name": "n4-highmem-4",
+        "description": "4 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 4
+    },
+    {
+        "name": "n4-highmem-48",
+        "description": "48 vCPUs, 384 GB RAM",
+        "memory": 393216,
+        "vcpus": 48
+    },
+    {
+        "name": "n4-highmem-64",
+        "description": "64 vCPUs, 512 GB RAM",
+        "memory": 524288,
+        "vcpus": 64
+    },
+    {
+        "name": "n4-highmem-8",
+        "description": "8 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 8
+    },
+    {
+        "name": "n4-highmem-80",
+        "description": "80 vCPUs, 640 GB RAM",
+        "memory": 655360,
+        "vcpus": 80
+    },
+    {
+        "name": "n4-standard-16",
+        "description": "16 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "n4-standard-2",
+        "description": "2 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 2
+    },
+    {
+        "name": "n4-standard-32",
+        "description": "32 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 32
+    },
+    {
+        "name": "n4-standard-4",
+        "description": "4 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "n4-standard-48",
+        "description": "48 vCPUs, 192 GB RAM",
+        "memory": 196608,
+        "vcpus": 48
+    },
+    {
+        "name": "n4-standard-64",
+        "description": "64 vCPUs, 256 GB RAM",
+        "memory": 262144,
+        "vcpus": 64
+    },
+    {
+        "name": "n4-standard-8",
+        "description": "8 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "n4-standard-80",
+        "description": "80 vCPUs, 320 GB RAM",
+        "memory": 327680,
+        "vcpus": 80
+    },
+    {
+        "name": "n4a-highcpu-16",
+        "description": "16 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 16
+    },
+    {
+        "name": "n4a-highcpu-2",
+        "description": "2 vCPUs, 4 GB RAM",
+        "memory": 4096,
+        "vcpus": 2
+    },
+    {
+        "name": "n4a-highcpu-32",
+        "description": "32 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 32
+    },
+    {
+        "name": "n4a-highcpu-4",
+        "description": "4 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 4
+    },
+    {
+        "name": "n4a-highcpu-48",
+        "description": "48 vCPUs, 96 GB RAM",
+        "memory": 98304,
+        "vcpus": 48
+    },
+    {
+        "name": "n4a-highcpu-64",
+        "description": "64 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 64
+    },
+    {
+        "name": "n4a-highcpu-8",
+        "description": "8 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 8
+    },
+    {
+        "name": "n4a-highmem-16",
+        "description": "16 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 16
+    },
+    {
+        "name": "n4a-highmem-2",
+        "description": "2 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 2
+    },
+    {
+        "name": "n4a-highmem-32",
+        "description": "32 vCPUs, 256 GB RAM",
+        "memory": 262144,
+        "vcpus": 32
+    },
+    {
+        "name": "n4a-highmem-4",
+        "description": "4 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 4
+    },
+    {
+        "name": "n4a-highmem-48",
+        "description": "48 vCPUs, 384 GB RAM",
+        "memory": 393216,
+        "vcpus": 48
+    },
+    {
+        "name": "n4a-highmem-64",
+        "description": "64 vCPUs, 512 GB RAM",
+        "memory": 524288,
+        "vcpus": 64
+    },
+    {
+        "name": "n4a-highmem-8",
+        "description": "8 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 8
+    },
+    {
+        "name": "n4a-standard-16",
+        "description": "16 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "n4a-standard-2",
+        "description": "2 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 2
+    },
+    {
+        "name": "n4a-standard-32",
+        "description": "32 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 32
+    },
+    {
+        "name": "n4a-standard-4",
+        "description": "4 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "n4a-standard-48",
+        "description": "48 vCPUs, 192 GB RAM",
+        "memory": 196608,
+        "vcpus": 48
+    },
+    {
+        "name": "n4a-standard-64",
+        "description": "64 vCPUs, 256 GB RAM",
+        "memory": 262144,
+        "vcpus": 64
+    },
+    {
+        "name": "n4a-standard-8",
+        "description": "8 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "t2d-standard-16",
+        "description": "16 vCPUs, 64 GB RAM",
+        "memory": 65536,
+        "vcpus": 16
+    },
+    {
+        "name": "t2d-standard-2",
+        "description": "2 vCPUs, 8 GB RAM",
+        "memory": 8192,
+        "vcpus": 2
+    },
+    {
+        "name": "t2d-standard-32",
+        "description": "32 vCPUs, 128 GB RAM",
+        "memory": 131072,
+        "vcpus": 32
+    },
+    {
+        "name": "t2d-standard-4",
+        "description": "4 vCPUs, 16 GB RAM",
+        "memory": 16384,
+        "vcpus": 4
+    },
+    {
+        "name": "t2d-standard-48",
+        "description": "48 vCPUs, 192 GB RAM",
+        "memory": 196608,
+        "vcpus": 48
+    },
+    {
+        "name": "t2d-standard-60",
+        "description": "60 vCPUs, 240 GB RAM",
+        "memory": 245760,
+        "vcpus": 60
+    },
+    {
+        "name": "t2d-standard-8",
+        "description": "8 vCPUs, 32 GB RAM",
+        "memory": 32768,
+        "vcpus": 8
+    },
+    {
+        "name": "x4-1440-24t-metal",
+        "description": "1440 vCPUs, 24576 GB RAM",
+        "memory": 25165824,
+        "vcpus": 1440
+    },
+    {
+        "name": "x4-1920-32t-metal",
+        "description": "1920 vCPUs, 32768 GB RAM",
+        "memory": 33554432,
+        "vcpus": 1920
+    },
+    {
+        "name": "x4-480-6t-metal",
+        "description": "480 vCPUs, 6144 GB RAM",
+        "memory": 6291456,
+        "vcpus": 480
+    },
+    {
+        "name": "x4-480-8t-metal",
+        "description": "480 vCPUs, 8192 GB RAM",
+        "memory": 8388608,
+        "vcpus": 480
+    },
+    {
+        "name": "x4-960-12t-metal",
+        "description": "960 vCPUs, 12288 GB RAM",
+        "memory": 12582912,
+        "vcpus": 960
+    },
+    {
+        "name": "x4-960-16t-metal",
+        "description": "960 vCPUs, 16384 GB RAM",
+        "memory": 16777216,
+        "vcpus": 960
+    },
+    {
+        "name": "x4-megamem-1440-metal",
+        "description": "1440 vCPUs, 24576 GB RAM",
+        "memory": 25165824,
+        "vcpus": 1440
+    },
+    {
+        "name": "x4-megamem-1920-metal",
+        "description": "1920 vCPUs, 32768 GB RAM",
+        "memory": 33554432,
+        "vcpus": 1920
+    },
+    {
+        "name": "x4-megamem-960-metal",
+        "description": "960 vCPUs, 16384 GB RAM",
+        "memory": 16777216,
+        "vcpus": 960
+    },
+    {
+        "name": "z3-highmem-14-standardlssd",
+        "description": "14 vCPUs, 112 GB RAM, 1 Local SSDs",
+        "memory": 114688,
+        "vcpus": 14
+    },
+    {
+        "name": "z3-highmem-16-highlssd",
+        "description": "16 vCPUs, 128 GB RAM, 2 Local SSDs",
+        "memory": 131072,
+        "vcpus": 16
+    },
+    {
+        "name": "z3-highmem-176",
+        "description": "176 vCPUs, 1408 GB RAM, 12 Local SSDs",
+        "memory": 1441792,
+        "vcpus": 176
+    },
+    {
+        "name": "z3-highmem-176-standardlssd",
+        "description": "176 vCPUs, 1408 GB RAM, 12 Local SSDs",
+        "memory": 1441792,
+        "vcpus": 176
+    },
+    {
+        "name": "z3-highmem-22-highlssd",
+        "description": "22 vCPUs, 176 GB RAM, 3 Local SSDs",
+        "memory": 180224,
+        "vcpus": 22
+    },
+    {
+        "name": "z3-highmem-22-standardlssd",
+        "description": "22 vCPUs, 176 GB RAM, 2 Local SSDs",
+        "memory": 180224,
+        "vcpus": 22
+    },
+    {
+        "name": "z3-highmem-32-highlssd",
+        "description": "32 vCPUs, 256 GB RAM, 4 Local SSDs",
+        "memory": 262144,
+        "vcpus": 32
+    },
+    {
+        "name": "z3-highmem-44-highlssd",
+        "description": "44 vCPUs, 352 GB RAM, 6 Local SSDs",
+        "memory": 360448,
+        "vcpus": 44
+    },
+    {
+        "name": "z3-highmem-44-standardlssd",
+        "description": "44 vCPUs, 352 GB RAM, 3 Local SSDs",
+        "memory": 360448,
+        "vcpus": 44
+    },
+    {
+        "name": "z3-highmem-8-highlssd",
+        "description": "8 vCPUs, 64 GB RAM, 1 Local SSDs",
+        "memory": 65536,
+        "vcpus": 8
+    },
+    {
+        "name": "z3-highmem-88",
+        "description": "88 vCPUs, 704 GB RAM, 12 Local SSDs",
+        "memory": 720896,
+        "vcpus": 88
+    },
+    {
+        "name": "z3-highmem-88-highlssd",
+        "description": "88 vCPUs, 704 GB RAM, 12 Local SSDs",
+        "memory": 720896,
+        "vcpus": 88
+    },
+    {
+        "name": "z3-highmem-88-standardlssd",
+        "description": "88 vCPUs, 704 GB RAM, 6 Local SSDs",
+        "memory": 720896,
+        "vcpus": 88
+    }
+]

@@ -1,0 +1,131 @@
+@use 'variables';
+
+.machine-type-demo {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.demo-header {
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: variables.$font-size-card-title;
+    font-weight: variables.$font-weight-medium;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: variables.$font-size-body;
+  }
+}
+
+.provider-selector-card,
+.selector-card,
+.details-card {
+  margin-bottom: 16px;
+}
+
+mat-card-header {
+  margin-bottom: 16px;
+}
+
+mat-card-title {
+  font-size: variables.$font-size-subhead;
+  font-weight: variables.$font-weight-medium;
+}
+
+.provider-toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  mat-button-toggle {
+    flex: 0 1 auto;
+  }
+
+  .provider-name {
+    padding: 0 8px;
+  }
+}
+
+.provider-info {
+  margin-top: 16px;
+
+  p {
+    margin-bottom: 8px;
+  }
+}
+
+.data-preview,
+.normalized-data {
+  margin-top: 16px;
+
+  summary {
+    cursor: pointer;
+    font-size: variables.$font-size-body;
+    font-weight: variables.$font-weight-medium;
+    padding: 8px 0;
+    user-select: none;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .json-preview {
+    font-family: 'Roboto Mono', monospace;
+    font-size: variables.$font-size-caption;
+    padding: 16px;
+    border-radius: variables.$border-radius;
+    overflow-x: auto;
+    margin-top: 8px;
+  }
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+
+  .detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &.detail-full-width {
+      grid-column: 1 / -1;
+    }
+
+    .detail-label {
+      font-size: variables.$font-size-caption;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-value {
+      font-size: variables.$font-size-body;
+      word-break: break-word;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .machine-type-demo {
+    padding: 16px;
+  }
+
+  .provider-toggle-group {
+    flex-direction: column;
+
+    mat-button-toggle {
+      flex: 1 1 auto;
+    }
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}

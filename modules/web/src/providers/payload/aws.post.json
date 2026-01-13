@@ -1,0 +1,119 @@
+{
+    "cluster": {
+        "name": "modest-golick",
+        "labels": {},
+        "spec": {
+            "cloud": {
+                "aws": {
+                    "securityGroupID": "",
+                    "nodePortsAllowedIPRanges": {
+                        "cidrBlocks": []
+                    },
+                    "vpcID": null,
+                    "accessKeyID": null,
+                    "secretAccessKey": null,
+                    "assumeRoleARN": null,
+                    "assumeRoleExternalID": null,
+                    "instanceProfileName": "",
+                    "roleARN": "",
+                    "routeTableID": ""
+                },
+                "dc": "aws-eu-central-1a"
+            },
+            "version": "1.33.7",
+            "auditLogging": {
+                "enabled": false,
+                "policyPreset": "",
+                "webhookBackend": null
+            },
+            "opaIntegration": {},
+            "kyverno": {
+                "enabled": false
+            },
+            "kubernetesDashboard": {
+                "enabled": false
+            },
+            "kubelb": {
+                "enabled": false,
+                "useLoadBalancerClass": false,
+                "enableGatewayAPI": false
+            },
+            "disableCsiDriver": false,
+            "mla": {},
+            "enableUserSSHKeyAgent": true,
+            "exposeStrategy": "Tunneling",
+            "containerRuntime": "containerd",
+            "clusterNetwork": {
+                "ipFamily": "IPv4",
+                "proxyMode": "ebpf",
+                "pods": {
+                    "cidrBlocks": [
+                        "172.25.0.0/16"
+                    ]
+                },
+                "services": {
+                    "cidrBlocks": [
+                        "10.240.16.0/20"
+                    ]
+                },
+                "nodeCidrMaskSizeIPv4": 24,
+                "nodeLocalDNSCacheEnabled": true,
+                "konnectivityEnabled": true,
+                "nodeCidrMaskSizeIPv6": null,
+                "dnsDomain": "cluster.local",
+                "ipvs": {
+                    "strictArp": true
+                },
+                "tunnelingAgentIP": "100.64.30.10"
+            },
+            "cniPlugin": {
+                "type": "cilium",
+                "version": "1.18.2"
+            },
+            "apiServerAllowedIPRanges": null,
+            "encryptionConfiguration": null,
+            "backupConfig": null,
+            "oidc": {},
+            "admissionPlugins": []
+        },
+        "credential": "dev",
+        "annotations": null
+    },
+    "nodeDeployment": {
+        "name": null,
+        "annotations": {
+            "k8c.io/operating-system-profile": "osp-ubuntu"
+        },
+        "spec": {
+            "template": {
+                "cloud": {
+                    "aws": {
+                        "diskSize": 25,
+                        "ami": "",
+                        "volumeType": "standard",
+                        "assignPublicIP": false,
+                        "isSpotInstance": false,
+                        "spotInstanceMaxPrice": "",
+                        "spotInstancePersistentRequest": false,
+                        "ebsVolumeEncrypted": false,
+                        "tags": {},
+                        "subnetID": "subnet-6cbe7420",
+                        "availabilityZone": "eu-central-1c",
+                        "instanceType": "t3.small"
+                    }
+                },
+                "annotations": {},
+                "taints": [],
+                "labels": {},
+                "operatingSystem": {
+                    "ubuntu": {}
+                }
+            },
+            "replicas": 1,
+            "dynamicConfig": false,
+            "minReplicas": null,
+            "maxReplicas": null
+        }
+    },
+    "applications": []
+}

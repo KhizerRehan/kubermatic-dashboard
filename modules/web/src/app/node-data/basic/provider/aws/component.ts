@@ -28,6 +28,7 @@ import {NodeDataService} from '@core/services/node-data/service';
 import {PresetsService} from '@core/services/wizard/presets';
 import {DynamicModule} from '@app/dynamic/module-registry';
 import {FilteredComboboxComponent} from '@shared/components/combobox/component';
+import {MachineTypeOption} from '@shared/components/machine-type-selector/component';
 import {NodeCloudSpec, NodeSpec} from '@shared/entity/node';
 import {Architecture, AWSSize, AWSSubnet} from '@shared/entity/provider/aws';
 import {NodeData} from '@shared/model/NodeSpecChange';
@@ -83,6 +84,7 @@ export class AWSBasicNodeDataComponent extends BaseFormValidator implements OnIn
   selectedArchitecture = Architecture.X64;
   private _sizes: AWSSize[] = [];
   filteredSizes: AWSSize[] = [];
+  machineTypeOptions: MachineTypeOption[] = [];
   selectedSize = '';
   sizeLabel = SizeState.Empty;
   selectedSubnet = '';
@@ -185,6 +187,17 @@ export class AWSBasicNodeDataComponent extends BaseFormValidator implements OnIn
     // Filter sizes by selected architecture.
     this.filteredSizes = this._sizes.filter(size => size.architecture === this.selectedArchitecture);
 
+    // Update machine type options for the new selector
+    this.machineTypeOptions = this.filteredSizes.map(size => ({
+      name: size.name,
+      prettyName: size.pretty_name,
+      vcpus: size.vcpus,
+      memory: size.memory,
+      gpus: size.gpus,
+      price: size.price,
+      architecture: size.architecture,
+    }));
+
     // Reset selected size if it doesn't belong to the filtered set.
     const matchingSize = this.filteredSizes.find(size => size.name === this.selectedSize);
     if (!matchingSize) {
@@ -259,6 +272,19 @@ export class AWSBasicNodeDataComponent extends BaseFormValidator implements OnIn
   private _setSizes(sizes: AWSSize[]): void {
     this._sizes = sizes.sort((a, b) => compare(a.price, b.price));
 
+    // Convert AWS sizes to MachineTypeOption format for the new selector
+    this.machineTypeOptions = this._sizes
+      .filter(size => size.architecture === this.selectedArchitecture)
+      .map(size => ({
+        name: size.name,
+        prettyName: size.pretty_name,
+        vcpus: size.vcpus,
+        memory: size.memory,
+        gpus: size.gpus,
+        price: size.price,
+        architecture: size.architecture,
+      }));
+
     // If node data service contains defaults (i.e. in the edit dialog) then set size and architecture based on that.
     if (!this.selectedSize && this._nodeDataService.nodeData.spec.cloud.aws.instanceType) {
       const matchingSize = this._sizes.find(
@@ -312,6 +338,7 @@ export class AWSBasicNodeDataComponent extends BaseFormValidator implements OnIn
   private _clearSize(): void {
     this._sizes = [];
     this.filteredSizes = [];
+    this.machineTypeOptions = [];
     this.selectedSize = '';
     this.sizeLabel = SizeState.Empty;
     this._sizeCombobox.reset();

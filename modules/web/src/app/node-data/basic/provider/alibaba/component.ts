@@ -33,6 +33,7 @@ import {PresetsService} from '@core/services/wizard/presets';
 import {DynamicModule} from '@app/dynamic/module-registry';
 import {AutocompleteControls, AutocompleteInitialState} from '@shared/components/autocomplete/component';
 import {FilteredComboboxComponent} from '@shared/components/combobox/component';
+import {MachineTypeOption} from '@shared/components/machine-type-selector/component';
 import {NodeCloudSpec, NodeSpec} from '@shared/entity/node';
 import {AlibabaInstanceType, AlibabaVSwitch, AlibabaZone} from '@shared/entity/provider/alibaba';
 import {NodeData} from '@shared/model/NodeSpecChange';
@@ -94,6 +95,7 @@ export class AlibabaBasicNodeDataComponent extends BaseFormValidator implements 
   private _zoneCombobox: FilteredComboboxComponent;
   readonly Controls = Controls;
   instanceTypes: AlibabaInstanceType[] = [];
+  machineTypeOptions: MachineTypeOption[] = [];
   selectedInstanceType = '';
   instanceTypeLabel = InstanceTypeState.Empty;
   zones: AlibabaZone[] = [];
@@ -271,6 +273,17 @@ export class AlibabaBasicNodeDataComponent extends BaseFormValidator implements 
 
   private _setDefaultInstanceType(instanceTypes: AlibabaInstanceType[]): void {
     this.instanceTypes = _.sortBy(instanceTypes, it => it.id.toLowerCase());
+
+    // Convert Alibaba instance types to MachineTypeOption format
+    this.machineTypeOptions = this.instanceTypes.map(it => ({
+      name: it.id,
+      prettyName: it.id,
+      vcpus: it.cpuCoreCount,
+      memory: it.memorySize,
+      gpus: it.gpuCoreCount || 0,
+      description: `${it.cpuCoreCount} CPU${it.gpuCoreCount > 0 ? `, ${it.gpuCoreCount} GPU` : ''}, ${it.memorySize} GB RAM`,
+    }));
+
     this.selectedInstanceType = this._nodeDataService.nodeData.spec.cloud.alibaba.instanceType;
 
     if (!this.selectedInstanceType && this.instanceTypes.length > 0) {

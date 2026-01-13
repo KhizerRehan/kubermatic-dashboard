@@ -31,6 +31,7 @@ import {GlobalModule} from '@core/services/global/module';
 import {NodeDataService} from '@core/services/node-data/service';
 import {QuotaCalculationService} from '@dynamic/enterprise/quotas/services/quota-calculation';
 import {ComboboxControls, FilteredComboboxComponent} from '@shared/components/combobox/component';
+import {MachineTypeOption} from '@shared/components/machine-type-selector/component';
 import {KubeVirtNodeAffinityPreset, KubeVirtNodeSpec, NodeCloudSpec, NodeSpec} from '@shared/entity/node';
 import {
   KubeVirtAffinityPreset,
@@ -158,6 +159,7 @@ export class KubeVirtBasicNodeDataComponent
   private _preferences: KubeVirtPreferenceList;
   private _osImages: KubeVirtOSImageList;
   isEnterpriseEdition = DynamicModule.isEnterpriseEdition;
+  machineTypeOptions: import('@shared/components/machine-type-selector/component').MachineTypeOption[] = [];
   selectedInstanceType: KubeVirtInstanceType;
   instanceTypeLabel = InstanceTypeState.Empty;
   selectedPreference: KubeVirtPreference;
@@ -541,6 +543,43 @@ export class KubeVirtBasicNodeDataComponent
 
   private _setInstanceTypes(instanceTypes: KubeVirtInstanceTypeList): void {
     this._instanceTypes = instanceTypes;
+
+    // Convert KubeVirt instance types to MachineTypeOption format
+    const allInstanceTypes: MachineTypeOption[] = [];
+    if (this._instanceTypes?.instancetypes) {
+      Object.keys(this._instanceTypes.instancetypes).forEach(category => {
+        this._instanceTypes.instancetypes[category].forEach(instanceType => {
+          try {
+            const spec = JSON.parse(instanceType.spec);
+            const cpuGuest = spec?.cpu?.guest || 0;
+            let memoryGuest = spec?.memory?.guest || '0M';
+            
+            // Convert memory from format like "8590M" to GB
+            let memoryGB = 0;
+            if (typeof memoryGuest === 'string') {
+              const memMatch = memoryGuest.match(/(\d+)M/);
+              if (memMatch) {
+                memoryGB = parseInt(memMatch[1], 10) / 1024;
+              }
+            }
+
+            allInstanceTypes.push({
+              name: instanceType._id,
+              prettyName: instanceType.name,
+              vcpus: cpuGuest,
+              memory: memoryGB,
+              gpus: 0, // KubeVirt doesn't expose GPU info directly in instance types
+              description: `${cpuGuest} vCPU, ${memoryGB.toFixed(2)} GB RAM${category !== 'kubermatic' ? ` (${category})` : ''}`,
+            });
+          } catch (e) {
+            // If spec parsing fails, skip this instance type
+            console.warn(`Failed to parse KubeVirt instance type spec for ${instanceType.name}:`, e);
+          }
+        });
+      });
+    }
+    this.machineTypeOptions = allInstanceTypes;
+
     if (this._initialData?.instancetype) {
       const instanceTypeId = this._getSelectedInstanceTypeId(this._initialData.instancetype);
       this.onInstanceTypeChange(instanceTypeId);

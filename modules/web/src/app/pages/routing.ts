@@ -15,6 +15,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AuthGuard} from '@core/services/auth/guard';
+import {MachineTypeSelectorDemoComponent} from '@shared/components/machine-type-selector-demo/component';
 import {ApiDocsComponent} from './api-docs/component';
 import {FrontpageComponent} from './frontpage/component';
 import {PageNotFoundComponent} from './page-not-found/component';
@@ -33,6 +34,11 @@ const routes: Routes = [
   {
     path: 'rest-api',
     component: ApiDocsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'machine-type-demo',
+    component: MachineTypeSelectorDemoComponent,
     canActivate: [AuthGuard],
   },
   {

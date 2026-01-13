@@ -31,6 +31,7 @@ import _ from 'lodash';
 import {merge, Observable} from 'rxjs';
 import {filter, map, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {FilteredComboboxComponent} from '@shared/components/combobox/component';
+import {MachineTypeOption} from '@shared/components/machine-type-selector/component';
 import {GCPNodeSpec, NodeCloudSpec, NodeSpec} from '@shared/entity/node';
 import {GCPDiskType, GCPMachineSize, GCPZone} from '@shared/entity/provider/gcp';
 import {NodeData} from '@shared/model/NodeSpecChange';
@@ -94,6 +95,7 @@ export class GCPBasicNodeDataComponent extends BaseFormValidator implements OnIn
   readonly Controls = Controls;
 
   machineTypes: GCPMachineSize[] = [];
+  machineTypeOptions: MachineTypeOption[] = [];
   selectedMachineType = '';
   machineTypeLabel = MachineTypeState.Empty;
   zones: GCPZone[] = [];
@@ -288,6 +290,28 @@ export class GCPBasicNodeDataComponent extends BaseFormValidator implements OnIn
 
   private _setDefaultMachineType(machineTypes: GCPMachineSize[]): void {
     this.machineTypes = machineTypes;
+
+    // Convert GCP machine types to MachineTypeOption format
+    this.machineTypeOptions = this.machineTypes.map(mt => {
+      // Infer GPU count from machine type name patterns
+      const hasGpu = /^(a2-|a3-|g2-)/.test(mt.name);
+      let gpus = 0;
+      if (hasGpu) {
+        // Extract GPU count from description or infer from name
+        const gpuMatch = mt.description.match(/(\d+)\s+.*GPU/i);
+        gpus = gpuMatch ? parseInt(gpuMatch[1], 10) : 1;
+      }
+
+      return {
+        name: mt.name,
+        prettyName: mt.name,
+        vcpus: mt.vcpus,
+        memory: mt.memory / 1024, // Convert MB to GB
+        gpus,
+        description: mt.description,
+      };
+    });
+
     this.selectedMachineType = this._nodeDataService.nodeData.spec.cloud.gcp.machineType;
 
     if (!this.selectedMachineType && !_.isEmpty(this.machineTypes)) {

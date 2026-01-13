@@ -16,54 +16,51 @@ limitations under the License.
 <form [formGroup]="form"
       fxLayout="column"
       fxLayoutGap="8px">
-  <div fxLayout="row"
+  <div fxLayout="column"
        fxLayoutGap="8px">
-    <km-combobox #instanceTypeCombobox
-                 [required]="false"
-                 [grouped]="true"
-                 [groups]="instanceTypeCategories"
-                 [selected]="selectedInstanceType?._id"
-                 [optionsGetter]="getInstanceTypeOptions.bind(this)"
-                 [valueFormatter]="instanceTypeDisplayName.bind(this)"
-                 [formControlName]="Controls.InstanceType"
-                 (changed)="onInstanceTypeChange($event)"
-                 [label]="instanceTypeLabel"
-                 inputLabel="Select instance type..."
-                 selectBy="_id"
-                 filterBy="name"
-                 fxFlex>
-      <div *option="let instanceType">{{instanceType.name}}</div>
-    </km-combobox>
+    <km-machine-type-selector fxFlex
+                              [options]="machineTypeOptions"
+                              [label]="instanceTypeLabel"
+                              [required]="false"
+                              [showGpuFilter]="true"
+                              [formControlName]="Controls.InstanceType"
+                              (selectionChange)="onInstanceTypeChange($event)">
+    </km-machine-type-selector>
 
-    <km-combobox #preferenceCombobox
-                 [required]="false"
-                 [grouped]="true"
-                 [groups]="preferenceCategories"
-                 [selected]="selectedPreference?._id"
-                 [optionsGetter]="getPreferenceOptions.bind(this)"
-                 [valueFormatter]="preferenceDisplayName.bind(this)"
-                 [formControlName]="Controls.Preference"
-                 [isDisabled]="!selectedInstanceType"
-                 [hint]="!selectedInstanceType ? 'Please select an instance type first.' : ''"
-                 [label]="preferenceLabel"
-                 (changed)="onPreferenceChange($event)"
-                 inputLabel="Select preference..."
-                 selectBy="_id"
-                 filterBy="name"
-                 fxFlex>
-      <div *option="let preference">{{preference.name}}</div>
-    </km-combobox>
+    <div fxLayout="row"
+         fxLayoutAlign="start center"
+         fxLayoutGap="8px">
+        <km-combobox #preferenceCombobox
+                    [required]="false"
+                    [grouped]="true"
+                    [groups]="preferenceCategories"
+                    [selected]="selectedPreference?._id"
+                    [optionsGetter]="getPreferenceOptions.bind(this)"
+                    [valueFormatter]="preferenceDisplayName.bind(this)"
+                    [formControlName]="Controls.Preference"
+                    [isDisabled]="!selectedInstanceType"
+                    [hint]="!selectedInstanceType ? 'Please select an instance type first.' : ''"
+                    [label]="preferenceLabel"
+                    (changed)="onPreferenceChange($event)"
+                    inputLabel="Select preference..."
+                    selectBy="_id"
+                    filterBy="name"
+                    fxFlex>
+          <div *option="let preference">{{preference.name}}</div>
+        </km-combobox>
 
-    <button mat-flat-button
-            type="button"
-            color="tertiary"
-            class="view-instance-details-button"
-            (click)="viewInstanceDetails()"
-            [disabled]="!selectedInstanceType">
-      <i class="km-icon-mask km-icon-search"
-         matButtonIcon></i>
-      <span>View</span>
-    </button>
+        <button mat-flat-button
+                type="button"
+                color="tertiary"
+                class="view-instance-details-button"
+                (click)="viewInstanceDetails()"
+                [disabled]="!selectedInstanceType">
+          <i class="km-icon-mask km-icon-search"
+            matButtonIcon></i>
+          <span>View</span>
+        </button>
+    </div>
+
   </div>
 
   @if (!form.get(Controls.CPUs).disabled) {

@@ -33,6 +33,7 @@ import {ClusterSpecService} from '@core/services/cluster-spec';
 import {DatacenterService} from '@core/services/datacenter';
 import {NodeDataService} from '@core/services/node-data/service';
 import {FilteredComboboxComponent} from '@shared/components/combobox/component';
+import {MachineTypeOption} from '@shared/components/machine-type-selector/component';
 import {Datacenter, DatacenterOperatingSystemOptions} from '@shared/entity/datacenter';
 import {NodeCloudSpec, NodeSpec, OpenstackNodeSpec} from '@shared/entity/node';
 import {OpenstackAvailabilityZone, OpenstackFlavor, OpenstackServerGroup} from '@shared/entity/provider/openstack';
@@ -109,6 +110,7 @@ export class OpenstackBasicNodeDataComponent extends BaseFormValidator implement
 
   readonly Controls = Controls;
   flavors: OpenstackFlavor[] = [];
+  machineTypeOptions: MachineTypeOption[] = [];
   selectedFlavor = '';
   flavorsLabel = FlavorState.Empty;
   availabilityZones: OpenstackAvailabilityZone[] = [];
@@ -350,6 +352,18 @@ export class OpenstackBasicNodeDataComponent extends BaseFormValidator implement
 
   private _setDefaultFlavor(flavors: OpenstackFlavor[]): void {
     this.flavors = flavors;
+
+    // Convert OpenStack flavors to MachineTypeOption format
+    this.machineTypeOptions = this.flavors.map(flavor => ({
+      name: flavor.slug,
+      prettyName: flavor.slug,
+      vcpus: flavor.vcpus,
+      memory: flavor.memory / 1024, // Convert MB to GB
+      gpus: 0, // OpenStack doesn't expose GPU info in flavor data
+      diskGB: flavor.disk,
+      description: `${flavor.memory / 1024} GB RAM, ${flavor.vcpus} CPU${flavor.vcpus !== 1 ? 's' : ''}, ${flavor.disk} GB Disk`,
+    }));
+
     this.selectedFlavor = this._nodeDataService.nodeData.spec.cloud.openstack.flavor;
 
     if (!this.selectedFlavor && !_.isEmpty(this.flavors)) {

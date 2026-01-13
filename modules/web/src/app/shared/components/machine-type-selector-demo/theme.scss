@@ -1,0 +1,17 @@
+@use 'sass:map';
+
+@mixin theme-machine-type-selector-demo-component($colors) {
+  .data-preview,
+  .normalized-data {
+    .json-preview {
+      background-color: map.get($colors, background);
+      border: 1px solid map.get($colors, divider);
+      color: map.get($colors, text);
+    }
+  }
+
+  .provider-info {
+    border-top: 1px solid map.get($colors, divider);
+    padding-top: 12px;
+  }
+}

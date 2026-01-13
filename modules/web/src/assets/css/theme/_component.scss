@@ -35,6 +35,8 @@
 @import '../../../app/shared/components/cluster-summary/theme';
 @import '../../../app/shared/components/chip/theme';
 @import '../../../app/shared/components/tab-card/theme';
+@import '../../../app/shared/components/machine-type-selector/theme';
+@import '../../../app/shared/components/machine-type-selector-demo/theme';
 @import '../../../app/shared/components/openstack-credentials/theme';
 @import '../../../app/shared/components/terminal/terminal-toolbar/theme';
 @import '../../../app/shared/components/terminal/terminal-status-bar/theme';
@@ -80,6 +82,8 @@
   @include theme-chip-component($colors);
   @include theme-add-binding-component($colors);
   @include theme-tab-card-component($colors);
+  @include theme-machine-type-selector-component($colors);
+  @include theme-machine-type-selector-demo-component($colors);
   @include theme-preset-list-component($colors);
   @include theme-preset-edit-dialog-component($colors);
   @include theme-admin-sidenav-component($colors);

@@ -1,0 +1,166 @@
+{
+    "standard": [
+        {
+            "id": 22,
+            "name": "cpx11",
+            "description": "CPX 11",
+            "cores": 2,
+            "memory": 2,
+            "disk": 40
+        },
+        {
+            "id": 23,
+            "name": "cpx21",
+            "description": "CPX 21",
+            "cores": 3,
+            "memory": 4,
+            "disk": 80
+        },
+        {
+            "id": 24,
+            "name": "cpx31",
+            "description": "CPX 31",
+            "cores": 4,
+            "memory": 8,
+            "disk": 160
+        },
+        {
+            "id": 25,
+            "name": "cpx41",
+            "description": "CPX 41",
+            "cores": 8,
+            "memory": 16,
+            "disk": 240
+        },
+        {
+            "id": 26,
+            "name": "cpx51",
+            "description": "CPX 51",
+            "cores": 16,
+            "memory": 32,
+            "disk": 360
+        },
+        {
+            "id": 109,
+            "name": "cpx22",
+            "description": "CPX 22",
+            "cores": 2,
+            "memory": 4,
+            "disk": 80
+        },
+        {
+            "id": 110,
+            "name": "cpx32",
+            "description": "CPX 32",
+            "cores": 4,
+            "memory": 8,
+            "disk": 160
+        },
+        {
+            "id": 111,
+            "name": "cpx42",
+            "description": "CPX 42",
+            "cores": 8,
+            "memory": 16,
+            "disk": 320
+        },
+        {
+            "id": 112,
+            "name": "cpx52",
+            "description": "CPX 52",
+            "cores": 12,
+            "memory": 24,
+            "disk": 480
+        },
+        {
+            "id": 113,
+            "name": "cpx62",
+            "description": "CPX 62",
+            "cores": 16,
+            "memory": 32,
+            "disk": 640
+        },
+        {
+            "id": 114,
+            "name": "cx23",
+            "description": "CX 23",
+            "cores": 2,
+            "memory": 4,
+            "disk": 40
+        },
+        {
+            "id": 115,
+            "name": "cx33",
+            "description": "CX 33",
+            "cores": 4,
+            "memory": 8,
+            "disk": 80
+        },
+        {
+            "id": 116,
+            "name": "cx43",
+            "description": "CX 43",
+            "cores": 8,
+            "memory": 16,
+            "disk": 160
+        },
+        {
+            "id": 117,
+            "name": "cx53",
+            "description": "CX 53",
+            "cores": 16,
+            "memory": 32,
+            "disk": 320
+        }
+    ],
+    "dedicated": [
+        {
+            "id": 96,
+            "name": "ccx13",
+            "description": "CCX13 Dedicated CPU",
+            "cores": 2,
+            "memory": 8,
+            "disk": 80
+        },
+        {
+            "id": 97,
+            "name": "ccx23",
+            "description": "CCX23 Dedicated CPU",
+            "cores": 4,
+            "memory": 16,
+            "disk": 160
+        },
+        {
+            "id": 98,
+            "name": "ccx33",
+            "description": "CCX33 Dedicated CPU",
+            "cores": 8,
+            "memory": 32,
+            "disk": 240
+        },
+        {
+            "id": 99,
+            "name": "ccx43",
+            "description": "CCX43 Dedicated CPU",
+            "cores": 16,
+            "memory": 64,
+            "disk": 360
+        },
+        {
+            "id": 100,
+            "name": "ccx53",
+            "description": "CCX53 Dedicated CPU",
+            "cores": 32,
+            "memory": 128,
+            "disk": 600
+        },
+        {
+            "id": 101,
+            "name": "ccx63",
+            "description": "CCX63 Dedicated CPU",
+            "cores": 48,
+            "memory": 192,
+            "disk": 960
+        }
+    ]
+}

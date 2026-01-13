@@ -21,6 +21,7 @@ import {NodeDataService} from '@core/services/node-data/service';
 import {QuotaCalculationService} from '@dynamic/enterprise/quotas/services/quota-calculation';
 import {HetznerNodeSpec, NodeCloudSpec, NodeSpec} from '@shared/entity/node';
 import {HetznerTypes, Type} from '@shared/entity/provider/hetzner';
+import {MachineTypeOption} from '@shared/components/machine-type-selector/component';
 import {ResourceQuotaCalculationPayload} from '@shared/entity/quota';
 import {NodeData} from '@shared/model/NodeSpecChange';
 import {BaseFormValidator} from '@shared/validators/base-form.validator';
@@ -70,6 +71,7 @@ export class HetznerBasicNodeDataComponent extends BaseFormValidator implements 
 
   selectedType = '';
   typeLabel = TypeState.Empty;
+  machineTypeOptions: MachineTypeOption[] = [];
 
   get groups(): string[] {
     return Object.values(GroupTypes);
@@ -148,6 +150,19 @@ export class HetznerBasicNodeDataComponent extends BaseFormValidator implements 
 
   private _setDefaultType(types: HetznerTypes): void {
     this._types = types;
+
+    // Convert Hetzner types to MachineTypeOption format
+    const allTypes = [...(this._types.dedicated || []), ...(this._types.standard || [])];
+    this.machineTypeOptions = allTypes.map(type => ({
+      name: type.name,
+      prettyName: type.description || type.name,
+      vcpus: type.cores,
+      memory: type.memory,
+      gpus: 0, // Hetzner doesn't have GPU instances in standard/dedicated
+      diskGB: type.disk,
+      description: `${type.cores} vCPU, ${type.memory} GB RAM`,
+    }));
+
     this.selectedType = this._nodeDataService.nodeData.spec.cloud.hetzner
       ? this._nodeDataService.nodeData.spec.cloud.hetzner.type
       : '';

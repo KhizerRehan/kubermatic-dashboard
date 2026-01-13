@@ -1,0 +1,127 @@
+// Copyright 2026 The Kubermatic Kubernetes Platform contributors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+@use 'variables';
+
+.km-machine-type-selector {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &-label {
+    font-size: variables.$font-size-body;
+    font-weight: variables.$font-weight-medium;
+    margin-bottom: 8px;
+
+    .km-required {
+      margin-left: 2px;
+    }
+  }
+
+  &-panel {
+    border-radius: variables.$border-radius;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  &-search {
+    padding: 16px;
+    border-bottom: 1px solid;
+
+    &-field {
+      width: 100%;
+
+      .mat-mdc-form-field-infix {
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+
+      i {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  &-tabs {
+    .mat-mdc-tab-header {
+      padding: 0 16px;
+    }
+
+    .mat-mdc-tab-label-container {
+      .mat-mdc-tab {
+        font-size: variables.$font-size-body;
+        font-weight: 400;
+        min-width: 160px;
+        padding: 0 16px;
+      }
+    }
+
+    .mat-mdc-tab-body-wrapper {
+      flex: 1;
+    }
+  }
+
+  &-tab-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+  }
+
+  &-tab-count {
+    font-size: variables.$font-size-caption;
+    margin-left: 4px;
+  }
+
+  &-table-container {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  &-table {
+    // Override default km-table border-radius for tables inside tabs
+    border-radius: 0;
+  }
+
+  &-name {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &-architecture {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: variables.$border-radius;
+    font-size: variables.$font-size-small;
+    font-weight: variables.$font-weight-medium;
+    margin-top: 4px;
+  }
+
+
+  &-footer {
+    padding: 12px 16px;
+    border-top: 1px solid;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: variables.$font-size-caption;
+
+    i {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}

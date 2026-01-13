@@ -1,0 +1,109 @@
+<div class="machine-type-demo">
+  <div class="demo-header">
+    <h1 class="km-text">Machine Type Selector Demo</h1>
+    <p class="km-text-muted">
+      Test the provider-agnostic machine type selector with different cloud providers.
+      Each provider has unique API response formats that are normalized using adapters.
+    </p>
+  </div>
+
+  <!-- Provider Selector -->
+  <mat-card class="provider-selector-card">
+    <mat-card-header>
+      <mat-card-title>Select Cloud Provider</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-button-toggle-group
+        class="provider-toggle-group"
+        [value]="selectedProvider"
+        (change)="onProviderChange($event.value)">
+        <mat-button-toggle *ngFor="let provider of providers" [value]="provider">
+          <span class="provider-name">{{ provider.name }}</span>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <div *ngIf="selectedProvider" class="provider-info">
+        <p class="km-text-muted">{{ selectedProvider.description }}</p>
+        <details class="data-preview">
+          <summary class="km-text">View API Response Format</summary>
+          <pre class="json-preview">{{ getDataPreview() }}</pre>
+        </details>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Machine Type Selector Component -->
+  <mat-card *ngIf="selectedProvider" class="selector-card">
+    <mat-card-header>
+      <mat-card-title>Machine Type Selector - {{ selectedProvider.name }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <km-machine-type-selector
+        [rawOptions]="selectedProvider.data"
+        [provider]="selectedProvider.provider"
+        [label]="'Select ' + selectedProvider.name + ' Machine Type'"
+        [required]="true"
+        (selectionChange)="onSelectionChange($event)"
+        (machineTypeSelected)="onMachineTypeSelected($event)">
+      </km-machine-type-selector>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Selected Machine Type Details -->
+  <mat-card *ngIf="selectedMachineType" class="details-card">
+    <mat-card-header>
+      <mat-card-title>Selected Machine Type Details</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="details-grid">
+        <div class="detail-item">
+          <span class="detail-label km-text-muted">ID:</span>
+          <span class="detail-value km-text">{{ selectedMachineType.id }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label km-text-muted">Name:</span>
+          <span class="detail-value km-text">{{ selectedMachineType.name }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label km-text-muted">vCPUs:</span>
+          <span class="detail-value km-text">{{ selectedMachineType.vcpus }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label km-text-muted">Memory:</span>
+          <span class="detail-value km-text">{{ selectedMachineType.memoryGB }} GB</span>
+        </div>
+        <div class="detail-item" *ngIf="selectedMachineType.gpus && selectedMachineType.gpus > 0">
+          <span class="detail-label km-text-muted">GPUs:</span>
+          <span class="detail-value km-text">{{ selectedMachineType.gpus }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label km-text-muted">Category:</span>
+          <span class="detail-value km-text">{{ selectedMachineType.category }}</span>
+        </div>
+        <div class="detail-item" *ngIf="selectedMachineType.pricePerHour">
+          <span class="detail-label km-text-muted">Price:</span>
+          <span class="detail-value km-text">${{ selectedMachineType.pricePerHour }}/hour</span>
+        </div>
+        <div class="detail-item" *ngIf="selectedMachineType.architecture">
+          <span class="detail-label km-text-muted">Architecture:</span>
+          <span class="detail-value km-text">{{ selectedMachineType.architecture }}</span>
+        </div>
+        <div class="detail-item" *ngIf="selectedMachineType.diskGB">
+          <span class="detail-label km-text-muted">Disk:</span>
+          <span class="detail-value km-text">{{ selectedMachineType.diskGB }} GB</span>
+        </div>
+        <div
+          class="detail-item detail-full-width"
+          *ngIf="selectedMachineType.description">
+          <span class="detail-label km-text-muted">Description:</span>
+          <span class="detail-value km-text">{{ selectedMachineType.description }}</span>
+        </div>
+      </div>
+
+      <details class="normalized-data" *ngIf="selectedMachineType">
+        <summary class="km-text">View Normalized Data Object</summary>
+        <pre class="json-preview">{{ selectedMachineType | json }}</pre>
+      </details>
+    </mat-card-content>
+  </mat-card>
+</div>

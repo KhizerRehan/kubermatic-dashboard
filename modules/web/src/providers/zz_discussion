@@ -1,0 +1,48 @@
+
+
+Azure
+/Users/mac/Work/Github/kubermatic/dashboard/modules/api/pkg/handler/common/provider/azure.go
+
+e.g NV12
+
+
+Ali Baba
+/Users/mac/Work/Github/kubermatic/dashboard/modules/api/pkg/handler/common/provider/alibaba.go
+
+Digital Ocean:
+- https://pkg.go.dev/github.com/digitalocean/godo@v1.145.0#Size
+
+
+
+API Format:
+/Users/mac/Work/Github/kubermatic/worktrees/wt-feat/advance-machine-selector/modules/web/src/providers
+
+
+Initially Decision was taken we need to sep machine types 
+
+- Either by CPU supported
+- Either by GPU supported
+
+
+- Standard Cols
+ - name
+ - cpu
+ - gpu
+ - memory
+
+- Description
+
+- Extra Cols
+ - e.g AWS Price (In Dev we show per hour)
+     price is it per hour/month
+ - Digital Ocean Price (Dev we show per month)
+     "price_monthly": 42,
+     "price_hourly": 0.0625,
+
+But there are are provider where Pricing is not being returned at all
+
+
+Similarly, we decided to have `description`
+
+- hetzner
+- gcp

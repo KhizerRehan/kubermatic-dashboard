@@ -39,6 +39,7 @@ import {BaseFormValidator} from '@shared/validators/base-form.validator';
 import {ResourceQuotaCalculationPayload} from '@shared/entity/quota';
 import {QuotaCalculationService} from '@dynamic/enterprise/quotas/services/quota-calculation';
 import {ComboboxControls} from '@shared/components/combobox/component';
+import {MachineTypeOption} from '@shared/components/machine-type-selector/component';
 
 enum Controls {
   Size = 'size',
@@ -87,6 +88,7 @@ export class AzureBasicNodeDataComponent extends BaseFormValidator implements On
 
   allSizes: AzureSizes[] = [];
   currentSizes: AzureSizes[] = [];
+  machineTypeOptions: MachineTypeOption[] = [];
   zones: Array<{name: string}> = [];
   sizeLabel = SizeState.Empty;
   zoneLabel = ZoneState.Empty;
@@ -137,6 +139,16 @@ export class AzureBasicNodeDataComponent extends BaseFormValidator implements On
         } else {
           this.currentSizes = this.allSizes;
         }
+
+        // Update machine type options for the new selector
+        this.machineTypeOptions = this.currentSizes.map(size => ({
+          name: size.name,
+          prettyName: size.name,
+          vcpus: size.numberOfCores,
+          memory: size.memoryInMB / 1024,
+          gpus: size.numberOfGPUs || 0,
+        }));
+
         this.selectedSize = this.currentSizes.find(
           sizes => sizes.name === this._nodeDataService.nodeData.spec.cloud.azure.size
         )?.name;
@@ -289,6 +301,16 @@ export class AzureBasicNodeDataComponent extends BaseFormValidator implements On
     } else {
       this.currentSizes = sizes;
     }
+
+    // Convert Azure sizes to MachineTypeOption format for the new selector
+    this.machineTypeOptions = this.currentSizes.map(size => ({
+      name: size.name,
+      prettyName: size.name,
+      vcpus: size.numberOfCores,
+      memory: size.memoryInMB / 1024, // Convert MB to GB
+      gpus: size.numberOfGPUs || 0,
+    }));
+
     this.selectedSize = this._nodeDataService.nodeData.spec.cloud.azure.size;
 
     if (!this.selectedSize && this.currentSizes.length > 0) {
