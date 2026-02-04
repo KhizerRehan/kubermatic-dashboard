@@ -42,6 +42,7 @@ import {AzureBasicNodeDataComponent} from './basic/provider/azure/component';
 import {AzureMachineTypeSelectorComponent} from './basic/provider/azure/machine-type-selector/component';
 import {BasicNodeDataComponent} from './basic/provider/component';
 import {DigitalOceanBasicNodeDataComponent} from './basic/provider/digitalocean/component';
+import {DigitalOceanMachineTypeSelectorComponent} from './basic/provider/digitalocean/machine-type-selector/component';
 import {GCPBasicNodeDataComponent} from './basic/provider/gcp/component';
 import {HetznerBasicNodeDataComponent} from './basic/provider/hetzner/component';
 import {HetznerMachineTypeSelectorComponent} from './basic/provider/hetzner/machine-type-selector/component';
@@ -71,6 +72,7 @@ const components = [
   GCPMachineTypeSelectorComponent,
   AWSExtendedNodeDataComponent,
   DigitalOceanBasicNodeDataComponent,
+  DigitalOceanMachineTypeSelectorComponent,
   DigitalOceanExtendedNodeDataComponent,
   VSphereBasicNodeDataComponent,
   KubeVirtBasicNodeDataComponent,
