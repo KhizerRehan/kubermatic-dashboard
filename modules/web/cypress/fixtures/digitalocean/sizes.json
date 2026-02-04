@@ -19,7 +19,24 @@
         "sfo3",
         "sgp1",
         "tor1"
-      ]
+      ],
+      "gpus": 0
+    },
+    {
+      "slug": "g-8vcpu-30gb-v100",
+      "available": true,
+      "transfer": 4,
+      "price_monthly": 2000,
+      "price_hourly": 2.98,
+      "memory": 30720,
+      "vcpus": 8,
+      "disk": 50,
+      "regions": [
+        "nyc1"
+      ],
+      "gpus": 1,
+      "gpu_model": "V100",
+      "gpu_vram": 16
     }
   ],
   "optimized": [
@@ -42,7 +59,8 @@
         "sfo3",
         "sgp1",
         "tor1"
-      ]
+      ],
+      "gpus": 0
     },
     {
       "slug": "c2-16vcpu-32gb",
@@ -63,7 +81,24 @@
         "sfo3",
         "sgp1",
         "tor1"
-      ]
+      ],
+      "gpus": 0
+    },
+    {
+      "slug": "g-20vcpu-250gb-h100",
+      "available": true,
+      "transfer": 4,
+      "price_monthly": 5000,
+      "price_hourly": 7.44,
+      "memory": 256000,
+      "vcpus": 20,
+      "disk": 50,
+      "regions": [
+        "nyc1"
+      ],
+      "gpus": 1,
+      "gpu_model": "H100",
+      "gpu_vram": 80
     }
   ]
 }

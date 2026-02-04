@@ -358,6 +358,9 @@ type DigitaloceanSize struct {
 	VCPUs        int      `json:"vcpus"`
 	Disk         int      `json:"disk"`
 	Regions      []string `json:"regions"`
+	GPUs         int      `json:"gpus"`
+	GPUModel     string   `json:"gpu_model,omitempty"`
+	GPUVRAM      int      `json:"gpu_vram,omitempty"`
 }
 
 // AzureSubnetsList is the object representing the subnets for vms in azure cloud provider

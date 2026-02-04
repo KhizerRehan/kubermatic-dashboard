@@ -61,11 +61,12 @@ export class DigitalOceanBasicNodeDataComponent extends BaseFormValidator implem
   readonly Controls = Controls;
   isEnterpriseEdition = DynamicModule.isEnterpriseEdition;
   private _quotaCalculationService: QuotaCalculationService;
-  private _sizes: DigitaloceanSizes = DigitaloceanSizes.newDigitalOceanSizes();
   private _initialQuotaCalculationPayload: ResourceQuotaCalculationPayload;
 
+  sizes: DigitaloceanSizes = DigitaloceanSizes.newDigitalOceanSizes();
   selectedSize = '';
   sizeLabel = SizeState.Empty;
+  isLoading = false;
 
   get sizeTypes(): string[] {
     return Object.values(SizeTypes);
@@ -113,7 +114,7 @@ export class DigitalOceanBasicNodeDataComponent extends BaseFormValidator implem
 
   getTypes(group: SizeTypes): Optimized[] | Standard[] {
     const key = Object.keys(SizeTypes).find(key => SizeTypes[key] === group);
-    return this._sizes[key.toLowerCase()];
+    return this.sizes[key.toLowerCase()];
   }
 
   onTypeChange(size: string): void {
@@ -122,7 +123,7 @@ export class DigitalOceanBasicNodeDataComponent extends BaseFormValidator implem
   }
 
   sizeDisplayName(slug: string): string {
-    const size = [...this._sizes.optimized, ...this._sizes.standard].find(size => size.slug === slug);
+    const size = [...this.sizes.optimized, ...this.sizes.standard].find(size => size.slug === slug);
     const memoryBase = 1024;
     return size
       ? `${size.slug} (${size.memory / memoryBase} GB RAM, ${size.vcpus} CPU${size.vcpus !== 1 ? 's' : ''}, $${
@@ -133,23 +134,25 @@ export class DigitalOceanBasicNodeDataComponent extends BaseFormValidator implem
 
   private _onSizeLoading(): void {
     this._clearSize();
+    this.isLoading = true;
     this.sizeLabel = SizeState.Loading;
     this._cdr.detectChanges();
   }
 
   private _clearSize(): void {
     this.selectedSize = '';
-    this._sizes = DigitaloceanSizes.newDigitalOceanSizes();
+    this.sizes = DigitaloceanSizes.newDigitalOceanSizes();
     this.sizeLabel = SizeState.Empty;
     this._cdr.detectChanges();
   }
 
   private _setDefaultSize(sizes: DigitaloceanSizes): void {
-    this._sizes = sizes;
+    this.sizes = sizes;
+    this.isLoading = false;
     this.selectedSize = this._nodeDataService.nodeData.spec.cloud.digitalocean.size;
 
-    if (!this.selectedSize && this._sizes && this._sizes.standard && this._sizes.standard.length > 0) {
-      this.selectedSize = this._sizes.standard[0].slug;
+    if (!this.selectedSize && this.sizes && this.sizes.standard && this.sizes.standard.length > 0) {
+      this.selectedSize = this.sizes.standard[0].slug;
     }
 
     this.sizeLabel = this.selectedSize ? SizeState.Ready : SizeState.Empty;
@@ -158,8 +161,8 @@ export class DigitalOceanBasicNodeDataComponent extends BaseFormValidator implem
 
   private _getQuotaCalculationPayload(): ResourceQuotaCalculationPayload {
     const slug = this._nodeDataService.nodeData.spec.cloud.digitalocean.size;
-    const optimizedSize = this._sizes.optimized.find(size => size.slug === slug);
-    const standardSize = this._sizes.standard.find(size => size.slug === slug);
+    const optimizedSize = this.sizes.optimized.find(size => size.slug === slug);
+    const standardSize = this.sizes.standard.find(size => size.slug === slug);
 
     if (!optimizedSize && !standardSize) {
       return null;

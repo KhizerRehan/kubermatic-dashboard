@@ -34,6 +34,9 @@ export class Standard {
   vcpus: number;
   disk: number;
   regions: string[];
+  gpus?: number;
+  gpu_model?: string;
+  gpu_vram?: number;
 }
 
 export class Optimized {
@@ -46,4 +49,7 @@ export class Optimized {
   vcpus: number;
   disk: number;
   regions: string[];
+  gpus?: number;
+  gpu_model?: string;
+  gpu_vram?: number;
 }

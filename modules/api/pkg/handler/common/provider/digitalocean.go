@@ -125,6 +125,9 @@ func DigitaloceanSize(ctx context.Context, quota kubermaticv1.MachineFlavorFilte
 			VCPUs:        sizes[k].Vcpus,
 			Disk:         sizes[k].Disk,
 			Regions:      sizes[k].Regions,
+			GPUs:         extractGPUCount(sizes[k].GPUInfo),
+			GPUModel:     extractGPUModel(sizes[k].GPUInfo),
+			GPUVRAM:      extractGPUVRAM(sizes[k].GPUInfo),
 		}
 		switch {
 		case reStandard.MatchString(sizes[k].Slug):
@@ -161,6 +164,9 @@ func filterDigitalOceanByQuota(instances apiv1.DigitaloceanSizeList, machineFilt
 		if !handlercommon.FilterMemory(r.Memory/1024, machineFilter.MinRAM, machineFilter.MaxRAM) {
 			keep = false
 		}
+		if !handlercommon.FilterGPU(r.GPUs, machineFilter.EnableGPU) {
+			keep = false
+		}
 
 		if keep {
 			filteredRecords.Optimized = append(filteredRecords.Optimized, r)
@@ -175,6 +181,9 @@ func filterDigitalOceanByQuota(instances apiv1.DigitaloceanSizeList, machineFilt
 		if !handlercommon.FilterMemory(r.Memory/1024, machineFilter.MinRAM, machineFilter.MaxRAM) {
 			keep = false
 		}
+		if !handlercommon.FilterGPU(r.GPUs, machineFilter.EnableGPU) {
+			keep = false
+		}
 
 		if keep {
 			filteredRecords.Standard = append(filteredRecords.Standard, r)
@@ -182,4 +191,28 @@ func filterDigitalOceanByQuota(instances apiv1.DigitaloceanSizeList, machineFilt
 	}
 
 	return filteredRecords
+}
+
+// extractGPUCount extracts the GPU count from godo.GPUInfo.
+func extractGPUCount(info *godo.GPUInfo) int {
+	if info != nil {
+		return info.Count
+	}
+	return 0
+}
+
+// extractGPUModel extracts the GPU model name from godo.GPUInfo.
+func extractGPUModel(info *godo.GPUInfo) string {
+	if info != nil {
+		return info.Model
+	}
+	return ""
+}
+
+// extractGPUVRAM extracts the GPU VRAM amount from godo.GPUInfo.
+func extractGPUVRAM(info *godo.GPUInfo) int {
+	if info != nil && info.VRAM != nil {
+		return info.VRAM.Amount
+	}
+	return 0
 }
