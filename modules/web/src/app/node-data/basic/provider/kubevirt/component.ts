@@ -442,6 +442,7 @@ export class KubeVirtBasicNodeDataComponent
   }
 
   onOSImageChange(osImageLink: string): void {
+    this._setOSImageDropdownOptions(osImageLink);
     this._nodeDataService.nodeData.spec.cloud.kubevirt.primaryDiskOSImage = osImageLink;
     this._nodeDataService.nodeDataChanges.next(this._nodeDataService.nodeData);
   }
@@ -624,10 +625,11 @@ export class KubeVirtBasicNodeDataComponent
     this._cdr.detectChanges();
   }
 
-  private _setOSImageDropdownOptions(): void {
+  private _setOSImageDropdownOptions(osImageLink?: string): void {
     if (!this.selectedOS) {
       this.osImageDropdownOptions = [];
     }
+    if (!this._osImages) return;
     const osVersions = this._osImages?.standard?.operatingSystems?.[this.selectedOS];
     this.osImageDropdownOptions = osVersions
       ? Object.keys(osVersions).map(version => ({
@@ -635,7 +637,14 @@ export class KubeVirtBasicNodeDataComponent
           link: osVersions[version],
         }))
       : [];
-    const selectedOSImage = this.form.get(Controls.PrimaryDiskOSImage).value?.[ComboboxControls?.Select];
+    // osImageLink will be set when onOSImageChange is called, since it fires before the form updates the new value.
+    const selectedOSImage = osImageLink || this.form.get(Controls.PrimaryDiskOSImage).value?.[ComboboxControls?.Select];
+    if (selectedOSImage) {
+      this._nodeDataService.kubeVirt.osImageVersion =
+        this.osImageDropdownOptions?.find(image => image.link === selectedOSImage)?.version || '';
+    } else {
+      this._nodeDataService.kubeVirt.osImageVersion = '';
+    }
     if (selectedOSImage && !this.osImageDropdownOptions.find(osImage => osImage.link === selectedOSImage)) {
       this._osImageCombobox.reset();
     }
@@ -751,7 +760,7 @@ export class KubeVirtBasicNodeDataComponent
     let payload: ResourceQuotaCalculationPayload = {
       replicas: this._nodeDataService.nodeData.count,
       kubevirtNodeSize: {
-        [Controls.PrimaryDiskSize]: `${this.form.get(Controls.PrimaryDiskSize).value}G`,
+        [Controls.PrimaryDiskSize]: `${this.form.get(Controls.PrimaryDiskSize).value}`,
       } as KubeVirtNodeSize,
     };
 
@@ -765,7 +774,7 @@ export class KubeVirtBasicNodeDataComponent
     payload.kubevirtNodeSize = {
       ...payload.kubevirtNodeSize,
       [Controls.CPUs]: `${cpus}`,
-      [Controls.Memory]: instanceTypeId ? memory : `${memory}M`,
+      [Controls.Memory]: instanceTypeId ? memory.slice(0, -1) : `${memory}`,
     };
 
     if (

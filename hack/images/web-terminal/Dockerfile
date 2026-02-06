@@ -12,24 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM --platform=$BUILDPLATFORM docker.io/alpine:3.19
+FROM --platform=$BUILDPLATFORM docker.io/alpine:3.23
 
 ARG BUILDPLATFORM
 ARG TARGETARCH
 
 LABEL maintainer="support@kubermatic.com"
 
-# Source: https://dl.k8s.io/release/stable-1.32.txt
-ENV KUBECTL_VERSION=v1.32.7
+# Source: https://dl.k8s.io/release/stable-1.34.txt
+ENV KUBECTL_VERSION=v1.34.3
 
 # Source: https://github.com/helm/helm/releases
-ENV HELM_VERSION=v3.17.4
+ENV HELM_VERSION=v3.18.5
 
 # Source: https://github.com/k8sgpt-ai/k8sgpt/releases
-ENV K8SGPT_VERSION=v0.4.22
+ENV K8SGPT_VERSION=v0.4.27
 
 # Source: https://github.com/derailed/k9s/releases
-ENV K9S_VERSION=v0.50.9
+ENV K9S_VERSION=v0.50.18
 
 # Source: https://github.com/kubernetes-sigs/krew/releases
 ENV KREW_VERSION=v0.4.5
@@ -100,12 +100,20 @@ USER ${USER}
 
 RUN mkdir ${USER_HOME}/bin/
 
-RUN wget https://rawgit.com/kubermatic/fubectl/master/fubectl.source -O ${USER_HOME}/bin/fubectl.source
+RUN wget https://raw.githubusercontent.com/kubermatic/fubectl/refs/heads/main/fubectl.source -O ${USER_HOME}/bin/fubectl.source
 
 USER 0
-RUN curl -LO https://github.com/k8sgpt-ai/k8sgpt/releases/download/${K8SGPT_VERSION}/k8sgpt_${TARGETARCH}.apk
 
-RUN apk add --allow-untrusted k8sgpt_${TARGETARCH}.apk
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+        APK_ARCH="x86_64"; \
+    elif [ "$TARGETARCH" = "arm64" ]; then \
+        APK_ARCH="arm64"; \
+    fi && \
+	curl -LO https://github.com/k8sgpt-ai/k8sgpt/releases/download/${K8SGPT_VERSION}/k8sgpt_Linux_${APK_ARCH}.tar.gz && \
+    tar -xf k8sgpt_Linux_${APK_ARCH}.tar.gz && \
+    mv k8sgpt /usr/bin/k8sgpt && \
+    chmod +x /usr/bin/k8sgpt && \
+    rm k8sgpt_Linux_${APK_ARCH}.tar.gz
 
 USER ${USER}
 COPY .bashrc /tmp/

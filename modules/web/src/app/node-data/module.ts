@@ -36,6 +36,8 @@ import {NodeDataService} from '@core/services/node-data/service';
 import {SharedModule} from '@shared/module';
 import {AlibabaBasicNodeDataComponent} from './basic/provider/alibaba/component';
 import {AWSBasicNodeDataComponent} from './basic/provider/aws/component';
+import {AWSMachineTypeSelectorComponent} from './basic/provider/aws/machine-type-selector/component';
+import {GCPMachineTypeSelectorComponent} from './basic/provider/gcp/machine-type-selector/component';
 import {AzureBasicNodeDataComponent} from './basic/provider/azure/component';
 import {BasicNodeDataComponent} from './basic/provider/component';
 import {DigitalOceanBasicNodeDataComponent} from './basic/provider/digitalocean/component';
@@ -61,6 +63,8 @@ const components = [
   AlibabaBasicNodeDataComponent,
   AlibabaExtendedNodeDataComponent,
   AWSBasicNodeDataComponent,
+  AWSMachineTypeSelectorComponent,
+  GCPMachineTypeSelectorComponent,
   AWSExtendedNodeDataComponent,
   DigitalOceanBasicNodeDataComponent,
   DigitalOceanExtendedNodeDataComponent,
