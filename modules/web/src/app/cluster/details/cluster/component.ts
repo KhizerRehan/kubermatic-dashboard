@@ -82,7 +82,7 @@ import {ShareKubeconfigComponent, ShareKubeconfigDialogMode} from './share-kubec
 import {FeatureGateService} from '@app/core/services/feature-gate';
 import {NodeProvider} from '@app/shared/model/NodeProviderConstants';
 import {Preset} from '@shared/entity/preset';
-import {ANEXIA_DEPRECATED_MESSAGE} from '@app/shared/constants/common';
+import {ANEXIA_DEPRECATED_MESSAGE, KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE} from '@app/shared/constants/common';
 
 @Component({
   selector: 'km-cluster-details',
@@ -103,6 +103,7 @@ export class ClusterDetailsComponent implements OnInit, OnDestroy {
   readonly clusterDeletionTooltip = 'Cluster is being deleted';
   readonly isEnterpriseEdition = DynamicModule.isEnterpriseEdition;
   readonly ANEXIA_DEPRECATED_MESSAGE = ANEXIA_DEPRECATED_MESSAGE;
+  readonly KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE = KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE;
   adminSettings: AdminSettings;
   presetStatus: HealthStatus;
   encryptionStatus: HealthStatus;
@@ -136,6 +137,7 @@ export class ClusterDetailsComponent implements OnInit, OnDestroy {
   isUserSshKeyEnabled = false;
   nodeProvider = NodeProvider;
   shareKubeconfigDialogMode = ShareKubeconfigDialogMode;
+  eventRateLimitTypes: string[];
 
   get admissionPlugins(): string[] {
     return Object.keys(AdmissionPlugin);
@@ -195,6 +197,7 @@ export class ClusterDetailsComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(cluster => {
           this.cluster = cluster;
+          this.eventRateLimitTypes = Object.keys(cluster.spec.eventRateLimitConfig || {});
           this.isDualStackNetworkSelected = Cluster.isDualStackNetworkSelected(cluster);
           if (cluster?.status?.encryption?.phase) {
             this.encryptionStatus = getEncryptionAtRestHealthStatus(cluster.status.encryption.phase);
@@ -477,8 +480,9 @@ export class ClusterDetailsComponent implements OnInit, OnDestroy {
   }
 
   editCluster(): void {
+    const maxWidth = '700px';
     this._dialogModeService.isEditDialog = true;
-    const modal = this._matDialog.open(EditClusterComponent);
+    const modal = this._matDialog.open(EditClusterComponent, {maxWidth});
     modal.componentInstance.cluster = this.cluster;
     modal.componentInstance.projectID = this.projectID;
     modal

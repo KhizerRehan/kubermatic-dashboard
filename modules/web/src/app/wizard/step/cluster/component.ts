@@ -57,6 +57,8 @@ import {
   MasterVersion,
   NetworkRanges,
   ProxyMode,
+  EventRateLimitConfig,
+  EventRateLimitConfigItem,
 } from '@shared/entity/cluster';
 import {ResourceType} from '@shared/entity/common';
 import {Datacenter, SeedSettings} from '@shared/entity/datacenter';
@@ -71,12 +73,13 @@ import {
   generateEncryptionKey,
 } from '@shared/utils/cluster';
 import {getEditionVersion} from '@shared/utils/common';
+import {KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE} from '@app/shared/constants/common';
 import {AsyncValidators} from '@shared/validators/async.validators';
 import {KmValidators} from '@shared/validators/validators';
 import * as y from 'js-yaml';
 import _ from 'lodash';
 import {combineLatest, merge, Subscription} from 'rxjs';
-import {filter, finalize, map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
+import {debounceTime, filter, finalize, map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
 import {coerce, compare, gte} from 'semver';
 import {WizardMode} from '../../types/wizard-mode';
 import {StepBase} from '../base';
@@ -200,6 +203,7 @@ export class ClusterStepComponent extends StepBase implements OnInit, ControlVal
   readonly AuditPolicyPreset = AuditPolicyPreset;
   readonly IPFamily = IPFamily;
   readonly NodeProvider = NodeProvider;
+  readonly KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE = KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE;
   private _datacenterSpec: Datacenter;
   private _seedSettings: SeedSettings;
   private _settings: AdminSettings;
@@ -209,6 +213,7 @@ export class ClusterStepComponent extends StepBase implements OnInit, ControlVal
   private readonly _canalDualStackMinimumSupportedVersion = '3.22.0';
   private readonly _cniInitialValuesMinimumSupportedVersion = '1.13.0';
   private readonly _cniCiliumApplicationName = 'cilium';
+  private readonly _debounceTime = 500;
 
   get isKubernetesDashboardEnabled(): boolean {
     return this._settings.enableDashboard;
@@ -397,6 +402,24 @@ export class ClusterStepComponent extends StepBase implements OnInit, ControlVal
         ) {
           this.control(Controls.PodNodeSelectorAdmissionPluginConfig).reset();
           this.onPodNodeSelectorAdmissionPluginConfigChange({});
+        }
+      });
+
+    this.control(Controls.EventRateLimitConfig)
+      .valueChanges.pipe(debounceTime(this._debounceTime), takeUntil(this._unsubscribe))
+      .subscribe((eventRate: {eventRateLimitConfig: EventRateLimitConfigItem[]}) => {
+        const eventRateLimitConfig: EventRateLimitConfig = {};
+        if (eventRate.eventRateLimitConfig?.length) {
+          eventRate.eventRateLimitConfig.forEach(item => {
+            if (item.limitType) {
+              eventRateLimitConfig[item.limitType] = {
+                qps: item.qps,
+                burst: item.burst,
+                cacheSize: item.cacheSize,
+              };
+            }
+          });
+          this._clusterSpecService.eventRateLimitConfig = eventRateLimitConfig;
         }
       });
 
