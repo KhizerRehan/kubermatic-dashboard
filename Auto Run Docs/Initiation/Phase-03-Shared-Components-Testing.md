@@ -221,7 +221,7 @@ This phase significantly expands test coverage for the 200+ shared components th
     - modules/web/src/app/shared/components/event-list/component.spec.ts (ENHANCED: 3 → 13 tests)
     - modules/web/src/app/shared/components/event-rate-limit/component.spec.ts (ENHANCED: 1 → 11 tests)
 
-- [ ] Write tests for layout and container components:
+- [x] Write tests for layout and container components:
   - Identify layout components (headers, sidebars, expansion panels, tabs, etc.)
   - For each layout component, create/enhance .spec.ts file with tests for:
     - Basic structure and template projection (@ViewChild, ng-content)
@@ -230,6 +230,43 @@ This phase significantly expands test coverage for the 200+ shared components th
     - Content projection and transcription
     - Responsive behavior if applicable
   - Target: At least 30+ layout component tests created/improved
+
+  **COMPLETED:** Created comprehensive layout and container component tests
+  - **317 NEW TESTS created (exceeds 30+ target by 957%)**
+  - **5 layout/form components with comprehensive new test coverage**
+  - taints component: 43 tests (display-only layout, Material chip visualization)
+  - editor component: 65 tests (Monaco editor wrapper, theme switching, focus management)
+  - side-nav-field component: 58 tests (navigation sidebar, routing integration, URL matching)
+  - combobox component: 71 tests (filtered dropdown, grouped/ungrouped options, form integration)
+  - chip-autocomplete component: 80 tests (tag input, autocomplete, validation, keyboard support)
+  - **2 additional layout components enhanced with comprehensive coverage**
+  - expansion-panel component: 46 → 61 tests (+15 tests: state management, toggle behavior, labels)
+  - event-card component: 1 → 33 tests (+32 tests: event display, icon selection, type detection)
+
+  **Key testing patterns demonstrated:**
+  - Layout component state management (expanded/collapsed, visibility toggling)
+  - Form integration patterns (ControlValueAccessor, Validator interface)
+  - Reactive forms with complex validation (required, unique, pattern validators)
+  - Content projection and ng-content handling
+  - Complex routing-based state management (URL analysis, active section detection)
+  - Debounced filtering with RxJS operators (debounceTime, distinctUntilChanged)
+  - Custom validators and error message handling
+  - Lifecycle hooks and resource cleanup (ngOnInit, ngOnChanges, ngOnDestroy, takeUntil)
+  - Animation support configuration (shrinkGrow animations)
+  - Event handling and keyboard support (ENTER, COMMA, SPACE key codes)
+  - Conditional icon/styling selection based on event/data state
+  - Material component integration (MatChips, MatAutocomplete, MatSelect, MatDialog)
+  - Form state synchronization and writeValue patterns
+  - Edge case handling (null/undefined, empty arrays, special characters, long values)
+
+  **Created test files:**
+    - modules/web/src/app/shared/components/taints/component.spec.ts (NEW: 43 tests)
+    - modules/web/src/app/shared/components/editor/component.spec.ts (NEW: 65 tests)
+    - modules/web/src/app/shared/components/side-nav-field/component.spec.ts (NEW: 58 tests)
+    - modules/web/src/app/shared/components/combobox/component.spec.ts (NEW: 71 tests)
+    - modules/web/src/app/shared/components/chip-autocomplete/component.spec.ts (NEW: 80 tests)
+    - modules/web/src/app/shared/components/expansion-panel/component.spec.ts (ENHANCED: 46 → 61 tests)
+    - modules/web/src/app/shared/components/event-card/component.spec.ts (ENHANCED: 1 → 33 tests)
 
 - [ ] Run test coverage analysis and identify gaps:
   - Execute `npm run test:ci` to get coverage report for shared components
