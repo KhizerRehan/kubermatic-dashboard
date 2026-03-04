@@ -37,7 +37,7 @@ This phase extends the existing mock infrastructure with additional utilities an
     - Mocks use fake data from existing test/data modules (opa.ts, mla.ts, rbac.ts)
     - Test files verify Observable emissions, method return types, and component integration patterns
 
-- [ ] Create advanced mocking patterns and utilities:
+- [x] Create advanced mocking patterns and utilities:
   - Create `src/test/utils/mock-observable-builder.ts` - Helper for creating mock observables
     - Factory function to create observables that emit data, then complete
     - Factory function to create observables that emit errors
@@ -55,6 +55,14 @@ This phase extends the existing mock infrastructure with additional utilities an
     - Factory to create mock HTTP responses with different status codes
     - Helper to verify mock HTTP calls were made with expected params
     - Support for both Observable and Promise-based HTTP calls
+  - **COMPLETED:** Created 4 advanced mocking utility files with comprehensive JSDoc documentation:
+    - `mock-observable-builder.ts` (MockObservableBuilder class) - 6 factory methods for creating observables with different emission patterns (success, error, timeout, subject, array emissions)
+    - `form-builder-helper.ts` (FormBuilderHelper class) - 13 helper methods for form testing (create, set/get values, mark touched/dirty, reset, enable/disable, verify state, get errors)
+    - `change-detection-helper.ts` (ChangeDetectionHelper class) - 11 helper methods for OnPush strategy testing (detect changes, mark for check, verify OnPush implementation, test reactivity, get compiled HTML/text)
+    - `http-mock-builder.ts` (HttpMockBuilder class) - 8 request expectation methods plus verification and response creation utilities for testing HTTP calls
+    - Each file includes complete JSDoc with @example usage patterns for all public methods
+    - All utilities follow project conventions: Apache 2.0 license header, comprehensive documentation, practical testing patterns
+    - All files created in `/modules/web/src/test/utils/` directory
 
 - [ ] Enhance existing mocks with advanced scenarios:
   - Review the 5 most-used mocks (AppConfigMock, AuthMock, ProjectMock, ClusterMock, MatDialogMock)
