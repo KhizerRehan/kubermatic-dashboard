@@ -117,7 +117,7 @@ This phase extends the existing mock infrastructure with additional utilities an
     - fixture-helper.spec.ts: 48 test cases covering DOM operations, events, state verification, and integration scenarios
     - All utilities follow established project patterns: Apache 2.0 license header, comprehensive JSDoc with @example sections, static class pattern for zero instantiation
 
-- [ ] Create documentation for new mock utilities and patterns:
+- [x] Create documentation for new mock utilities and patterns:
   - Update `modules/web/docs/testing/MOCK-SERVICES-REFERENCE.md` with new mocks
   - Create `modules/web/docs/testing/ADVANCED-TESTING-PATTERNS.md` covering:
     - Observable mock builder patterns
@@ -127,6 +127,7 @@ This phase extends the existing mock infrastructure with additional utilities an
     - Testing async/await and promises
     - Testing error scenarios
     - Examples for each pattern with before/after comparisons
+  - **COMPLETED:** Updated MOCK-SERVICES-REFERENCE.md with new critical priority mocks (OPA, MLA, RBAC, History), added table categories, and created comprehensive ADVANCED-TESTING-PATTERNS.md with 9 major sections covering all testing utilities with before/after examples, API documentation, and practical patterns
 
 - [ ] Write unit tests for the new testing utilities:
   - Create `src/test/utils/*.spec.ts` files for each new utility created above

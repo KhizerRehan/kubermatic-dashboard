@@ -13,7 +13,12 @@ A comprehensive guide to the mock services available in the Kubermatic Dashboard
    - [ProjectMock](#projectmock)
    - [ClusterMock](#clustermock)
    - [MatDialogMock & MatDialogRefMock](#matdialogmock--matdialogrefmock)
-3. [Complete Mock Inventory](#complete-mock-inventory)
+3. [Critical Priority Mocks](#critical-priority-mocks)
+   - [OPAMock](#opamock)
+   - [MLAMock](#llamock)
+   - [RBACMock](#rbacmock)
+   - [HistoryMock](#historymock)
+4. [Complete Mock Inventory](#complete-mock-inventory)
 4. [TestBed Configuration Patterns](#testbed-configuration-patterns)
 5. [Common Mock Patterns](#common-mock-patterns)
 6. [Creating New Mocks](#creating-new-mocks)
@@ -449,23 +454,316 @@ describe('UserManagementComponent', () => {
 
 ---
 
+## Critical Priority Mocks
+
+### OPAMock
+
+**Location:** `src/test/services/opa-mock.ts`
+
+**Purpose:** Mocks OPA (Open Policy Agent) service for constraint templates and policy management.
+
+**Key Methods:**
+
+```typescript
+// Constraint Template Operations
+constraintTemplates(datacenter: string): Observable<ConstraintTemplate[]>
+// Lists all OPA constraint templates
+
+constraintTemplate(datacenter: string, name: string): Observable<ConstraintTemplate>
+// Fetches a specific constraint template
+
+createConstraintTemplate(datacenter: string, ct: ConstraintTemplate): Observable<ConstraintTemplate>
+// Creates a new constraint template
+
+patchConstraintTemplate(datacenter: string, name: string, patch: ConstraintTemplatePatch): Observable<ConstraintTemplate>
+// Updates an existing constraint template
+
+deleteConstraintTemplate(datacenter: string, name: string): Observable<void>
+// Deletes a constraint template
+
+// Constraint Operations (cluster-specific)
+constraints(projectID: string, clusterId: string, datacenter: string): Observable<Constraint[]>
+// Lists all OPA constraints in a cluster
+
+createConstraint(projectID: string, clusterId: string, datacenter: string, constraint: Constraint): Observable<Constraint>
+// Creates a new OPA constraint in cluster
+
+patchConstraint(projectID: string, clusterId: string, datacenter: string, name: string, patch: ConstraintPatch): Observable<Constraint>
+// Updates a constraint in cluster
+
+deleteConstraint(projectID: string, clusterId: string, datacenter: string, name: string): Observable<void>
+// Deletes a constraint from cluster
+```
+
+**Usage Example:**
+
+```typescript
+import {OPAMockService} from '@test/services';
+
+describe('OPAPolicyComponent', () => {
+  let opaMock: OPAMockService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [OPAPolicyComponent],
+      providers: [
+        {provide: OPAService, useClass: OPAMockService}
+      ]
+    });
+
+    opaMock = TestBed.inject(OPAService) as OPAMockService;
+  });
+
+  it('should display constraint templates', fakeAsync(() => {
+    opaMock.constraintTemplates('dc-1').subscribe(templates => {
+      expect(templates).toBeTruthy();
+      expect(templates.length).toBeGreaterThan(0);
+    });
+    tick();
+  }));
+
+  it('should create new constraint', fakeAsync(() => {
+    const newConstraint = fakeConstraint();
+    opaMock.createConstraint('proj-1', 'cluster-1', 'dc-1', newConstraint)
+      .subscribe(created => {
+        expect(created.metadata.name).toBe(newConstraint.metadata.name);
+      });
+    tick();
+  }));
+});
+```
+
+---
+
+### MLAMock
+
+**Location:** `src/test/services/mla-mock.ts`
+
+**Purpose:** Mocks MLA (Multi-Level Authentication) service for alertmanager and rule management.
+
+**Key Methods:**
+
+```typescript
+// Alertmanager Configuration
+alertmanagerConfig(projectID: string, clusterId: string, datacenter: string): Observable<AlertmanagerConfig>
+// Fetches alertmanager configuration
+
+createAlertmanagerConfig(projectID: string, clusterId: string, datacenter: string, config: AlertmanagerConfig): Observable<AlertmanagerConfig>
+// Creates or updates alertmanager configuration
+
+deleteAlertmanagerConfig(projectID: string, clusterId: string, datacenter: string): Observable<void>
+// Deletes alertmanager configuration
+
+// Rule Group Operations
+ruleGroups(projectID: string, clusterId: string, datacenter: string): Observable<RuleGroup[]>
+// Lists all alerting rule groups
+
+createRuleGroup(projectID: string, clusterId: string, datacenter: string, ruleGroup: RuleGroup): Observable<RuleGroup>
+// Creates a new rule group
+
+patchRuleGroup(projectID: string, clusterId: string, datacenter: string, name: string, patch: RuleGroupPatch): Observable<RuleGroup>
+// Updates a rule group
+
+deleteRuleGroup(projectID: string, clusterId: string, datacenter: string, name: string): Observable<void>
+// Deletes a rule group
+```
+
+**Usage Example:**
+
+```typescript
+import {MLAMockService} from '@test/services';
+
+describe('AlertmanagerConfigComponent', () => {
+  let mlaMock: MLAMockService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [AlertmanagerConfigComponent],
+      providers: [
+        {provide: MLAService, useClass: MLAMockService}
+      ]
+    });
+
+    mlaMock = TestBed.inject(MLAService) as MLAMockService;
+  });
+
+  it('should load alertmanager config', fakeAsync(() => {
+    mlaMock.alertmanagerConfig('proj-1', 'cluster-1', 'dc-1')
+      .subscribe(config => {
+        expect(config).toBeTruthy();
+      });
+    tick();
+  }));
+
+  it('should create rule group', fakeAsync(() => {
+    const newRuleGroup = fakeRuleGroup();
+    mlaMock.createRuleGroup('proj-1', 'cluster-1', 'dc-1', newRuleGroup)
+      .subscribe(created => {
+        expect(created.name).toBe(newRuleGroup.name);
+      });
+    tick();
+  }));
+});
+```
+
+---
+
+### RBACMock
+
+**Location:** `src/test/services/rbac-mock.ts`
+
+**Purpose:** Mocks RBAC (Role-Based Access Control) service for role binding management.
+
+**Key Methods:**
+
+```typescript
+// Cluster Role Bindings
+clusterRoleBindings(projectID: string, clusterId: string, datacenter: string): Observable<ClusterRoleBinding[]>
+// Lists cluster role bindings
+
+createClusterRoleBinding(projectID: string, clusterId: string, datacenter: string, binding: ClusterRoleBinding): Observable<ClusterRoleBinding>
+// Creates a cluster role binding
+
+deleteClusterRoleBinding(projectID: string, clusterId: string, datacenter: string, name: string): Observable<void>
+// Deletes a cluster role binding
+
+// Namespace Role Bindings
+namespaceRoleBindings(projectID: string, clusterId: string, datacenter: string, namespace: string): Observable<NamespaceRoleBinding[]>
+// Lists namespace role bindings
+
+createNamespaceRoleBinding(projectID: string, clusterId: string, datacenter: string, namespace: string, binding: NamespaceRoleBinding): Observable<NamespaceRoleBinding>
+// Creates a namespace role binding
+
+deleteNamespaceRoleBinding(projectID: string, clusterId: string, datacenter: string, namespace: string, name: string): Observable<void>
+// Deletes a namespace role binding
+```
+
+**Usage Example:**
+
+```typescript
+import {RBACMockService} from '@test/services';
+
+describe('RoleBindingComponent', () => {
+  let rbacMock: RBACMockService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [RoleBindingComponent],
+      providers: [
+        {provide: RBACService, useClass: RBACMockService}
+      ]
+    });
+
+    rbacMock = TestBed.inject(RBACService) as RBACMockService;
+  });
+
+  it('should list cluster role bindings', fakeAsync(() => {
+    rbacMock.clusterRoleBindings('proj-1', 'cluster-1', 'dc-1')
+      .subscribe(bindings => {
+        expect(bindings).toBeTruthy();
+        expect(Array.isArray(bindings)).toBe(true);
+      });
+    tick();
+  }));
+
+  it('should create namespace role binding', fakeAsync(() => {
+    const newBinding = fakeNamespaceRoleBinding();
+    rbacMock.createNamespaceRoleBinding('proj-1', 'cluster-1', 'dc-1', 'default', newBinding)
+      .subscribe(created => {
+        expect(created.metadata.name).toBe(newBinding.metadata.name);
+      });
+    tick();
+  }));
+});
+```
+
+---
+
+### HistoryMock
+
+**Location:** `src/test/services/history-mock.ts`
+
+**Purpose:** Mocks browser history service for navigation testing.
+
+**Key Methods:**
+
+```typescript
+// Navigation History
+back(): void
+// Navigates to previous page in history
+
+forward(): void
+// Navigates to next page in history
+
+pushItem(item: HistoryItem): void
+// Adds item to navigation history stack
+```
+
+**Usage Example:**
+
+```typescript
+import {HistoryMockService} from '@test/services';
+import {HistoryService} from '@core/services';
+
+describe('NavigationComponent', () => {
+  let historyMock: HistoryMockService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [NavigationComponent],
+      providers: [
+        {provide: HistoryService, useClass: HistoryMockService}
+      ]
+    });
+
+    historyMock = TestBed.inject(HistoryService) as HistoryMockService;
+  });
+
+  it('should navigate back', () => {
+    spyOn(historyMock, 'back');
+
+    fixture.componentInstance.goBack();
+    fixture.detectChanges();
+
+    expect(historyMock.back).toHaveBeenCalled();
+  });
+
+  it('should add to history on navigation', () => {
+    const item = {url: '/clusters', title: 'Clusters'};
+
+    historyMock.pushItem(item);
+
+    expect(historyMock.pushItem).toHaveBeenCalledWith(item);
+  });
+});
+```
+
+---
+
 ## Complete Mock Inventory
 
 | Mock Service | Location | Purpose | Primary Method |
 |---|---|---|---|
+| **Core Mocks** | | | |
 | AppConfigMock | `app-config-mock.ts` | Application configuration | `getConfig()` |
 | AuthMock | `auth-mock.ts` | Authentication state | `authenticated()` |
+| ProjectMock | `project-mock.ts` | Project management | `projects` |
+| ClusterMock | `cluster-mock.ts` | Cluster operations | `cluster()` |
+| MatDialogMock | `mat-dialog-mock.ts` | Material dialogs | `open()` |
+| MatDialogRefMock | `mat-dialog-ref-mock.ts` | Dialog reference | `close()` |
+| **Critical Priority Mocks** | | | |
+| OPAMock | `opa-mock.ts` | OPA policy management | `constraintTemplates()` |
+| MLAMock | `mla-mock.ts` | Alertmanager & rules | `alertmanagerConfig()` |
+| RBACMock | `rbac-mock.ts` | Role binding management | `clusterRoleBindings()` |
+| HistoryMock | `history-mock.ts` | Browser history | `back()` |
+| **Other Mocks** | | | |
 | AddonMock | `addon-mock.ts` | Cluster add-ons management | `create()` |
 | ApplicationMock | `application-mock.ts` | Application deployments | `list()` |
-| ClusterMock | `cluster-mock.ts` | Cluster operations | `cluster()` |
-| ClusterBackupMock | Not found | Cluster backups | - |
 | ClusterServiceAccountMock | `cluster-service-account-mock.ts` | Service accounts | `list()` |
 | ClusterTemplateMock | `cluster-template-mock.ts` | Cluster templates | `list()` |
 | DatacenterMock | `datacenter-mock.ts` | Datacenter configuration | `datacenters()` |
 | FeatureGateMock | `feature-gate-mock.ts` | Feature gates | `getFeatureGates()` |
 | MachineDeploymentMock | `machine-deployment-mock.ts` | Machine deployments | `list()` |
-| MatDialogMock | `mat-dialog-mock.ts` | Material dialogs | `open()` |
-| MatDialogRefMock | `mat-dialog-ref-mock.ts` | Dialog reference | `close()` |
 | MemberMock | `member-mock.ts` | Project members | `list()` |
 | MeteringMock | `metering-mock.ts` | Usage metering | `getMeteringReport()` |
 | NodeMock | `node-mock.ts` | Node operations | `list()` |
@@ -477,7 +775,6 @@ describe('UserManagementComponent', () => {
 | SSHKeyMock | `ssh-key-mock.ts` | SSH key management | `list()` |
 | UserMock | `user-mock.ts` | User information | `currentUser` |
 | SettingsMock | `settings-mock.ts` | User settings | `DEFAULT_USER_SETTINGS_MOCK` |
-| ProjectMock | `project-mock.ts` | Project management | `projects` |
 | ActivateRouteMock | `activate-route-mock.ts` | Route activation | `params` |
 
 ---
@@ -921,9 +1218,11 @@ it('should handle cluster load errors gracefully', fakeAsync(() => {
 ## Related Documentation
 
 - [Testing Patterns Guide](./TESTING-PATTERNS.md) - Comprehensive testing patterns and examples
+- [Advanced Testing Patterns](./ADVANCED-TESTING-PATTERNS.md) - Observable builders, form helpers, change detection, and HTTP mocking patterns
 - [Setup Verification Checklist](./SETUP-VERIFICATION.md) - Jest configuration and troubleshooting
 - Test Data Factories: `src/test/data/` - Fake object generators
 - Real Services: `src/app/core/services/` - Service implementations to mock
+- Testing Utilities: `src/test/utils/` - Reusable helper classes and factories
 
 ---
 
