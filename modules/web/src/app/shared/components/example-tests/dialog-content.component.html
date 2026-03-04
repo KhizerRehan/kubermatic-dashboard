@@ -1,0 +1,44 @@
+<!-- Copyright 2020 The Kubermatic Kubernetes Platform contributors. -->
+
+<div class="dialog-container">
+  <!-- Dialog Header -->
+  <h2 data-cy="dialog-header" class="dialog-header">
+    {{ data?.title || 'Dialog' }}
+  </h2>
+
+  <!-- Dialog Content -->
+  <div data-cy="dialog-content" class="dialog-content">
+    <p data-cy="dialog-message">{{ data?.message }}</p>
+
+    <!-- Error Message -->
+    <div *ngIf="error" data-cy="dialog-error" class="error-message">
+      {{ error }}
+    </div>
+  </div>
+
+  <!-- Dialog Actions (Footer) -->
+  <div data-cy="dialog-footer" class="dialog-footer">
+    <button
+      *ngIf="mode === 'delete'"
+      data-cy="delete-button"
+      (click)="deleteAction()"
+      [disabled]="!isFormValid || error !== null"
+      class="delete-button"
+    >
+      Delete
+    </button>
+
+    <button
+      data-cy="confirm-button"
+      (click)="confirmAction()"
+      [disabled]="!isFormValid || error !== null"
+      class="confirm-button"
+    >
+      Confirm
+    </button>
+
+    <button data-cy="cancel-button" (click)="closeDialog()" class="cancel-button">
+      Cancel
+    </button>
+  </div>
+</div>

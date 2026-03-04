@@ -1,0 +1,38 @@
+<!-- Copyright 2020 The Kubermatic Kubernetes Platform contributors. -->
+
+<div class="async-service-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" data-cy="loading-spinner" class="loading">
+    <p>Loading data...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !isLoading" data-cy="error-message" class="error">
+    <p>Failed to load data: {{ error.message }}</p>
+    <button data-cy="retry-button" (click)="loadUser()" class="retry-button">
+      Retry
+    </button>
+  </div>
+
+  <!-- Success State -->
+  <div *ngIf="user && !isLoading && !error" data-cy="user-info" class="user-info">
+    <h3>User Information</h3>
+    <div>
+      <label>Name:</label>
+      <span data-cy="user-name">{{ user.name }}</span>
+    </div>
+    <div>
+      <label>Email:</label>
+      <span data-cy="user-email">{{ user.email }}</span>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="!user && !isLoading && !error"
+    data-cy="empty-state"
+    class="empty-state"
+  >
+    <p>No data available</p>
+  </div>
+</div>

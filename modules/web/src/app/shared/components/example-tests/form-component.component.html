@@ -1,0 +1,50 @@
+<!-- Copyright 2020 The Kubermatic Kubernetes Platform contributors. -->
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- Username Field -->
+  <div class="form-group">
+    <label for="username">Username:</label>
+    <input id="username" formControlName="username" type="text" />
+
+    <div
+      *ngIf="form.get('username')?.invalid && form.get('username')?.touched"
+      data-cy="username-error"
+      class="error-message"
+    >
+      Username is required
+    </div>
+  </div>
+
+  <!-- Email Field -->
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input id="email" formControlName="email" type="email" />
+
+    <div
+      *ngIf="form.get('email')?.invalid && form.get('email')?.touched"
+      data-cy="email-error"
+      class="error-message"
+    >
+      Please enter a valid email
+    </div>
+  </div>
+
+  <!-- Age Field -->
+  <div class="form-group">
+    <label for="age">Age:</label>
+    <input id="age" formControlName="age" type="number" />
+
+    <div
+      *ngIf="form.get('age')?.hasError('ageRange') && form.get('age')?.touched"
+      data-cy="age-error"
+      class="error-message"
+    >
+      Age must be between 18 and 120
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <button type="submit" [disabled]="form.invalid" data-cy="submit-button" class="submit-button">
+    Submit
+  </button>
+</form>

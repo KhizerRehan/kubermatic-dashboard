@@ -1,0 +1,15 @@
+<!-- Copyright 2020 The Kubermatic Kubernetes Platform contributors. -->
+
+<div [ngClass]="{'highlighted': isHighlighted}" data-cy="container">
+  <h2 data-cy="title">{{ title }}</h2>
+  <p data-cy="description">{{ description }}</p>
+
+  <button
+    *ngIf="isActionEnabled"
+    data-cy="action-button"
+    (click)="onAction()"
+    class="action-button"
+  >
+    Click Me
+  </button>
+</div>

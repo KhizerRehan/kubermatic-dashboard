@@ -1,0 +1,88 @@
+// Copyright 2020 The Kubermatic Kubernetes Platform contributors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+.dialog-container {
+  min-width: 300px;
+}
+
+.dialog-header {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.dialog-content {
+  margin-bottom: 16px;
+  line-height: 1.5;
+
+  p {
+    margin: 0 0 12px 0;
+  }
+}
+
+.error-message {
+  padding: 12px;
+  background-color: #ffebee;
+  border-left: 4px solid #c62828;
+  color: #c62828;
+  border-radius: 2px;
+  margin: 12px 0 0 0;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.confirm-button {
+  background-color: #1976d2;
+  color: white;
+
+  &:not(:disabled):hover {
+    background-color: #1565c0;
+  }
+}
+
+.delete-button {
+  background-color: #c62828;
+  color: white;
+
+  &:not(:disabled):hover {
+    background-color: #b71c1c;
+  }
+}
+
+.cancel-button {
+  background-color: #e0e0e0;
+  color: #333;
+
+  &:not(:disabled):hover {
+    background-color: #d0d0d0;
+  }
+}
