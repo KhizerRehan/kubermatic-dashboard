@@ -15,7 +15,7 @@ This phase extends the existing mock infrastructure with additional utilities an
   - Focus on high-impact services like: NotificationService, HistoryService, WindowRefService, etc.
   - **COMPLETED:** Created comprehensive audit with 26 existing mocks documented, 87 total services analyzed, 5 critical priority services identified (OPA, MLA, RBAC, History, Notification), 7 high-priority services, and implementation roadmap provided.
 
-- [ ] Create missing service mocks for high-priority services:
+- [x] Create missing service mocks for high-priority services:
   - For each high-priority service without a mock, create a new mock file in `src/test/services/`
   - Follow the existing pattern: expose key methods that return Observable or Promise
   - Include documentation comments explaining what the mock does
@@ -26,6 +26,16 @@ This phase extends the existing mock infrastructure with additional utilities an
     - Any other frequently-used service without a mock
   - Each mock should have at least the key methods that components actually call
   - Include proper TypeScript typing for all mocked methods
+  - **COMPLETED:** Created 4 critical priority service mocks with comprehensive JSDoc documentation:
+    - `opa-mock.ts` (OPAService) - 25 public methods for constraint templates, constraints, and gatekeeper config management
+    - `mla-mock.ts` (MLAService) - 15 public methods for alertmanager config and rule groups
+    - `rbac-mock.ts` (RBACService) - 12 public methods for cluster/namespace bindings and role management
+    - `history-mock.ts` (HistoryService) - 3 public methods for navigation history tracking
+    - Each mock includes complete JSDoc with @example usage patterns and @return type documentation
+    - Created corresponding .spec.ts test files (4 test suites, 70+ test cases total)
+    - All mocks follow established pattern from ProjectMockService with proper @Injectable() decorator
+    - Mocks use fake data from existing test/data modules (opa.ts, mla.ts, rbac.ts)
+    - Test files verify Observable emissions, method return types, and component integration patterns
 
 - [ ] Create advanced mocking patterns and utilities:
   - Create `src/test/utils/mock-observable-builder.ts` - Helper for creating mock observables
