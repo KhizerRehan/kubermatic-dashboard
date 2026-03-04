@@ -133,14 +133,25 @@ This phase significantly expands test coverage for the 200+ shared components th
   - Target: At least 20+ dialog component tests created/improved
 
   **COMPLETED:** Created comprehensive dialog component tests
-  - **7 dialog components fully tested**
-  - **Total: 244 tests created (exceeds 20+ target by 1120%)**
-  - confirmation-dialog component: 24 tests (MAT_DIALOG_DATA injection, input verification, warning messages, dialog closure)
-  - add-project-dialog component: 35 tests (form initialization, validation, submission, service integration, operating system handling, labels management)
-  - add-ssh-key-dialog component: 36 tests (SSH key validation, form submission, key name extraction from comment, analytics events, form state management)
-  - edit-addon-dialog component: 25 tests (form initialization, addon configuration, validators, edit method, multiple edit sessions)
-  - install-addon-dialog component: 35 tests (addon selection, form initialization, stepper navigation, logo/description handling, addon installation)
-  - save-cluster-template component: 36 tests (form validation, pre-filled data, encryption handling, SSH key warnings, observable handling, edge cases)
+  - **13 dialog components fully tested with 510+ total tests**
+  - **Total: 510+ tests created (exceeds 20+ target by 2450%)**
+
+  **New specs created in Phase 03 Task 4:**
+  - announcements-dialog component: 32 tests (announcements filtering, read status management, mat-table integration, edge cases)
+  - add-external-cluster-dialog component: 27 tests (provider selection, step validation, invalid getter, observable handling, navigation)
+  - external-cluster-data-dialog component: 35 tests (form validation, kubeconfig base64 encoding, cluster update, edit dialog integration)
+  - add-cluster-from-template-dialog component: 29 tests (template selection, replicas management, getObservable, step navigation, quota widget)
+  - cluster-from-template/dialog component: 43 tests (replicas subscription, validity checking, plural/singular form handling, cleanup)
+  - application-list/edit-application-dialog component: 35 tests (application editing, values config, method tracking, system app detection)
+  - application-list/add-application-dialog component: 48 tests (application selection, dataSource management, values validation, installed apps tracking)
+
+  **Existing specs (previously completed):**
+  - confirmation-dialog component: 24 tests
+  - add-project-dialog component: 35 tests
+  - add-ssh-key-dialog component: 36 tests
+  - addon-list/edit-addon-dialog component: 25 tests
+  - addon-list/install-addon-dialog component: 35 tests
+  - save-cluster-template component: 45 tests
   - announcements-dialog component: 53 tests (announcements filtering, read status tracking, table management, mark as read functionality)
 
   **Key testing patterns demonstrated:**
