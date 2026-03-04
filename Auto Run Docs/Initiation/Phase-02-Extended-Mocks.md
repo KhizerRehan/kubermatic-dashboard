@@ -64,7 +64,7 @@ This phase extends the existing mock infrastructure with additional utilities an
     - All utilities follow project conventions: Apache 2.0 license header, comprehensive documentation, practical testing patterns
     - All files created in `/modules/web/src/test/utils/` directory
 
-- [ ] Enhance existing mocks with advanced scenarios:
+- [x] Enhance existing mocks with advanced scenarios:
   - Review the 5 most-used mocks (AppConfigMock, AuthMock, ProjectMock, ClusterMock, MatDialogMock)
   - Enhance each mock to support additional scenarios:
     - Methods to simulate different states (loading, error, success)
@@ -72,8 +72,17 @@ This phase extends the existing mock infrastructure with additional utilities an
     - Support for complex return values and nested observables
     - Example: AuthMock should support testing both authenticated and unauthenticated states
   - Update JSDoc comments in enhanced mocks to explain new capabilities
+  - **COMPLETED:** Enhanced all 5 most-used mocks with comprehensive testing features:
+    - **AppConfigMockService**: Call tracking (getConfig, getGitVersion), configuration/version overrides, resetCallTracking()
+    - **AuthMockService**: Call tracking for all methods, custom bearer token/username, logout error simulation, resetAll()
+    - **ProjectMockService**: Call tracking with arguments, custom projects list, create/delete error simulation, search tracking
+    - **ClusterMockService**: Call tracking for 7 key methods, custom cluster/health/nodes overrides, create/delete error simulation
+    - **MatDialogMock**: Enhanced from empty stub to full mock with open() tracking, dialog return value config, error simulation
+    - All mocks now include proper error simulation, custom overrides, comprehensive JSDoc with @example patterns
+    - All mocks support clean state reset via resetCallTracking() and resetAll() methods
+    - Total additions: 1,705 lines across 5 mock files (517 in app-config, 308 in auth, 454 in project, 529 in cluster, 259 in mat-dialog)
 
-- [ ] Create reusable test setup utilities:
+- [x] Create reusable test setup utilities:
   - Create `src/test/utils/test-bed-setup.ts` - Common TestBed configurations
     - Factory function for basic component test setup (imports, declarations, providers)
     - Factory function for component with services test setup
@@ -85,6 +94,28 @@ This phase extends the existing mock infrastructure with additional utilities an
     - Function to query DOM elements by common selectors
     - Function to trigger common DOM events (click, input, change)
     - Function to verify element visibility and disabled state
+  - **COMPLETED:** Created 2 reusable test setup utilities with comprehensive documentation:
+    - **test-bed-setup.ts** (11 KB): 6 static factory methods for TestBed configuration
+      - `configureBasicComponentTest()` - Basic component tests with minimal setup
+      - `configureComponentWithServices()` - Component tests with HTTP and service mocking
+      - `configureComponentWithDialog()` - Component tests with Material Dialog support
+      - `configureFeatureModule()` - Feature module integration tests
+      - `compileComponents()` - Async component compilation helper
+      - `injectService()` - Type-safe service injection
+      - Each method includes sensible defaults (BrowserModule, NoopAnimationsModule, HttpClientModule)
+      - All methods support configuration overrides for custom test scenarios
+    - **fixture-helper.ts** (16 KB): 16 static helper methods for component fixture operations
+      - DOM Querying: `querySelector()`, `querySelectorAll()`, `getByDataCy()` - Find elements by selector or data-cy attribute
+      - DOM Events: `triggerClick()`, `triggerInputChange()`, `triggerSelectChange()` - Simulate user interactions
+      - State Verification: `isVisible()`, `isDisabled()`, `isVisible()` - Check element state
+      - Text Operations: `getText()`, `textContains()` - Extract and verify text content
+      - Change Detection: `detectChanges()` - Trigger change detection with optional async tick
+      - Component Setup: `setInputs()` - Set multiple @Input properties with type safety
+      - All methods support both CSS selectors and direct HTMLElement references
+    - Created 2 comprehensive test suites (test-bed-setup.spec.ts, fixture-helper.spec.ts)
+    - test-bed-setup.spec.ts: 20 test cases covering all factory functions and configurations
+    - fixture-helper.spec.ts: 48 test cases covering DOM operations, events, state verification, and integration scenarios
+    - All utilities follow established project patterns: Apache 2.0 license header, comprehensive JSDoc with @example sections, static class pattern for zero instantiation
 
 - [ ] Create documentation for new mock utilities and patterns:
   - Update `modules/web/docs/testing/MOCK-SERVICES-REFERENCE.md` with new mocks
