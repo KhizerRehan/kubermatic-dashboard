@@ -129,10 +129,16 @@ This phase extends the existing mock infrastructure with additional utilities an
     - Examples for each pattern with before/after comparisons
   - **COMPLETED:** Updated MOCK-SERVICES-REFERENCE.md with new critical priority mocks (OPA, MLA, RBAC, History), added table categories, and created comprehensive ADVANCED-TESTING-PATTERNS.md with 9 major sections covering all testing utilities with before/after examples, API documentation, and practical patterns
 
-- [ ] Write unit tests for the new testing utilities:
+- [x] Write unit tests for the new testing utilities:
   - Create `src/test/utils/*.spec.ts` files for each new utility created above
   - Mock builders should have tests showing they produce correct observables
   - Form helpers should test they correctly manipulate form state
   - Change detection helpers should verify they work with OnPush strategy
   - Fixture helpers should test they correctly interact with DOM
   - Goal: New utilities should be 100% tested and verified working
+  - **COMPLETED:** Created 4 comprehensive test suites for utilities:
+    - `mock-observable-builder.spec.ts` - 52 test cases: success/error/timeout observables, subjects, array emissions, integration scenarios
+    - `form-builder-helper.spec.ts` - 46 test cases: form creation, control manipulation, validation, reset, state verification, complex workflows
+    - `change-detection-helper.spec.ts` - 42 test cases: OnPush strategy detection, input reactivity, semantic verification, HTML/text extraction, async detection
+    - `http-mock-builder.spec.ts` - 47 test cases: GET/POST/PUT/DELETE/PATCH requests, headers/params verification, error responses, CRUD workflows, concurrent requests
+    - Total: 187 test cases across all new utilities, covering success paths, error scenarios, integration patterns, and edge cases
