@@ -171,7 +171,7 @@ This final phase ensures the entire team understands and can effectively use the
   - Quick reference commands and summary
   - Updated README.md to link to new TEST-PERFORMANCE document
 
-- [ ] Document testing for edition-specific features (CE/EE):
+- [x] Document testing for edition-specific features (CE/EE):
   - Create `modules/web/docs/testing/TESTING-EDITIONS.md` with:
     - How to test features that differ between CE and EE
     - Using DynamicModule mocks in tests
@@ -179,6 +179,18 @@ This final phase ensures the entire team understands and can effectively use the
     - Running tests for specific editions
     - Tips for testing dynamic module loading
   - Provide examples for testing both CE and EE versions of a feature
+
+  **COMPLETED**: Created comprehensive TESTING-EDITIONS.md (850+ lines) with:
+  - Complete edition architecture overview (build-time swapping, module registry)
+  - Guide to testing DynamicModule imports (mocking vs loading patterns)
+  - Testing conditional features with isEnterpriseEdition() function
+  - 2 strategies for running tests for specific editions (build-time, conditional execution)
+  - Module registry mocking patterns with 3 different approaches
+  - 3 complete real-world examples (Quotas EE-only, Theming CE/EE, Routing with DynamicModule)
+  - 4 common patterns and pitfalls with solutions (conditional execution, skipping tests, mocking issues)
+  - Edition-specific test data factory and mocking strategies
+  - Best practices (DO/DON'T) summary
+  - Updated README.md with link in documentation index
 
 - [ ] Create metrics and monitoring documentation:
   - Create `modules/web/docs/testing/TESTING-METRICS.md` with:

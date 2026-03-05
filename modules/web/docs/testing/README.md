@@ -11,6 +11,7 @@ tags:
 related:
   - '[[TESTING-PATTERNS]]'
   - '[[TESTING-BEST-PRACTICES]]'
+  - '[[TESTING-EDITIONS]]'
   - '[[MAINTENANCE-PROCESS]]'
   - '[[TEST-PERFORMANCE]]'
   - '[[CI-CD-INTEGRATION]]'
@@ -281,6 +282,19 @@ When tests fail, consult **[TESTING-BEST-PRACTICES.md](./TESTING-BEST-PRACTICES.
 - Performance testing patterns
 
 📌 **Use this** for testing complex, non-standard scenarios.
+
+#### [TESTING-EDITIONS.md](./TESTING-EDITIONS.md)
+**Testing features that differ between Community Edition (CE) and Enterprise Edition (EE)**
+- Edition architecture and build-time module swapping
+- Testing DynamicModule imports and lazy loading
+- Testing conditional features with isEnterpriseEdition()
+- Running tests for specific editions
+- Module registry mocking strategies
+- Complete CE/EE testing examples
+- Common patterns and pitfalls
+- Edition-specific mock services
+
+📌 **Read this** when testing features that vary between CE and EE editions.
 
 ---
 
