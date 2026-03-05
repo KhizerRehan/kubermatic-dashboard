@@ -18,6 +18,7 @@ related:
   - '[[CI-CD-INTEGRATION]]'
   - '[[TESTING-METRICS]]'
   - '[[FEEDBACK-PROCESS]]'
+  - '[[TESTING-ROADMAP]]'
 ---
 
 # Kubermatic Dashboard Testing Documentation
@@ -436,6 +437,21 @@ When tests fail, consult **[TESTING-BEST-PRACTICES.md](./TESTING-BEST-PRACTICES.
 - Communication and visibility strategies
 
 📌 **Refer to this** when suggesting improvements, participating in office hours, or understanding how testing processes evolve.
+
+#### [TESTING-ROADMAP.md](./TESTING-ROADMAP.md)
+**Strategic roadmap and long-term testing goals for the Kubermatic Dashboard**
+- Summary of testing coverage achieved across Phases 1-6
+- Current state assessment with quantitative and qualitative metrics
+- Identified gaps (performance, security, E2E, accessibility, mobile)
+- Recommendations for future work with priority levels and timelines
+- Long-term testing strategy and vision through 2027
+- Integration with other quality measures (CI/CD, security, performance)
+- Maintenance schedule and team responsibilities
+- Success criteria for production-ready test suite
+- Implementation timeline for Q2-Q4 2026
+- Escalation and support structures
+
+📌 **Read this** to understand the overall testing direction, identify improvement opportunities, and understand how to contribute to testing excellence.
 
 ---
 
