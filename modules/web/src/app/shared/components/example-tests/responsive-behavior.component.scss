@@ -1,0 +1,364 @@
+// Copyright 2020 The Kubermatic Kubernetes Platform contributors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+.responsive-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+
+  // Desktop Navigation
+  .desktop-nav {
+    display: none;
+    background-color: #333;
+    padding: 1rem;
+
+    ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+
+      li a {
+        color: white;
+        text-decoration: none;
+        font-size: 1rem;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  // Mobile Menu Button
+  .mobile-menu-btn {
+    display: none;
+    padding: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  // Mobile Sidenav
+  .mobile-sidenav {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #f8f9fa;
+    z-index: 1000;
+    padding: 1rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+      margin: 3rem 0 0 0;
+      padding: 0;
+
+      li {
+        padding: 1rem 0;
+
+        a {
+          color: #333;
+          text-decoration: none;
+          display: block;
+
+          &:hover {
+            color: #007bff;
+          }
+        }
+      }
+    }
+  }
+
+  // Main Content
+  .main-content {
+    flex: 1;
+    padding: 2rem;
+    background-color: #fff;
+  }
+
+  .section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    h3 {
+      margin-top: 0;
+      color: #333;
+    }
+  }
+
+  // Viewport Information
+  .viewport-info {
+    background-color: #e7f3ff;
+    border-color: #007bff;
+
+    h2 {
+      color: #007bff;
+      margin-top: 0;
+    }
+
+    .breakpoint-indicators {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      .badge {
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        font-weight: bold;
+
+        &.mobile-badge {
+          background-color: #ff6b6b;
+          color: white;
+        }
+
+        &.tablet-badge {
+          background-color: #ffd93d;
+          color: #333;
+        }
+
+        &.desktop-badge {
+          background-color: #6bcf7f;
+          color: white;
+        }
+      }
+    }
+  }
+
+  // Touch Events Display
+  .touch-display,
+  .storage-display,
+  .print-display,
+  .typography-display {
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: 4px;
+
+    p {
+      margin: 0.5rem 0;
+      font-family: monospace;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+
+    input {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .available {
+      color: #28a745;
+      font-weight: bold;
+    }
+
+    .unavailable {
+      color: #dc3545;
+      font-weight: bold;
+    }
+
+    .printing {
+      color: #007bff;
+      font-weight: bold;
+    }
+  }
+
+  // Responsive Grid
+  .responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
+    .grid-item {
+      background-color: #e7f3ff;
+      padding: 2rem 1rem;
+      border-radius: 4px;
+      text-align: center;
+
+      .item-content {
+        font-weight: bold;
+        color: #007bff;
+      }
+    }
+  }
+
+  // Responsive Typography
+  .responsive-heading {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    margin-bottom: 1rem;
+  }
+
+  .responsive-text {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.6;
+    color: #555;
+  }
+
+  // Mobile Responsive Styles
+  @media (max-width: 767px) {
+    .mobile-menu-btn {
+      display: block;
+    }
+
+    .mobile-sidenav {
+      display: block;
+    }
+
+    .desktop-nav {
+      display: none !important;
+    }
+
+    .main-content {
+      padding: 1rem;
+    }
+
+    .section {
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .responsive-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // Tablet Responsive Styles
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .responsive-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .main-content {
+      padding: 1.5rem;
+    }
+  }
+
+  // Desktop Responsive Styles
+  @media (min-width: 1024px) {
+    .desktop-nav {
+      display: block;
+    }
+
+    .mobile-menu-btn,
+    .mobile-sidenav {
+      display: none !important;
+    }
+
+    .responsive-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  // Print Styles
+  @media print {
+    .mobile-menu-btn,
+    .desktop-nav {
+      display: none !important;
+    }
+
+    .main-content {
+      padding: 0;
+      background-color: white;
+    }
+
+    .section {
+      page-break-inside: avoid;
+      border: none;
+      margin-bottom: 1rem;
+      padding: 0 0 1rem 0;
+    }
+
+    .print-section {
+      border-top: 1px solid #000;
+      padding-top: 1rem;
+    }
+
+    .print-content {
+      background-color: white;
+      color: black;
+      border: none;
+    }
+
+    .responsive-grid {
+      grid-template-columns: 1fr;
+    }
+
+    button {
+      display: none;
+    }
+
+    a {
+      text-decoration: underline;
+      color: black;
+    }
+  }
+
+  // High Contrast Mode
+  @media (prefers-contrast: more) {
+    .section {
+      border-width: 2px;
+    }
+
+    .badge {
+      border: 2px solid currentColor;
+    }
+  }
+
+  // Reduced Motion
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}

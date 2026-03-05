@@ -1,0 +1,159 @@
+<!-- Copyright 2020 The Kubermatic Kubernetes Platform contributors. -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License"); -->
+<!-- you may not use this file except in compliance with the License. -->
+<!-- You may obtain a copy of the License at -->
+<!-- http://www.apache.org/licenses/LICENSE-2.0 -->
+<!-- Unless required by applicable law or agreed to in writing, software -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS, -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. -->
+<!-- See the License for the specific language governing permissions and -->
+<!-- limitations under the License. -->
+
+<div [class]="getViewportClass()" class="responsive-container">
+  <!-- Desktop Navigation (hidden on mobile) -->
+  <nav *ngIf="isDesktopViewport" class="desktop-nav" data-cy="desktop-nav">
+    <ul>
+      <li><a href="#section1" data-cy="nav-section1">Section 1</a></li>
+      <li><a href="#section2" data-cy="nav-section2">Section 2</a></li>
+      <li><a href="#section3" data-cy="nav-section3">Section 3</a></li>
+    </ul>
+  </nav>
+
+  <!-- Mobile Navigation Toggle -->
+  <button
+    *ngIf="isMobileViewport"
+    class="mobile-menu-btn"
+    (click)="toggleSidenav()"
+    data-cy="mobile-menu-btn"
+    aria-label="Toggle navigation menu"
+    aria-expanded="sidenavOpen">
+    ☰ Menu
+  </button>
+
+  <!-- Mobile Sidenav (slides in from left) -->
+  <nav
+    *ngIf="isMobileViewport && sidenavOpen"
+    class="mobile-sidenav"
+    data-cy="mobile-sidenav"
+    [@slideIn]>
+    <button
+      class="close-btn"
+      (click)="toggleSidenav()"
+      data-cy="sidenav-close">
+      ✕
+    </button>
+    <ul>
+      <li><a href="#section1" data-cy="mobile-nav-section1">Section 1</a></li>
+      <li><a href="#section2" data-cy="mobile-nav-section2">Section 2</a></li>
+      <li><a href="#section3" data-cy="mobile-nav-section3">Section 3</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Viewport Information -->
+    <div class="viewport-info" data-cy="viewport-info">
+      <h2>Responsive Behavior Demo</h2>
+      <p data-cy="window-size">Window Size: {{ getDisplaySize() }}</p>
+      <p data-cy="layout-mode">Layout Mode: {{ layoutMode }}</p>
+
+      <!-- Breakpoint Indicators -->
+      <div class="breakpoint-indicators">
+        <span
+          *ngIf="isMobileViewport"
+          class="badge mobile-badge"
+          data-cy="mobile-indicator">
+          Mobile (&lt; 768px)
+        </span>
+        <span
+          *ngIf="isTabletViewport"
+          class="badge tablet-badge"
+          data-cy="tablet-indicator">
+          Tablet (768px - 1024px)
+        </span>
+        <span
+          *ngIf="isDesktopViewport"
+          class="badge desktop-badge"
+          data-cy="desktop-indicator">
+          Desktop (&gt; 1024px)
+        </span>
+      </div>
+    </div>
+
+    <!-- Touch Events Section -->
+    <section class="section" data-cy="touch-section">
+      <h3>Touch Events (swipe left/right on mobile)</h3>
+      <div class="touch-display" data-cy="touch-display">
+        <p data-cy="last-touch-event">Last Touch: {{ lastTouchEvent || 'None' }}</p>
+        <p *ngIf="touchStartPos" data-cy="touch-position">
+          Position: {{ touchStartPos.x }}, {{ touchStartPos.y }}
+        </p>
+      </div>
+    </section>
+
+    <!-- LocalStorage Section -->
+    <section class="section" data-cy="storage-section">
+      <h3>LocalStorage Integration</h3>
+      <div class="storage-display" data-cy="storage-display">
+        <p data-cy="storage-available">
+          Status: <span [class.available]="localStorageAvailable" [class.unavailable]="!localStorageAvailable">
+            {{ localStorageAvailable ? 'Available' : 'Unavailable (Fallback)' }}
+          </span>
+        </p>
+        <p data-cy="stored-value">Stored Value: {{ storedValue || 'None' }}</p>
+        <input
+          type="text"
+          placeholder="Enter a value"
+          data-cy="storage-input"
+          (blur)="saveToLocalStorage('responsive-preference', $any($event.target).value)">
+        <button
+          (click)="removeFromLocalStorage('responsive-preference')"
+          data-cy="clear-storage-btn">
+          Clear
+        </button>
+      </div>
+    </section>
+
+    <!-- Print Styling Section -->
+    <section class="section print-section" data-cy="print-section">
+      <h3>Print Styling</h3>
+      <div class="print-display" data-cy="print-display">
+        <p data-cy="print-mode">Print Mode: <span [class.printing]="isPrinting">{{ isPrinting ? 'Active' : 'Inactive' }}</span></p>
+        <div class="print-content" data-cy="print-content">
+          <h4>This content is optimized for printing</h4>
+          <p>On print view, colors and layouts are adjusted for better readability on paper.</p>
+        </div>
+        <button
+          (click)="window.print()"
+          data-cy="print-btn"
+          aria-label="Open print dialog">
+          Print
+        </button>
+      </div>
+    </section>
+
+    <!-- Responsive Grid Section -->
+    <section class="section" data-cy="grid-section">
+      <h3>Responsive Grid Layout</h3>
+      <div class="responsive-grid" data-cy="responsive-grid">
+        <div class="grid-item" *ngFor="let i of [1,2,3,4,5,6]" data-cy="grid-item-{{i}}">
+          <div class="item-content">Item {{ i }}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flexible Typography Section -->
+    <section class="section" data-cy="typography-section">
+      <h3>Responsive Typography</h3>
+      <div class="typography-display" data-cy="typography-display">
+        <h4 class="responsive-heading" data-cy="responsive-heading">
+          This heading scales with viewport
+        </h4>
+        <p class="responsive-text" data-cy="responsive-text">
+          This text also scales responsively. On mobile, it's smaller and easier to read on small screens.
+          On desktop, it uses more of the available space.
+        </p>
+      </div>
+    </section>
+  </main>
+</div>
