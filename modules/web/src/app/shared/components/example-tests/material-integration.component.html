@@ -1,0 +1,322 @@
+<div class="material-integration-container">
+  <!-- ========== MatTab Component ========== -->
+  <mat-tab-group data-cy="tab-group" (selectedIndexChange)="selectTab($event)">
+    <!-- ========== Form Tab ========== -->
+    <mat-tab data-cy="form-tab">
+      <ng-template mat-tab-label>
+        <mat-icon>edit</mat-icon>
+        Form
+      </ng-template>
+
+      <div class="tab-content">
+        <h2>Material Form Example</h2>
+
+        <form [formGroup]="form" (ngSubmit)="submitForm()" data-cy="test-form">
+          <!-- Name Field -->
+          <mat-form-field appearance="outline" data-cy="name-field">
+            <mat-label>Name</mat-label>
+            <input
+              matInput
+              formControlName="name"
+              placeholder="Enter your name"
+              data-cy="name-input"
+              aria-label="Name input" />
+            <mat-error *ngIf="form.get('name')?.hasError('required')" data-cy="name-error">
+              Name is required
+            </mat-error>
+            <mat-error *ngIf="form.get('name')?.hasError('minlength')" data-cy="name-minlength">
+              Name must be at least 3 characters
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Email Field -->
+          <mat-form-field appearance="outline" data-cy="email-field">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              formControlName="email"
+              placeholder="Enter your email"
+              data-cy="email-input"
+              aria-label="Email input" />
+            <mat-error *ngIf="form.get('email')?.hasError('required')" data-cy="email-error">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="form.get('email')?.hasError('email')" data-cy="email-format">
+              Invalid email format
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Description Field -->
+          <mat-form-field appearance="outline" data-cy="description-field">
+            <mat-label>Description</mat-label>
+            <textarea
+              matInput
+              formControlName="description"
+              placeholder="Enter description"
+              data-cy="description-input"
+              aria-label="Description input"></textarea>
+            <mat-hint *ngIf="form.get('description')?.value" data-cy="description-hint">
+              {{ form.get('description')?.value?.length }} / 100 characters
+            </mat-hint>
+            <mat-error *ngIf="form.get('description')?.hasError('maxlength')" data-cy="description-error">
+              Description cannot exceed 100 characters
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Form Buttons -->
+          <div class="button-group">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="form.invalid || isLoading"
+              data-cy="submit-button">
+              <mat-spinner *ngIf="isLoading" diameter="20" data-cy="submit-spinner"></mat-spinner>
+              Submit
+            </button>
+            <button mat-button type="button" (click)="resetForm()" data-cy="reset-button">
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-tab>
+
+    <!-- ========== Table Tab ========== -->
+    <mat-tab data-cy="table-tab">
+      <ng-template mat-tab-label>
+        <mat-icon>table_chart</mat-icon>
+        Table
+      </ng-template>
+
+      <div class="tab-content">
+        <h2>Material Table with Sorting & Pagination</h2>
+
+        <!-- Table Controls -->
+        <div class="table-controls">
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="deleteItem()"
+            [disabled]="selectedItems.length === 0"
+            data-cy="delete-button">
+            Delete Selected ({{ selectedItems.length }})
+          </button>
+          <button mat-button (click)="toggleTable()" data-cy="toggle-table-button">
+            {{ showTable ? 'Hide' : 'Show' }} Table
+          </button>
+        </div>
+
+        <!-- Data Table -->
+        <div *ngIf="showTable" class="table-wrapper" data-cy="table-wrapper">
+          <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" data-cy="data-table">
+            <!-- Selection Column -->
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let item">
+                <mat-checkbox
+                  [checked]="isItemSelected(item)"
+                  (change)="toggleItemSelection(item)"
+                  [attr.data-cy]="'item-checkbox-' + item.id"
+                  aria-label="Select item {{ item.id }}">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header data-cy="id-header">ID</th>
+              <td mat-cell *matCellDef="let item" data-cy="id-cell-{{ item.id }}">{{ item.id }}</td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header data-cy="name-header">Name</th>
+              <td mat-cell *matCellDef="let item" data-cy="name-cell-{{ item.id }}">{{ item.name }}</td>
+            </ng-container>
+
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header data-cy="description-header">Description</th>
+              <td mat-cell *matCellDef="let item" data-cy="description-cell-{{ item.id }}">
+                {{ item.description }}
+              </td>
+            </ng-container>
+
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header data-cy="status-header">Status</th>
+              <td mat-cell *matCellDef="let item" data-cy="status-cell-{{ item.id }}">
+                <mat-chip [selected]="item.status === 'active'" [attr.aria-label]="'Status: ' + item.status">
+                  {{ item.status }}
+                </mat-chip>
+              </td>
+            </ng-container>
+
+            <!-- Header Row -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" data-cy="table-header-row"></tr>
+
+            <!-- Data Rows -->
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              [attr.data-cy]="'table-row-' + row.id"
+              [class.selected]="isItemSelected(row)"></tr>
+          </table>
+        </div>
+
+        <!-- Paginator -->
+        <mat-paginator
+          [pageSizeOptions]="[1, 5, 10]"
+          showFirstLastButtons
+          (page)="paginate($event)"
+          data-cy="paginator"></mat-paginator>
+      </div>
+    </mat-tab>
+
+    <!-- ========== Expansion Tab ========== -->
+    <mat-tab data-cy="expansion-tab">
+      <ng-template mat-tab-label>
+        <mat-icon>unfold_more</mat-icon>
+        Expansion
+      </ng-template>
+
+      <div class="tab-content">
+        <h2>Material Expansion Panel</h2>
+
+        <mat-accordion data-cy="accordion">
+          <mat-expansion-panel
+            *ngFor="let item of items"
+            [expanded]="isExpanded(item.id)"
+            (opened)="toggleExpansion(item.id)"
+            (closed)="toggleExpansion(null)"
+            [attr.data-cy]="'expansion-panel-' + item.id">
+            <mat-expansion-panel-header data-cy="expansion-header-{{ item.id }}">
+              <mat-panel-title data-cy="expansion-title-{{ item.id }}">
+                {{ item.name }}
+              </mat-panel-title>
+              <mat-panel-description data-cy="expansion-description-{{ item.id }}">
+                Status: {{ item.status }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div data-cy="expansion-content-{{ item.id }}">
+              <p>ID: {{ item.id }}</p>
+              <p>Description: {{ item.description }}</p>
+              <p>Status: {{ item.status }}</p>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </mat-tab>
+
+    <!-- ========== Menu & Buttons Tab ========== -->
+    <mat-tab data-cy="menu-tab">
+      <ng-template mat-tab-label>
+        <mat-icon>menu</mat-icon>
+        Menu & Buttons
+      </ng-template>
+
+      <div class="tab-content">
+        <h2>Material Menu & Buttons</h2>
+
+        <!-- Button Examples -->
+        <div class="button-section">
+          <h3>Button States</h3>
+
+          <div class="button-row">
+            <button mat-button data-cy="button-basic">Basic Button</button>
+            <button mat-raised-button data-cy="button-raised">Raised Button</button>
+            <button mat-stroked-button data-cy="button-stroked">Stroked Button</button>
+          </div>
+
+          <div class="button-row">
+            <button mat-button color="primary" data-cy="button-primary">Primary</button>
+            <button mat-button color="accent" data-cy="button-accent">Accent</button>
+            <button mat-button color="warn" data-cy="button-warn">Warn</button>
+          </div>
+
+          <div class="button-row">
+            <button mat-button disabled data-cy="button-disabled">Disabled Button</button>
+            <button mat-raised-button color="primary" [disabled]="true" data-cy="button-disabled-raised">
+              Disabled Raised
+            </button>
+          </div>
+
+          <!-- FAB Buttons -->
+          <div class="button-row">
+            <button mat-fab data-cy="button-fab">
+              <mat-icon>add</mat-icon>
+            </button>
+            <button mat-mini-fab data-cy="button-mini-fab">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Menu Example -->
+        <div class="menu-section">
+          <h3>Dropdown Menu</h3>
+
+          <button mat-raised-button [matMenuTriggerFor]="menu" data-cy="menu-trigger">
+            <mat-icon>more_vert</mat-icon>
+            Actions
+          </button>
+
+          <mat-menu #menu="matMenu" data-cy="dropdown-menu">
+            <button mat-menu-item (click)="selectAction('export')" data-cy="menu-export">
+              <mat-icon>download</mat-icon>
+              <span>Export</span>
+            </button>
+            <button mat-menu-item (click)="selectAction('import')" data-cy="menu-import">
+              <mat-icon>upload</mat-icon>
+              <span>Import</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item disabled data-cy="menu-disabled">
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+        </div>
+
+        <!-- Tooltip Example -->
+        <div class="tooltip-section">
+          <h3>Tooltips</h3>
+
+          <button
+            mat-raised-button
+            matTooltip="This is a helpful tooltip"
+            matTooltipPosition="above"
+            data-cy="tooltip-button">
+            Hover for Tooltip
+          </button>
+
+          <mat-icon
+            matTooltip="Information icon"
+            matTooltipPosition="right"
+            data-cy="tooltip-icon">
+            info
+          </mat-icon>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- ========== Dialog Tab ========== -->
+    <mat-tab data-cy="dialog-tab">
+      <ng-template mat-tab-label>
+        <mat-icon>dialog</mat-icon>
+        Dialog
+      </ng-template>
+
+      <div class="tab-content">
+        <h2>Material Dialog</h2>
+        <p>Click the button below to open a Material Dialog.</p>
+
+        <button mat-raised-button color="primary" (click)="openDialog()" data-cy="open-dialog-button">
+          Open Dialog
+        </button>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
