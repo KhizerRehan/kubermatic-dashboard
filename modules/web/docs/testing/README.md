@@ -19,6 +19,9 @@ related:
   - '[[TESTING-METRICS]]'
   - '[[FEEDBACK-PROCESS]]'
   - '[[TESTING-ROADMAP]]'
+  - '[[KNOWLEDGE-SHARING-SESSION]]'
+  - '[[TESTING-CHAMPIONS]]'
+  - '[[FACILITATOR-QUICK-START]]'
 ---
 
 # Kubermatic Dashboard Testing Documentation
@@ -453,6 +456,47 @@ When tests fail, consult **[TESTING-BEST-PRACTICES.md](./TESTING-BEST-PRACTICES.
 
 📌 **Read this** to understand the overall testing direction, identify improvement opportunities, and understand how to contribute to testing excellence.
 
+#### [KNOWLEDGE-SHARING-SESSION.md](./KNOWLEDGE-SHARING-SESSION.md)
+**Complete guide for hosting team knowledge-sharing sessions and feedback gathering**
+- Session planning and pre-session checklist (2-3 weeks before)
+- 90-minute session agenda with detailed timing
+- Presentation outline with slides and key messages
+- Three feedback collection methods (online survey, forms, sticky notes)
+- Testing champion identification and recruitment strategy
+- Post-session follow-up procedures and timelines
+- Facilitator tips and troubleshooting common situations
+- Sample documents and templates (champion agreements, check-ins)
+
+📌 **Use this** when organizing team sessions to gather feedback, present testing results, and identify testing champions.
+
+#### [TESTING-CHAMPIONS.md](./TESTING-CHAMPIONS.md)
+**Testing Champions Program - peer leadership and distributed expertise**
+- Overview of champion program mission, vision, and principles
+- Five champion roles with detailed responsibilities (Shared Components, Service/API, Form, E2E, Edition-Specific)
+- Recruitment strategy and selection process
+- Comprehensive onboarding (Week 1-4 timelines)
+- Mentor structure and support for champions
+- Monthly time commitment breakdown (2-3 hours/month)
+- Success metrics and recognition programs
+- Escalation paths and support resources
+- Program evolution and sustainability planning
+
+📌 **Refer to this** if you're interested in becoming a Testing Champion or if you're managing champions.
+
+#### [FACILITATOR-QUICK-START.md](./FACILITATOR-QUICK-START.md)
+**Quick-reference guide for session facilitators - day-of checklist and scripts**
+- Day-of checklist (30 minutes before session)
+- Opening script and key presentation points
+- Handling common questions and challenging scenarios
+- Time management and maintaining energy
+- Facilitator roles (presenter, feedback collector, note-taker, time-keeper)
+- Feedback collection scripts and methods
+- Closing remarks and next steps
+- Post-session immediate actions
+- Facilitator self-care and encouragement
+
+📌 **Review this** if you're facilitating a knowledge-sharing session to stay on track and handle common situations smoothly.
+
 ---
 
 ## Quick Reference
@@ -870,6 +914,26 @@ open coverage/index.html
 4. **Use the debugging guide** - TESTING-BEST-PRACTICES.md has a dedicated section
 5. **Ask in team chat** - Share the error and what you've tried
 
+### Team Support Channels
+
+**Need help with testing?** Here are your options:
+
+| Need | Channel | When | Response |
+|------|---------|------|----------|
+| Quick question | `#testing-help` Slack | Anytime | 24 hours |
+| Real-time discussion | Testing Office Hours (1st Thursday, 2-3 PM) | Monthly | Live |
+| Expert help (specific area) | Contact Testing Champion | Anytime | 48 hours |
+| Process improvements | FEEDBACK-PROCESS.md | Anytime | Quarterly review |
+
+**Testing Champions** - Peer experts ready to help:
+- 👤 Shared Components Testing Expert
+- 👤 Service/API Testing Expert
+- 👤 Form Testing Expert
+- 👤 E2E Testing Expert
+- 👤 Edition-Specific (CE/EE) Testing Expert
+
+See [TESTING-CHAMPIONS.md](./TESTING-CHAMPIONS.md) for champion contact info.
+
 ### Documentation Categories
 
 - **Learning**: Start with TESTING-PATTERNS.md
@@ -877,6 +941,7 @@ open coverage/index.html
 - **Reference**: Use MOCK-SERVICES-REFERENCE.md
 - **Advanced**: See ADVANCED-TESTING-PATTERNS.md
 - **Operations**: Check MAINTENANCE-PROCESS.md
+- **Team Help**: See TESTING-CHAMPIONS.md for expert help
 
 ---
 
@@ -903,7 +968,11 @@ README.md (YOU ARE HERE)
 │   ├── TEST-PERFORMANCE.md
 │   └── TESTING-METRICS.md
 └── Team Processes
-    └── FEEDBACK-PROCESS.md
+    ├── FEEDBACK-PROCESS.md
+    ├── TESTING-ROADMAP.md
+    ├── KNOWLEDGE-SHARING-SESSION.md
+    ├── TESTING-CHAMPIONS.md
+    └── FACILITATOR-QUICK-START.md
 ```
 
 ### Recommended Reading Order
