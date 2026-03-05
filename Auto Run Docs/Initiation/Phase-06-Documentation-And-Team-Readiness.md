@@ -213,7 +213,7 @@ This final phase ensures the entire team understands and can effectively use the
   - 4 troubleshooting scenarios with solutions
   - Updated README.md with link in documentation index and document map
 
-- [ ] Create troubleshooting and debugging guide:
+- [x] Create troubleshooting and debugging guide:
   - Create `modules/web/docs/testing/DEBUGGING-TESTS.md` with:
     - Common test failures and their solutions:
       - "cannot find module" errors
@@ -226,6 +226,19 @@ This final phase ensures the entire team understands and can effectively use the
     - How to use console.log and debugger effectively in tests
     - Common mistakes and how to fix them
     - When to reach out for help and who to contact
+
+  **COMPLETED**: Created comprehensive DEBUGGING-TESTS.md (950+ lines) with:
+  - Overview of debugging process and why tests fail
+  - 5 detailed solutions for common failures (cannot find module, routing, providers, async timeouts, flaky tests)
+  - Complete troubleshooting for each error type with code examples
+  - Step-by-step guide to using Chrome DevTools with Jest
+  - VS Code debugger setup with launch.json configuration
+  - Strategic logging techniques and structured logging patterns
+  - 5 detailed common mistakes with before/after solutions
+  - Comprehensive flaky test diagnosis and solutions (7 patterns)
+  - Troubleshooting checklist and help resources
+  - Quick reference commands and common assertions
+  - Updated README.md to link to new DEBUGGING-TESTS document in Documentation Index
 
 - [ ] Create feedback loop and continuous improvement process:
   - Create `modules/web/docs/testing/FEEDBACK-PROCESS.md` with:

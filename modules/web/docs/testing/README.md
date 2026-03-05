@@ -13,6 +13,7 @@ related:
   - '[[TESTING-BEST-PRACTICES]]'
   - '[[TESTING-EDITIONS]]'
   - '[[MAINTENANCE-PROCESS]]'
+  - '[[DEBUGGING-TESTS]]'
   - '[[TEST-PERFORMANCE]]'
   - '[[CI-CD-INTEGRATION]]'
   - '[[TESTING-METRICS]]'
@@ -365,6 +366,18 @@ When tests fail, consult **[TESTING-BEST-PRACTICES.md](./TESTING-BEST-PRACTICES.
 
 📌 **Follow this** as your guide for day-to-day testing responsibilities.
 
+#### [DEBUGGING-TESTS.md](./DEBUGGING-TESTS.md)
+**Troubleshooting and debugging guide for failing tests**
+- Common test failures and their solutions (cannot find module, routing errors, provider errors, timeouts)
+- Using Chrome DevTools to debug tests
+- Using Jest debugging with VS Code
+- Console logging and debugging techniques
+- Common mistakes and how to fix them
+- Handling flaky and intermittent test failures
+- When and how to reach out for help
+
+📌 **Use this** when tests are failing and you need to diagnose and fix the issues.
+
 #### [CI-CD-INTEGRATION.md](./CI-CD-INTEGRATION.md)
 **Continuous Integration setup and coverage reporting**
 - CI pipeline configuration and execution
@@ -517,7 +530,7 @@ expect(form.valid).toBe(false);
 
 ### Task: Debugging a Failing Test
 
-**Path:** [TESTING-BEST-PRACTICES.md](./TESTING-BEST-PRACTICES.md) → "Debugging Failing Tests"
+**Path:** [DEBUGGING-TESTS.md](./DEBUGGING-TESTS.md) → "Common Test Failures and Solutions"
 
 **Steps:**
 1. Read the error message carefully
@@ -525,6 +538,12 @@ expect(form.valid).toBe(false);
 3. Add `console.log()` to inspect values
 4. Use VS Code debugger with `--inspect-brk`
 5. Consult the debugging guide for specific error types
+6. For flaky tests, check isolation and async handling
+
+**Additional Resources:**
+- Specific failures: [DEBUGGING-TESTS.md](./DEBUGGING-TESTS.md#common-test-failures-and-solutions)
+- Common mistakes: [DEBUGGING-TESTS.md](./DEBUGGING-TESTS.md#common-mistakes-and-how-to-fix-them)
+- Debugging tools: [DEBUGGING-TESTS.md](./DEBUGGING-TESTS.md#using-jest-debugging-with-vs-code)
 
 ### Task: Adding Tests for a New Component
 
