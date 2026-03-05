@@ -508,7 +508,7 @@ This phase expands test coverage to feature-specific components and the core ser
 
   **Achievement:** 100+ tests created, 5x target (20+ tests)
 
-- [ ] Create tests for async operations and HTTP interactions:
+- [x] Create tests for async operations and HTTP interactions:
   - Focus on components/services that make HTTP calls
   - For each HTTP-using service, create tests for:
     - Successful HTTP response handling
@@ -519,6 +519,92 @@ This phase expands test coverage to feature-specific components and the core ser
     - Response transformation
   - Use HttpClientTestingModule and HttpTestingController patterns
   - Target: At least 25+ HTTP-related tests
+
+  **COMPLETED:** Created 162 comprehensive HTTP interaction tests (6.5x target!)
+
+  ✅ **AddonService** (39 tests)
+  - POST addon creation with success/error handling
+  - GET addon list with error fallback to empty array
+  - PATCH addon updates with various HTTP status codes
+  - DELETE addon removal with permission/not-found errors
+  - GET accessible addons list
+  - GET addon configs with timer-based refresh and caching
+  - URL construction and parameter validation
+  - Concurrent request handling
+  - Response object structure preservation
+  - Error handling for 400, 401, 403, 404, 500 status codes
+
+  ✅ **MachineDeploymentService** (45 tests)
+  - POST machine deployment creation with label/annotation filtering
+  - GET machine deployment list with error graceful fallback
+  - GET single machine deployment retrieval
+  - PATCH machine deployment updates with various error scenarios
+  - POST restart action with conflict handling
+  - DELETE machine deployment with permission checks
+  - GET nodes for machine deployment
+  - GET nodes metrics for performance monitoring
+  - GET nodes events for activity tracking
+  - GET joining script for node configuration
+  - Parameter validation and URL construction
+  - Concurrent request handling across multiple operations
+  - Error handling for 400, 403, 404, 409, 500 status codes
+  - Response transformation and object preservation
+
+  ✅ **OPAService** (50 tests)
+  - GET constraint templates with observable caching (shareReplay)
+  - POST constraint template creation
+  - PATCH constraint template updates
+  - DELETE constraint template removal
+  - Observable refresh triggering mechanism
+  - GET constraints (project/cluster scoped) with separate caching per combination
+  - POST constraint creation
+  - PATCH constraint updates
+  - DELETE constraint removal
+  - GET default constraints (global) with empty array fallback
+  - POST default constraint creation
+  - PATCH default constraint updates
+  - DELETE default constraint removal
+  - GET gatekeeper config with undefined fallback on error
+  - POST gatekeeper config creation
+  - PATCH gatekeeper config updates
+  - DELETE gatekeeper config removal
+  - Violation page index management (local state)
+  - Concurrent requests to different endpoints
+  - Error handling with different fallback strategies (empty array vs undefined)
+  - Observable cache lifecycle and shareReplay behavior
+
+  ✅ **FeatureGateService** (28 tests)
+  - GET feature gates with timer-based refresh
+  - Observable caching on repeated subscriptions
+  - Handling all feature gates enabled/disabled states
+  - Mixed feature gate states (some enabled, some disabled)
+  - Empty feature gates object response
+  - Error handling with empty object fallback
+  - 404, 401, 403, 500, 503 error status handling
+  - Correct endpoint URL validation
+  - Timer interval-based refresh behavior
+  - Partial feature gate response handling
+  - No duplicate requests within cache window
+  - Response type preservation (boolean values)
+  - Additional unknown properties handling
+  - Network timeout graceful degradation
+  - Rate limiting (429) handling
+  - Subscription behavior and unsubscription lifecycle
+
+  **Testing Patterns Applied:**
+  - HttpClientTestingModule and HttpTestingController setup
+  - Comprehensive HTTP method testing (GET, POST, PATCH, DELETE)
+  - Error response handling across all HTTP status codes (4xx and 5xx)
+  - Observable caching with shareReplay pattern verification
+  - Timer-based refresh mechanism testing
+  - Parameter validation and URL construction
+  - Response transformation and type preservation
+  - Concurrent request handling
+  - Error graceful fallback strategies
+  - Subscription lifecycle management
+  - Network error simulation
+
+  **Achievement:** 162 tests created for HTTP interactions, 6.5x target coverage
 
 - [ ] Create and run integration-style tests:
   - Create tests that verify component + service interactions:
