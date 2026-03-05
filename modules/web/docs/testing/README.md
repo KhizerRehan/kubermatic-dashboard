@@ -17,6 +17,7 @@ related:
   - '[[TEST-PERFORMANCE]]'
   - '[[CI-CD-INTEGRATION]]'
   - '[[TESTING-METRICS]]'
+  - '[[FEEDBACK-PROCESS]]'
 ---
 
 # Kubermatic Dashboard Testing Documentation
@@ -416,6 +417,25 @@ When tests fail, consult **[TESTING-BEST-PRACTICES.md](./TESTING-BEST-PRACTICES.
 - Troubleshooting metrics and reporting issues
 
 📌 **Reference this** to set up metric tracking and understand test suite health at a glance.
+
+---
+
+### 👥 Team Processes & Continuous Improvement
+
+#### [FEEDBACK-PROCESS.md](./FEEDBACK-PROCESS.md)
+**Establishing feedback loops and continuous improvement processes for testing practices**
+- How team members submit improvements and suggestions
+- Monthly feedback surveys and submission channels
+- Quarterly strategy reviews and metric analysis
+- Documentation update workflow based on learnings
+- Issue tracking for testing improvements
+- Regular retrospectives (sprint, feature, quarterly)
+- Monthly "Testing Office Hours" for team discussion
+- Feedback analysis and implementation process
+- Success metrics and tracking mechanisms
+- Communication and visibility strategies
+
+📌 **Refer to this** when suggesting improvements, participating in office hours, or understanding how testing processes evolve.
 
 ---
 
@@ -861,11 +881,13 @@ README.md (YOU ARE HERE)
 │   ├── SHARED-COMPONENTS-COVERAGE-REPORT.md
 │   ├── SHARED-COMPONENTS-COVERAGE-PLAN.md
 │   └── MOCK-COVERAGE-AUDIT.md
-└── Operations
-    ├── MAINTENANCE-PROCESS.md
-    ├── CI-CD-INTEGRATION.md
-    ├── TEST-PERFORMANCE.md
-    └── TESTING-METRICS.md
+├── Operations
+│   ├── MAINTENANCE-PROCESS.md
+│   ├── CI-CD-INTEGRATION.md
+│   ├── TEST-PERFORMANCE.md
+│   └── TESTING-METRICS.md
+└── Team Processes
+    └── FEEDBACK-PROCESS.md
 ```
 
 ### Recommended Reading Order
@@ -894,8 +916,11 @@ This documentation is a living resource. As you:
 - Learn new testing patterns → Update TESTING-PATTERNS.md
 - Find common mistakes → Add to TESTING-BEST-PRACTICES.md
 - Encounter issues → Update MAINTENANCE-PROCESS.md
+- Have suggestions for improvements → Submit via [FEEDBACK-PROCESS.md](./FEEDBACK-PROCESS.md)
 
-See [MAINTENANCE-PROCESS.md](./MAINTENANCE-PROCESS.md) → "Documentation Updates" for how to contribute improvements.
+See [FEEDBACK-PROCESS.md](./FEEDBACK-PROCESS.md) → "Feedback Submission Process" for how to suggest improvements to testing practices.
+
+See [MAINTENANCE-PROCESS.md](./MAINTENANCE-PROCESS.md) → "Documentation Updates" for how to contribute documentation improvements.
 
 ---
 
