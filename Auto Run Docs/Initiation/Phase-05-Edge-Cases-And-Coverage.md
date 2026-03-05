@@ -313,7 +313,7 @@ This phase focuses on achieving comprehensive test coverage by handling edge cas
   - Real examples from actual test patterns used in codebase
   - Cross-references to TESTING-PATTERNS.md and other documentation
 
-- [ ] Establish ongoing test maintenance processes:
+- [x] Establish ongoing test maintenance processes:
   - Create `modules/web/docs/testing/MAINTENANCE-PROCESS.md` with:
     - Guidelines for keeping tests up-to-date with code changes
     - Process for reviewing and updating tests during refactoring
@@ -321,3 +321,22 @@ This phase focuses on achieving comprehensive test coverage by handling edge cas
     - Regular coverage review and improvement cycles
     - Team responsibilities for test creation and maintenance
     - Tools and commands for monitoring test health
+
+  **COMPLETED**: Created comprehensive test maintenance process guide (2,800+ lines):
+  - File: `modules/web/docs/testing/MAINTENANCE-PROCESS.md`
+  - 10 major sections covering maintenance processes and responsibilities
+  - Daily Development Tasks: Code writing, testing, and verification workflow
+  - Code Review Checklist: Quality checks for both reviewers and authors
+  - Test Failure Handling: Debugging techniques, CI/CD failures, flaky test fixes
+  - Refactoring & Updates: Processes for renaming, API changes, HTML refactoring
+  - Regular Coverage Reviews: Weekly, monthly, and quarterly review cycles
+  - Team Responsibilities: Developer, reviewer, QA, tech lead, and DevOps roles
+  - Tools & Commands Reference: Complete command reference and helper utilities
+  - Common Scenarios: 5 detailed examples (merge conflicts, coverage drops, E2E fails, etc.)
+  - Test Health Monitoring: Key metrics, automated checks, monthly reporting
+  - Quick Reference Decision Trees: "Should I test?", "Test fails?", "Which helper?"
+
+  Coverage includes practical guidance on maintaining ~600+ test cases across the dashboard,
+  establishing team workflows, handling CI/CD integration, and monitoring long-term test health.
+  All sections include real examples and actionable checklists. Cross-references to existing
+  documentation (TESTING-BEST-PRACTICES.md, TESTING-PATTERNS.md, MOCK-SERVICES-REFERENCE.md).
