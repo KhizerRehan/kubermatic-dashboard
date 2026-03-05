@@ -15,6 +15,7 @@ related:
   - '[[MAINTENANCE-PROCESS]]'
   - '[[TEST-PERFORMANCE]]'
   - '[[CI-CD-INTEGRATION]]'
+  - '[[TESTING-METRICS]]'
 ---
 
 # Kubermatic Dashboard Testing Documentation
@@ -389,6 +390,19 @@ When tests fail, consult **[TESTING-BEST-PRACTICES.md](./TESTING-BEST-PRACTICES.
 - Performance anti-patterns to avoid
 
 📌 **Use this** to optimize test execution time and keep test suite fast during development.
+
+#### [TESTING-METRICS.md](./TESTING-METRICS.md)
+**Key metrics to track and dashboards for monitoring test health**
+- Key metrics explained: coverage %, test count, pass rate, execution time
+- Methods for measuring and reporting metrics
+- Coverage goals by component category
+- Identifying trending issues (coverage drops, flaky tests, slow tests)
+- Dashboard setup options (Google Sheets, GitHub Projects, Node.js server)
+- Integration with monitoring tools (Codecov, Grafana)
+- Best practices for metric tracking
+- Troubleshooting metrics and reporting issues
+
+📌 **Reference this** to set up metric tracking and understand test suite health at a glance.
 
 ---
 
@@ -829,7 +843,10 @@ README.md (YOU ARE HERE)
 │   ├── SHARED-COMPONENTS-COVERAGE-PLAN.md
 │   └── MOCK-COVERAGE-AUDIT.md
 └── Operations
-    └── MAINTENANCE-PROCESS.md
+    ├── MAINTENANCE-PROCESS.md
+    ├── CI-CD-INTEGRATION.md
+    ├── TEST-PERFORMANCE.md
+    └── TESTING-METRICS.md
 ```
 
 ### Recommended Reading Order
