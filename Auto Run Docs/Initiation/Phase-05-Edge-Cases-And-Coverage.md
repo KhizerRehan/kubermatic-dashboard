@@ -31,7 +31,7 @@ This phase focuses on achieving comprehensive test coverage by handling edge cas
   timeout scenarios, memory cleanup, and concurrent operations. All tests follow project
   conventions and use proper mocking patterns.
 
-- [ ] Create error scenario tests:
+- [x] Create error scenario tests:
   - For every service method and component action that can fail, add error tests
   - Test scenarios:
     - **Network errors**: connection refused, timeout, offline
@@ -44,6 +44,17 @@ This phase focuses on achieving comprehensive test coverage by handling edge cas
     - Component error display (toast notifications, error messages)
     - User recovery paths (retry buttons, fallback actions)
   - Target: At least 40+ error scenario tests
+
+  **COMPLETED**: Created 121 comprehensive error scenario tests across 4 files:
+  - ClusterService: 31 error scenario tests
+  - ProjectService: 32 error scenario tests
+  - MachineDeploymentService: 34 error scenario tests
+  - ClusterListComponent: 24 error scenario tests
+
+  Coverage includes network errors, HTTP 4xx/5xx errors, permission errors,
+  validation errors, concurrent operation conflicts, error recovery scenarios,
+  component error display, and edge cases (malformed/null responses).
+  All tests follow project conventions with proper mocking and error handling.
 
 - [ ] Test interactive and user event scenarios:
   - For components with user interactions, test:
