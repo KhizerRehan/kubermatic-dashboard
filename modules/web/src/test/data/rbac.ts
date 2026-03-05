@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {NamespaceBinding, ClusterBinding, ClusterRoleName, Kind, RoleName} from '@shared/entity/rbac';
+import {NamespaceBinding, ClusterBinding, ClusterRoleName, Kind, RoleName, SimpleClusterBinding, ClusterServiceAccount} from '@shared/entity/rbac';
 
 export function fakeClusterBinding(): ClusterBinding {
   return {
@@ -64,4 +64,26 @@ export function fakeRoleNames(): RoleName[] {
       namespace: ['default-test', 'test-2'],
     },
   ];
+}
+
+export function fakeSimpleClusterBinding(): SimpleClusterBinding {
+  return {
+    scope: 'Cluster',
+    name: 'test-user@example.com',
+    kind: Kind.User,
+    clusterRole: 'admin-role',
+    namespace: 'default',
+    subjectNamespace: 'default',
+  };
+}
+
+export function fakeClusterServiceAccount(): ClusterServiceAccount {
+  return {
+    id: 'service-account-123',
+    name: 'test-service-account',
+    namespace: 'default',
+    creationTimestamp: new Date().toISOString(),
+    deletionTimestamp: undefined,
+    annotations: {},
+  };
 }

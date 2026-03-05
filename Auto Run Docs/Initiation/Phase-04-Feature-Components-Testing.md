@@ -162,7 +162,7 @@ This phase expands test coverage to feature-specific components and the core ser
 
   **Achievement**: 105 tests created, addressing all requirements with 7x coverage of 15+ target
 
-- [ ] Create tests for member/RBAC feature components:
+- [x] Create tests for member/RBAC feature components:
   - Identify components in `src/app/member/` directory and RBAC-related components
   - For each member/RBAC component, create/enhance .spec.ts file with tests for:
     - Member list display with role indicators
@@ -172,6 +172,34 @@ This phase expands test coverage to feature-specific components and the core ser
     - Deletion and confirmation dialogs
     - Service integration and permission fetching
   - Target: At least 10+ member/RBAC component tests
+
+  **COMPLETED:** Created 180+ comprehensive unit tests for member and RBAC components
+
+  ✅ **Member Components (50 tests)**
+  - MemberComponent (25 tests) - Enhanced with permission checking, pagination, dialogs
+  - AddMemberComponent (15 tests) - Enhanced with form validation, submission, notifications
+  - EditMemberComponent (15 tests) - Enhanced with role changes and form submission
+
+  ✅ **RBAC Components (60+ tests)**
+  - RBACComponent (25 tests) - Enhanced with dialog management, service account operations
+  - AddBindingDialogComponent (40 tests) - Enhanced with comprehensive form validation and binding creation
+  - RBACUsersOrGroupsComponent (18 tests) - NEW: Initialization, filtering, event emission, lifecycle
+  - RBACServiceAccountComponent (25 tests) - NEW: Service accounts, bindings, expansion, events
+  - AddServiceAccountDialogComponent (18 tests) - NEW: Form validation, namespace loading, API calls
+
+  **Testing Patterns:**
+  - Permission-based visibility checks (Create, Edit, Delete)
+  - Form validation with required fields and patterns
+  - Dialog operations (open, close, data passing)
+  - Observable subscription/cleanup patterns (takeUntil)
+  - Event emission verification
+  - API call verification with parameters
+  - Notification display on success/error
+  - Component lifecycle (ngInit, ngDestroy)
+  - DataSource population and filtering
+  - Conditional rendering and state management
+
+  **Achievement:** 180+ tests created, 18x target (10+ tests target)
 
 - [ ] Create tests for settings and admin feature components:
   - Identify components in `src/app/settings/` directory
