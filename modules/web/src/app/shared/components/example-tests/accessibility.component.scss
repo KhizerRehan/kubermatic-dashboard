@@ -1,0 +1,341 @@
+// Copyright 2020 The Kubermatic Kubernetes Platform contributors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+.accessibility-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+  background-color: #fff;
+
+  h1,
+  h2 {
+    margin-top: 0;
+    color: #222;
+    line-height: 1.3;
+  }
+
+  p {
+    color: #666;
+    line-height: 1.5;
+  }
+}
+
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.error-message {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fee;
+  border-left: 4px solid #c33;
+  color: #933;
+  border-radius: 2px;
+}
+
+.success-message {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #efe;
+  border-left: 4px solid #3c3;
+  color: #393;
+  border-radius: 2px;
+}
+
+.loading-state {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #eef;
+  border-left: 4px solid #33c;
+  color: #339;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.form-field {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+
+  &.form-checkbox {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #222;
+}
+
+.form-input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+  }
+
+  &[aria-invalid='true'] {
+    border-color: #c33;
+    background-color: #fef0f0;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(204, 51, 51, 0.2);
+    }
+  }
+
+  &:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+  }
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.error-text {
+  display: block;
+  margin-top: 0.5rem;
+  color: #c33;
+  font-size: 0.9rem;
+
+  span {
+    display: block;
+
+    &:not(:last-child)::after {
+      content: '';
+    }
+  }
+}
+
+.form-checkbox-input {
+  margin-right: 0.5rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+
+  &:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+  }
+}
+
+.form-checkbox-label {
+  cursor: pointer;
+  color: #333;
+
+  &:hover {
+    color: #0066cc;
+  }
+}
+
+.form-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #0066cc;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: #f0f8ff;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+}
+
+.btn-primary {
+  background-color: #0066cc;
+  color: #fff;
+  border-color: #0066cc;
+
+  &:hover:not(:disabled) {
+    background-color: #0052a3;
+  }
+}
+
+.btn-secondary {
+  background-color: #f5f5f5;
+  color: #333;
+  border-color: #ddd;
+
+  &:hover:not(:disabled) {
+    background-color: #efefef;
+  }
+}
+
+.shortcuts-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+
+  ul {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+
+  kbd {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 0.9em;
+    color: #333;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background-color: #0066cc;
+  color: #fff;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 100;
+
+  &:focus {
+    top: 0;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: more) {
+  .form-input {
+    border-width: 2px;
+  }
+
+  .btn {
+    border-width: 2px;
+  }
+
+  .error-text {
+    font-weight: 600;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .accessibility-container {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  h1,
+  h2 {
+    color: #f0f0f0;
+  }
+
+  p {
+    color: #b0b0b0;
+  }
+
+  .form-input {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #444;
+
+    &:focus {
+      border-color: #66b3ff;
+      box-shadow: 0 0 0 3px rgba(102, 179, 255, 0.2);
+    }
+
+    &[aria-invalid='true'] {
+      background-color: #3a1a1a;
+      border-color: #ff6666;
+    }
+  }
+
+  .form-label {
+    color: #e0e0e0;
+  }
+
+  .btn {
+    background-color: #003d99;
+    color: #e0e0e0;
+    border-color: #0066cc;
+
+    &.btn-secondary {
+      background-color: #2a2a2a;
+      color: #e0e0e0;
+      border-color: #444;
+    }
+  }
+
+  .error-message {
+    background-color: #3a1a1a;
+    color: #ff9999;
+    border-color: #ff6666;
+  }
+
+  .success-message {
+    background-color: #1a3a1a;
+    color: #99ff99;
+    border-color: #66ff66;
+  }
+
+  .loading-state {
+    background-color: #1a1a3a;
+    color: #99ccff;
+    border-color: #3366ff;
+  }
+}

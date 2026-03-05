@@ -1,0 +1,214 @@
+<!-- Copyright 2020 The Kubermatic Kubernetes Platform contributors. -->
+<!-- -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License"); -->
+<!-- you may not use this file except in compliance with the License. -->
+<!-- You may obtain a copy of the License at -->
+<!-- -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0 -->
+<!-- -->
+<!-- Unless required by applicable law or agreed to in writing, software -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS, -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. -->
+<!-- See the License for the specific language governing permissions and -->
+<!-- limitations under the License. -->
+
+<div class="accessibility-container">
+  <!-- Main form section with proper role and aria-live for dynamic content -->
+  <section role="region" aria-label="Contact Form" class="form-section">
+    <h1 id="form-title">Accessible Contact Form</h1>
+    <p id="form-description">Fill out this form to get in touch with us.</p>
+
+    <!-- Error message with aria-live for announcements -->
+    <div
+      *ngIf="errorMessage"
+      class="error-message"
+      role="alert"
+      aria-live="assertive"
+      data-cy="error-message"
+    >
+      {{ errorMessage }}
+    </div>
+
+    <!-- Success message with aria-live -->
+    <div
+      *ngIf="successMessage"
+      class="success-message"
+      role="alert"
+      aria-live="polite"
+      data-cy="success-message"
+    >
+      {{ successMessage }}
+    </div>
+
+    <!-- Loading state with aria-busy -->
+    <div
+      *ngIf="isLoading"
+      class="loading-state"
+      aria-busy="true"
+      aria-label="Form is being submitted"
+      data-cy="loading-indicator"
+    >
+      Loading...
+    </div>
+
+    <!-- Main form with aria-labelledby and aria-describedby -->
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      (keydown)="onKeyDown($event)"
+      aria-labelledby="form-title"
+      aria-describedby="form-description"
+      novalidate
+      data-cy="contact-form"
+    >
+      <!-- Name field with proper label association -->
+      <div class="form-field">
+        <label for="name-input" class="form-label">
+          Name <span aria-label="required">*</span>
+        </label>
+        <input
+          id="name-input"
+          type="text"
+          formControlName="name"
+          class="form-input"
+          placeholder="Enter your name"
+          aria-required="true"
+          [attr.aria-invalid]="form.get('name')?.invalid && isSubmitted"
+          [attr.aria-describedby]="form.get('name')?.invalid && isSubmitted ? 'name-error' : null"
+          (focus)="trackFocus($event.target as HTMLElement)"
+          data-cy="name-input"
+        />
+        <span
+          *ngIf="form.get('name')?.invalid && isSubmitted"
+          id="name-error"
+          class="error-text"
+          role="alert"
+          data-cy="name-error"
+        >
+          <span *ngIf="form.get('name')?.hasError('required')">Name is required.</span>
+          <span *ngIf="form.get('name')?.hasError('minlength')">Name must be at least 3 characters.</span>
+        </span>
+      </div>
+
+      <!-- Email field with proper label association -->
+      <div class="form-field">
+        <label for="email-input" class="form-label">
+          Email <span aria-label="required">*</span>
+        </label>
+        <input
+          id="email-input"
+          type="email"
+          formControlName="email"
+          class="form-input"
+          placeholder="Enter your email"
+          aria-required="true"
+          [attr.aria-invalid]="form.get('email')?.invalid && isSubmitted"
+          [attr.aria-describedby]="form.get('email')?.invalid && isSubmitted ? 'email-error' : null"
+          (focus)="trackFocus($event.target as HTMLElement)"
+          data-cy="email-input"
+        />
+        <span
+          *ngIf="form.get('email')?.invalid && isSubmitted"
+          id="email-error"
+          class="error-text"
+          role="alert"
+          data-cy="email-error"
+        >
+          <span *ngIf="form.get('email')?.hasError('required')">Email is required.</span>
+          <span *ngIf="form.get('email')?.hasError('email')">Please enter a valid email.</span>
+        </span>
+      </div>
+
+      <!-- Message field with proper label association -->
+      <div class="form-field">
+        <label for="message-input" class="form-label">
+          Message <span aria-label="required">*</span>
+        </label>
+        <textarea
+          id="message-input"
+          formControlName="message"
+          class="form-input form-textarea"
+          placeholder="Enter your message"
+          aria-required="true"
+          [attr.aria-invalid]="form.get('message')?.invalid && isSubmitted"
+          [attr.aria-describedby]="form.get('message')?.invalid && isSubmitted ? 'message-error' : null"
+          (focus)="trackFocus($event.target as HTMLElement)"
+          data-cy="message-input"
+          rows="5"
+        ></textarea>
+        <span
+          *ngIf="form.get('message')?.invalid && isSubmitted"
+          id="message-error"
+          class="error-text"
+          role="alert"
+          data-cy="message-error"
+        >
+          <span *ngIf="form.get('message')?.hasError('required')">Message is required.</span>
+          <span *ngIf="form.get('message')?.hasError('minlength')">Message must be at least 10 characters.</span>
+        </span>
+      </div>
+
+      <!-- Checkbox field with proper label association -->
+      <div class="form-field form-checkbox">
+        <input
+          id="subscribe-input"
+          type="checkbox"
+          formControlName="subscribe"
+          class="form-checkbox-input"
+          data-cy="subscribe-input"
+        />
+        <label for="subscribe-input" class="form-checkbox-label">
+          Subscribe to our newsletter
+        </label>
+      </div>
+
+      <!-- Form buttons with proper roles -->
+      <div class="form-buttons">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isLoading"
+          aria-label="Submit the contact form"
+          data-cy="submit-button"
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="resetForm()"
+          [disabled]="isLoading"
+          aria-label="Reset the form to empty state"
+          data-cy="reset-button"
+        >
+          Reset
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Keyboard shortcuts help section with proper ARIA -->
+  <section role="region" aria-label="Keyboard Shortcuts" class="shortcuts-section">
+    <h2>Keyboard Navigation</h2>
+    <ul role="list">
+      <li role="listitem">
+        <kbd>Tab</kbd> - Move to next form field
+      </li>
+      <li role="listitem">
+        <kbd>Shift + Tab</kbd> - Move to previous form field
+      </li>
+      <li role="listitem">
+        <kbd>Enter</kbd> - Submit form (when focus is on submit button)
+      </li>
+      <li role="listitem">
+        <kbd>Escape</kbd> - Reset form
+      </li>
+      <li role="listitem">
+        <kbd>Space</kbd> - Toggle checkbox when focused
+      </li>
+    </ul>
+  </section>
+
+  <!-- Skip to main content link (best practice for accessibility) -->
+  <a href="#form-title" class="skip-link">Skip to main form</a>
+</div>
