@@ -201,7 +201,7 @@ This phase expands test coverage to feature-specific components and the core ser
 
   **Achievement:** 180+ tests created, 18x target (10+ tests target)
 
-- [ ] Create tests for settings and admin feature components:
+- [x] Create tests for settings and admin feature components:
   - Identify components in `src/app/settings/` directory
   - For each settings component, create/enhance .spec.ts file with tests for:
     - Settings form rendering with current values
@@ -211,6 +211,88 @@ This phase expands test coverage to feature-specific components and the core ser
     - Admin vs. user settings distinction
     - Feature flag-based visibility
   - Target: At least 10+ settings component tests
+
+  **COMPLETED:** Created 130 comprehensive unit tests for 5 key settings components (13x target!)
+
+  ✅ **UserSettingsComponent** (16 tests)
+  - Settings form loading and initialization with user preferences
+  - Landing page selection (Clusters vs Overview) with persistence
+  - Debounced auto-save functionality (1000ms debounce)
+  - Observable subscription cleanup on destroy
+  - Settings comparison and equality checking
+  - Project list loading and validation
+  - Invalid project selection clearing
+
+  ✅ **AccountsComponent** (22 tests)
+  - User list rendering with Material table and sorting
+  - Paginator initialization and page size management
+  - Filter and search functionality with query binding
+  - Loading state management (show/hide during fetch)
+  - Data source updates on ngOnChanges
+  - User filtering (removing entries with missing data)
+  - Paginator visibility logic (show only when needed)
+  - Displayed columns configuration
+  - User settings integration (items per page)
+  - Proper unsubscription on destroy
+
+  ✅ **AdminsComponent** (28 tests)
+  - Admin list display with Material table and sorting
+  - Admin table data source setup and updates
+  - Delete button permission checking (current user restriction)
+  - Confirmation dialog for admin removal with escape handling
+  - Add admin dialog operations and refresh
+  - Success notifications on admin removal
+  - Admin refresh trigger on successful operations
+  - Admin ID generation for delete buttons
+  - Paginator visibility based on admin count
+  - Dialog filtering and subscription management
+
+  ✅ **CustomizationComponent** (23 tests)
+  - Admin settings loading and cloning for editing
+  - Changelog popup toggle with checkbox event handling
+  - Debounced settings changes (500ms delay)
+  - Display link settings comparison (API docs, demo info, ToS)
+  - Custom links patch generation
+  - Success notifications on settings update
+  - Settings change event triggering
+  - Local vs API settings separation
+  - Unsubscription on component destroy
+
+  ✅ **DefaultsComponent** (41 tests)
+  - Complex admin settings with 8+ major feature areas
+  - Feature gate checking (OIDC, OpenID Auth)
+  - Event rate limit configuration and form control
+  - Operating system selection with allowed OS tracking
+  - Velero checksum algorithm configuration
+  - VMware Cloud Director IP allocation modes
+  - Annotations management (hidden/protected annotations)
+  - MLA logging/monitoring settings comparison
+  - OIDC kubeconfig settings with cascading updates
+  - Kubernetes Dashboard feature gate requirements verification
+  - Static labels validation and updates
+  - Documentation link generation with branding check
+  - Event rate limit state management (enabled/enforced/default config)
+
+  **Testing Patterns Established:**
+  - Comprehensive mock services (SettingsService, UserService, MatDialog, UserClusterConfigService, FeatureGateService)
+  - Reactive forms testing with debounce verification
+  - Dialog operations with afterClosed subscriptions
+  - Permission-based visibility and action enabling/disabling
+  - Observable subscription cleanup (takeUntil pattern)
+  - Material Table DataSource with sorting/pagination
+  - Change detection and automatic refresh patterns
+  - Error handling and graceful degradation
+  - Feature flag and conditional feature testing
+  - Form validation and state management
+
+  **Files Created:**
+  - `modules/web/src/app/settings/user/component.spec.ts` (16 tests)
+  - `modules/web/src/app/settings/admin/accounts/component.spec.ts` (22 tests)
+  - `modules/web/src/app/settings/admin/admins/component.spec.ts` (28 tests)
+  - `modules/web/src/app/settings/admin/customization/component.spec.ts` (23 tests)
+  - `modules/web/src/app/settings/admin/defaults/component.spec.ts` (41 tests)
+
+  **Achievement:** 130 tests created addressing all requirements with 13x coverage of 10+ target
 
 - [ ] Create comprehensive service unit tests:
   - Focus on core services that multiple features depend on
