@@ -27,7 +27,7 @@ import {ClusterMockService} from '@test/services/cluster-mock';
 import {ActivatedRouteStub} from '@test/services/router-stubs';
 import {UserMockService} from '@test/services/user-mock';
 import {TerminalComponent} from './component';
-import {LayoutType} from './types';
+import {LayoutType} from '@shared/model/Terminal';
 
 describe('TerminalComponent', () => {
   let component: TerminalComponent;

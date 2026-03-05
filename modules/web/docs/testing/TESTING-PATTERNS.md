@@ -1310,6 +1310,593 @@ it('displays stuff')
 
 ---
 
+## Phase 03: Advanced Shared Component Testing Patterns
+
+This section documents patterns discovered and refined during Phase 03 comprehensive shared component testing (1,120+ tests across 43+ components).
+
+### Testing Form Controls with ControlValueAccessor
+
+Many shared components implement `ControlValueAccessor` to integrate with Angular reactive forms. Testing requires special considerations:
+
+```typescript
+describe('CustomInputComponent', () => {
+  let component: CustomInputComponent;
+  let fixture: ComponentFixture<CustomInputComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, CustomInputComponent],
+    });
+    fixture = TestBed.createComponent(CustomInputComponent);
+    component = fixture.componentInstance;
+  });
+
+  describe('ControlValueAccessor Integration', () => {
+    it('should write value via writeValue', () => {
+      const testValue = 'test input';
+      component.writeValue(testValue);
+      expect(component.value).toBe(testValue);
+    });
+
+    it('should register onChange callback', () => {
+      const onChangeFn = jasmine.createSpy('onChange');
+      component.registerOnChange(onChangeFn);
+
+      component.value = 'new value';
+      component.onChange(); // Trigger change
+
+      expect(onChangeFn).toHaveBeenCalledWith('new value');
+    });
+
+    it('should register onTouched callback', () => {
+      const onTouchedFn = jasmine.createSpy('onTouched');
+      component.registerOnTouched(onTouchedFn);
+
+      const input = fixture.nativeElement.querySelector('input');
+      input.dispatchEvent(new Event('blur'));
+
+      expect(onTouchedFn).toHaveBeenCalled();
+    });
+
+    it('should disable input via setDisabledState', () => {
+      component.setDisabledState(true);
+      expect(component.disabled).toBe(true);
+
+      component.setDisabledState(false);
+      expect(component.disabled).toBe(false);
+    });
+
+    // Integration with FormControl
+    it('should work with FormControl', () => {
+      const control = new FormControl('initial value');
+      component.writeValue(control.value);
+
+      component.registerOnChange(value => {
+        control.setValue(value);
+      });
+
+      component.value = 'updated';
+      component.onChange();
+
+      expect(control.value).toBe('updated');
+    });
+  });
+});
+```
+
+**Key Patterns:**
+- Test `writeValue()` for value binding
+- Test `registerOnChange()` for change emission
+- Test `registerOnTouched()` for blur/touch
+- Test `setDisabledState()` for enabled/disabled state
+- Verify integration with FormControl and FormGroup
+
+### Testing Material Components
+
+Phase 03 tests extensively use Angular Material components. Common patterns:
+
+```typescript
+describe('DialogComponent', () => {
+  let component: DialogComponent;
+  let fixture: ComponentFixture<DialogComponent>;
+  let dialogRef: MatDialogRef<DialogComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [MatDialogModule, MatButtonModule, DialogComponent],
+      providers: [
+        {provide: MAT_DIALOG_DATA, useValue: {title: 'Test'}},
+        {provide: MatDialogRef, useValue: {close: jasmine.createSpy('close')}},
+      ],
+    });
+    fixture = TestBed.createComponent(DialogComponent);
+    component = fixture.componentInstance;
+    dialogRef = TestBed.inject(MatDialogRef);
+  });
+
+  describe('Material Dialog Integration', () => {
+    it('should inject dialog data', () => {
+      expect(component.data.title).toBe('Test');
+    });
+
+    it('should close dialog with data', () => {
+      component.onSave({result: true});
+      expect(dialogRef.close).toHaveBeenCalledWith({result: true});
+    });
+
+    it('should handle button clicks', () => {
+      fixture.detectChanges();
+      const button = fixture.nativeElement.querySelector('[mat-dialog-close]');
+      button.click();
+      expect(dialogRef.close).toHaveBeenCalled();
+    });
+  });
+
+  describe('Material Form Field', () => {
+    it('should display error messages', () => {
+      component.form.get('email').setErrors({required: true});
+      fixture.detectChanges();
+
+      const error = fixture.nativeElement.querySelector('mat-error');
+      expect(error).toBeTruthy();
+    });
+
+    it('should apply error styles to input', () => {
+      component.form.get('email').markAsTouched();
+      component.form.get('email').setErrors({invalid: true});
+      fixture.detectChanges();
+
+      const formField = fixture.debugElement.query(By.directive(MatFormField));
+      expect(formField.componentInstance.isErrorState(
+        component.form.get('email'),
+        component.form
+      )).toBe(true);
+    });
+  });
+
+  describe('Material Chips', () => {
+    it('should render chip set', () => {
+      component.items = ['item1', 'item2'];
+      fixture.detectChanges();
+
+      const chips = fixture.debugElement.queryAll(By.directive(MatChip));
+      expect(chips.length).toBe(2);
+    });
+
+    it('should handle chip removal', () => {
+      component.items = ['item1', 'item2'];
+      fixture.detectChanges();
+
+      const removeButton = fixture.nativeElement.querySelector('button[matChipRemove]');
+      removeButton.click();
+
+      expect(component.items.length).toBe(1);
+    });
+  });
+});
+```
+
+**Key Patterns:**
+- Mock `MatDialogRef` and `MAT_DIALOG_DATA`
+- Test dialog closing with return data
+- Verify error message display on form fields
+- Test Material-specific directives and components
+
+### Testing Components with @ContentChild and @ViewChild
+
+Layout and container components often use content and view child references:
+
+```typescript
+describe('ExpansionPanelComponent', () => {
+  let component: ExpansionPanelComponent;
+  let fixture: ComponentFixture<ExpansionPanelComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ExpansionPanelComponent],
+    });
+    fixture = TestBed.createComponent(ExpansionPanelComponent);
+    component = fixture.componentInstance;
+  });
+
+  describe('@ViewChild Elements', () => {
+    it('should reference header element after view init', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+
+      const header = component.headerRef;
+      expect(header).toBeTruthy();
+    }));
+
+    it('should toggle header class on expanded', () => {
+      fixture.detectChanges();
+      component.expanded = true;
+      fixture.detectChanges();
+
+      const headerElement = component.headerRef.nativeElement;
+      expect(headerElement.classList.contains('expanded')).toBe(true);
+    });
+  });
+
+  describe('Content Projection (@ContentChild)', () => {
+    it('should project custom content', () => {
+      @Component({
+        selector: 'app-test-wrapper',
+        template: `
+          <km-expansion-panel>
+            <div class="custom-content">Projected Content</div>
+          </km-expansion-panel>
+        `,
+      })
+      class TestWrapperComponent {}
+
+      const wrapperFixture = TestBed.createComponent(TestWrapperComponent);
+      wrapperFixture.detectChanges();
+
+      const projectedContent = wrapperFixture.nativeElement.querySelector('.custom-content');
+      expect(projectedContent.textContent).toBe('Projected Content');
+    });
+
+    it('should access @ContentChild from parent', () => {
+      @Component({
+        selector: 'app-tab-panel',
+        template: `<ng-content></ng-content>`,
+      })
+      class TabPanelComponent {
+        @ContentChild('tabHeader') header: TemplateRef<any>;
+      }
+
+      @Component({
+        template: `
+          <app-tab-panel>
+            <ng-template #tabHeader>Header Content</ng-template>
+          </app-tab-panel>
+        `,
+      })
+      class TestComponent {}
+
+      const testFixture = TestBed.configureTestingModule({
+        declarations: [TabPanelComponent, TestComponent],
+      }).createComponent(TestComponent);
+      testFixture.detectChanges();
+
+      const panelComponent = testFixture.debugElement.query(By.directive(TabPanelComponent)).componentInstance;
+      expect(panelComponent.header).toBeTruthy();
+    });
+  });
+});
+```
+
+**Key Patterns:**
+- Use `fakeAsync`/`tick` to wait for view initialization
+- Access `@ViewChild` references after `detectChanges()`
+- Test content projection with wrapper components
+- Verify @ContentChild references are available
+
+### Testing Components with Complex Change Detection
+
+OnPush change detection strategy requires careful handling:
+
+```typescript
+describe('HighPerformanceComponentWithOnPush', () => {
+  let component: HighPerformanceComponent;
+  let fixture: ComponentFixture<HighPerformanceComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HighPerformanceComponent],
+    });
+    fixture = TestBed.createComponent(HighPerformanceComponent);
+    component = fixture.componentInstance;
+  });
+
+  describe('OnPush Change Detection Strategy', () => {
+    it('should not detect changes for in-place modifications', () => {
+      component.items = [{name: 'Item 1'}];
+      fixture.detectChanges();
+
+      // In-place modification - no new reference
+      component.items[0].name = 'Modified Item';
+      fixture.detectChanges();
+
+      // Component won't detect change without new array reference
+      const content = fixture.nativeElement.textContent;
+      expect(content).not.toContain('Modified Item');
+    });
+
+    it('should detect changes with new object reference', () => {
+      component.items = [{name: 'Item 1'}];
+      fixture.detectChanges();
+
+      // New array reference
+      component.items = [{name: 'Modified Item'}];
+      fixture.detectChanges();
+
+      // Component detects change
+      const content = fixture.nativeElement.textContent;
+      expect(content).toContain('Modified Item');
+    });
+
+    it('should manually trigger change detection with markForCheck', () => {
+      spyOn(component['_cdr'], 'markForCheck');
+
+      component.updateData({newValue: true});
+
+      expect(component['_cdr'].markForCheck).toHaveBeenCalled();
+    });
+
+    it('should detect changes from observable subscriptions', fakeAsync(() => {
+      const data$ = of({name: 'Updated'}).pipe(delay(100));
+      component.data$ = data$;
+      fixture.detectChanges();
+
+      tick(100);
+      fixture.detectChanges();
+
+      expect(component.data.name).toBe('Updated');
+    }));
+
+    it('should verify component has OnPush strategy', () => {
+      const metadata = (HighPerformanceComponent as any).__annotations__[0];
+      expect(metadata.changeDetection).toBe(ChangeDetectionStrategy.OnPush);
+    });
+  });
+});
+```
+
+**Key Patterns:**
+- Test that in-place modifications don't trigger change detection
+- Verify new object references trigger changes
+- Test `markForCheck()` calls
+- Use `fixture.detectChanges()` explicitly after state changes
+- Verify `ChangeDetectionStrategy.OnPush` is applied
+
+### Testing Components with Animations and Transitions
+
+Shared components use Angular animations for smooth UX:
+
+```typescript
+describe('ExpansionPanelWithAnimation', () => {
+  let component: ExpansionPanelComponent;
+  let fixture: ComponentFixture<ExpansionPanelComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [BrowserAnimationsModule, ExpansionPanelComponent],
+      // Note: Use BrowserAnimationsModule, not NoopAnimationsModule to test animations
+    });
+    fixture = TestBed.createComponent(ExpansionPanelComponent);
+    component = fixture.componentInstance;
+  });
+
+  describe('Animation Triggers', () => {
+    it('should trigger shrinkGrow animation on toggle', fakeAsync(() => {
+      fixture.detectChanges();
+
+      // Initial state: collapsed
+      expect(component.expanded).toBe(false);
+
+      // Toggle to expanded
+      component.onClick();
+      fixture.detectChanges();
+      tick(500); // Wait for animation duration
+
+      expect(component.expanded).toBe(true);
+
+      // Verify animation element is present
+      const animatedDiv = fixture.nativeElement.querySelector('[ng-if] div');
+      expect(animatedDiv).toBeTruthy();
+    }));
+
+    it('should handle rapid animation toggling', fakeAsync(() => {
+      fixture.detectChanges();
+
+      // Toggle multiple times rapidly
+      component.onClick();
+      fixture.detectChanges();
+      tick(100);
+
+      component.onClick();
+      fixture.detectChanges();
+      tick(100);
+
+      component.onClick();
+      fixture.detectChanges();
+      tick(500);
+
+      expect(component.expanded).toBe(true);
+    }));
+
+    it('should apply animation state classes', fakeAsync(() => {
+      fixture.detectChanges();
+
+      // Expand with animation
+      component.expanded = true;
+      fixture.detectChanges();
+      tick(); // Micro-task queue
+
+      const element = fixture.nativeElement.querySelector('.expandable-content');
+      expect(element).toBeTruthy();
+    }));
+  });
+
+  describe('Animation Performance', () => {
+    it('should not cause memory leaks during animations', fakeAsync(() => {
+      const initialSubscriptions = component['_unsubscribe'].observers.length;
+
+      // Multiple animation cycles
+      for (let i = 0; i < 10; i++) {
+        component.onClick();
+        fixture.detectChanges();
+        tick(500);
+      }
+
+      component.ngOnDestroy();
+
+      // Verify cleanup happened
+      expect(component['_unsubscribe'].closed).toBe(true);
+    }));
+  });
+});
+```
+
+**Key Patterns:**
+- Use `BrowserAnimationsModule` instead of `NoopAnimationsModule` to test animations
+- Use `fakeAsync`/`tick` to control animation timing
+- Wait for animation duration before verifying state
+- Test rapid animation toggling
+- Verify cleanup on component destroy
+
+### Common Pitfalls in Shared Component Testing
+
+Based on Phase 03 experience, avoid these common mistakes:
+
+```typescript
+describe('Common Testing Pitfalls', () => {
+  let component: MyComponent;
+  let fixture: ComponentFixture<MyComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [MyComponent],
+    });
+    fixture = TestBed.createComponent(MyComponent);
+    component = fixture.componentInstance;
+  });
+
+  describe('Pitfall 1: Forgetting fixture.detectChanges()', () => {
+    // BAD - Template not rendered
+    it('should display text - WRONG', () => {
+      component.text = 'Hello';
+      // Missing: fixture.detectChanges();
+
+      const element = fixture.nativeElement.querySelector('.text');
+      expect(element).toBeFalsy(); // Fails - element not rendered yet!
+    });
+
+    // GOOD - Template rendered
+    it('should display text - CORRECT', () => {
+      component.text = 'Hello';
+      fixture.detectChanges(); // ✓ Now template is rendered
+
+      const element = fixture.nativeElement.querySelector('.text');
+      expect(element.textContent).toBe('Hello');
+    });
+  });
+
+  describe('Pitfall 2: Not unsubscribing from observables', () => {
+    // BAD - Memory leak in tests
+    it('should subscribe - WRONG', (done) => {
+      component.data$.subscribe(data => {
+        // Never unsubscribed
+        done();
+      });
+    });
+
+    // GOOD - Explicit cleanup
+    it('should subscribe - CORRECT', (done) => {
+      const subscription = component.data$.subscribe(data => {
+        subscription.unsubscribe();
+        done();
+      });
+    });
+
+    // BETTER - Using takeUntil pattern
+    it('should subscribe - BEST PRACTICE', (done) => {
+      const destroy$ = new Subject<void>();
+
+      component.data$.pipe(takeUntil(destroy$)).subscribe(() => {
+        destroy$.complete();
+        done();
+      });
+    });
+  });
+
+  describe('Pitfall 3: Testing implementation instead of behavior', () => {
+    // BAD - Tests private implementation
+    it('should set private variable - WRONG', () => {
+      component.toggle();
+      expect(component['_expanded']).toBe(true); // Tests private field!
+    });
+
+    // GOOD - Tests public API
+    it('should expand when toggled - CORRECT', () => {
+      expect(component.expanded).toBe(false);
+      component.toggle();
+      expect(component.expanded).toBe(true); // Tests public property
+    });
+  });
+
+  describe('Pitfall 4: Incomplete Material setup', () => {
+    // BAD - Missing Material modules
+    it('should show error - WRONG', () => {
+      TestBed.configureTestingModule({
+        imports: [MyFormComponent],
+        // Missing: MatFormFieldModule, MatInputModule, etc.
+      });
+
+      const testFixture = TestBed.createComponent(MyFormComponent);
+      testFixture.detectChanges();
+      // Fails - Material directives not loaded
+    });
+
+    // GOOD - Complete Material modules
+    it('should show error - CORRECT', () => {
+      TestBed.configureTestingModule({
+        imports: [
+          MyFormComponent,
+          MatFormFieldModule,
+          MatInputModule,
+          ReactiveFormsModule,
+        ],
+      });
+
+      const testFixture = TestBed.createComponent(MyFormComponent);
+      testFixture.detectChanges();
+      // Works - All dependencies available
+    });
+  });
+
+  describe('Pitfall 5: Mixing async patterns incorrectly', () => {
+    // BAD - Mixing done callback and fakeAsync
+    it('should load data - WRONG', fakeAsync((done) => {
+      // Don't mix fakeAsync and done callback
+      component.loadData();
+      tick(1000);
+      done(); // Confusing and error-prone
+    }) as any);
+
+    // GOOD - Using fakeAsync without done
+    it('should load data - CORRECT', fakeAsync(() => {
+      component.loadData();
+      tick(1000);
+      expect(component.data).toBeDefined();
+    }));
+
+    // GOOD - Using waitForAsync with promises
+    it('should load data - ALSO CORRECT', waitForAsync(() => {
+      component.loadPromise().then(() => {
+        expect(component.data).toBeDefined();
+      });
+    }));
+  });
+});
+```
+
+**Common Pitfalls to Avoid:**
+1. Forgetting `fixture.detectChanges()` after state changes
+2. Not unsubscribing from observables (memory leaks)
+3. Testing private implementation instead of public behavior
+4. Missing Material module imports in TestBed setup
+5. Mixing async patterns (fakeAsync + done callback)
+6. Not resetting component state between tests
+7. Accessing DOM before change detection
+8. Not cleaning up setTimeout/setInterval
+9. Assuming synchronous behavior for async operations
+10. Not verifying mock call arguments and counts
+
+---
+
 ## Summary
 
 This guide provides comprehensive patterns for testing the Kubermatic Dashboard. Key takeaways:
