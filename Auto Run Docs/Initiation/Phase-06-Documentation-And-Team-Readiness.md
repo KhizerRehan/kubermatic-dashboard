@@ -145,7 +145,7 @@ This final phase ensures the entire team understands and can effectively use the
   - Tips section for using templates effectively
   - Common mistakes section with do's and don'ts
 
-- [ ] Create performance testing and optimization guide:
+- [x] Create performance testing and optimization guide:
   - Create `modules/web/docs/testing/TEST-PERFORMANCE.md` with:
     - How to measure test execution time
     - Identifying slow tests
@@ -157,6 +157,19 @@ This final phase ensures the entire team understands and can effectively use the
       - Caching strategies
     - Tools for monitoring test performance over time
     - Target: Keep test execution under 5 minutes for full suite
+
+  **COMPLETED**: Created comprehensive TEST-PERFORMANCE.md (850+ lines) with:
+  - 7 methods for measuring test performance with detailed examples
+  - Understanding performance metrics breakdown (boot, loading, execution, coverage, reporting)
+  - 4 methods to identify slow tests (visual inspection, JSON analysis, CI extraction, watch mode)
+  - 8 common causes with before/after examples (TestBed config, HTTP mocks, async ops, change detection, shallow rendering, large data, timers, compilation)
+  - 8 optimization techniques with measurable impact
+  - 5 performance monitoring tools (Jest metrics, reporters, dashboard tracking, GitHub Actions, Chrome DevTools)
+  - Baseline establishment, regression detection, and team goals
+  - 4 major performance anti-patterns with good/bad examples
+  - 4 troubleshooting scenarios with step-by-step solutions
+  - Quick reference commands and summary
+  - Updated README.md to link to new TEST-PERFORMANCE document
 
 - [ ] Document testing for edition-specific features (CE/EE):
   - Create `modules/web/docs/testing/TESTING-EDITIONS.md` with:

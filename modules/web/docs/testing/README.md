@@ -12,6 +12,8 @@ related:
   - '[[TESTING-PATTERNS]]'
   - '[[TESTING-BEST-PRACTICES]]'
   - '[[MAINTENANCE-PROCESS]]'
+  - '[[TEST-PERFORMANCE]]'
+  - '[[CI-CD-INTEGRATION]]'
 ---
 
 # Kubermatic Dashboard Testing Documentation
@@ -359,6 +361,20 @@ When tests fail, consult **[TESTING-BEST-PRACTICES.md](./TESTING-BEST-PRACTICES.
 - GitHub Actions workflow setup
 
 📌 **Reference this** to understand how tests run in CI and how coverage is measured.
+
+#### [TEST-PERFORMANCE.md](./TEST-PERFORMANCE.md)
+**Test performance measurement, optimization, and monitoring**
+- Measuring test execution time with various methods
+- Understanding performance metrics and components
+- Identifying slow tests with detailed analysis tools
+- Common causes of slow tests with examples
+- Optimization techniques and best practices
+- Performance monitoring and tracking tools
+- Setting and maintaining performance targets
+- Troubleshooting performance issues
+- Performance anti-patterns to avoid
+
+📌 **Use this** to optimize test execution time and keep test suite fast during development.
 
 ---
 
