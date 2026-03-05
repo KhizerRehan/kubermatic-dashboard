@@ -348,6 +348,18 @@ When tests fail, consult **[TESTING-BEST-PRACTICES.md](./TESTING-BEST-PRACTICES.
 
 📌 **Follow this** as your guide for day-to-day testing responsibilities.
 
+#### [CI-CD-INTEGRATION.md](./CI-CD-INTEGRATION.md)
+**Continuous Integration setup and coverage reporting**
+- CI pipeline configuration and execution
+- Coverage report generation and interpretation
+- Coverage thresholds and quality gates
+- Interpreting and responding to coverage drops
+- Debugging CI test failures
+- Local verification before pushing
+- GitHub Actions workflow setup
+
+📌 **Reference this** to understand how tests run in CI and how coverage is measured.
+
 ---
 
 ## Quick Reference

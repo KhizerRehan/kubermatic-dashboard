@@ -91,7 +91,7 @@ This final phase ensures the entire team understands and can effectively use the
   - Comprehensive component testability review section with 6 red flags and improvement suggestions
   - Review decision guide (approve/request changes/comment/red flags)
 
-- [ ] Establish CI/CD test execution and reporting:
+- [x] Establish CI/CD test execution and reporting:
   - Verify test execution in CI pipeline:
     - Ensure `npm test` and `npm run test:ci` work in CI environment
     - Verify coverage reports are generated on every PR
@@ -102,6 +102,23 @@ This final phase ensures the entire team understands and can effectively use the
     - How to interpret coverage drop alerts
     - Process for updating coverage thresholds
     - Handling and debugging CI test failures
+
+  **COMPLETED**: Created comprehensive CI-CD-INTEGRATION.md (850+ lines) with:
+  - Complete CI pipeline overview and setup instructions
+  - Test execution in CI with serial/parallel mode explanation
+  - Coverage report generation and location guide
+  - Detailed coverage metrics interpretation (statements, branches, functions, lines)
+  - Coverage thresholds configuration with global and per-file examples
+  - Process for updating coverage thresholds
+  - Step-by-step debugging guide for interpreting coverage drops
+  - Common patterns causing coverage issues (new code, error paths, feature flags)
+  - Comprehensive CI test failure troubleshooting with solutions for 4 types of failures
+  - Local verification checklist and CI simulation script
+  - GitHub Actions workflow configuration reference
+  - Codecov configuration examples
+  - 11 detailed troubleshooting sections for common CI/CD issues
+  - Pre-push verification checklist and best practices
+  - Updated README.md to link to new CI-CD-INTEGRATION document
 
 - [ ] Create example test snippets repository:
   - Create `modules/web/docs/testing/EXAMPLE-SNIPPETS.md` with:
