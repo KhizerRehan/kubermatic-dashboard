@@ -1,0 +1,289 @@
+<!-- Copyright 2020 The Kubermatic Kubernetes Platform contributors.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. -->
+
+<div class="km-user-interactions-container">
+  <!-- ========== Click Handling Tests ========== -->
+  <section class="click-handling-section">
+    <h3>Click Handling</h3>
+
+    <button
+      class="click-button"
+      data-cy="click-button"
+      (click)="onButtonClick()"
+    >
+      Click Button (Count: {{ buttonClickCount }})
+    </button>
+
+    <button
+      class="double-click-button"
+      data-cy="double-click-button"
+      (dblclick)="onDoubleClick()"
+    >
+      Double Click Button (Count: {{ doubleClickCount }})
+    </button>
+
+    <button
+      class="long-press-button"
+      data-cy="long-press-button"
+      (mousedown)="onLongPressStart()"
+      (mouseup)="onLongPressEnd()"
+      (mouseleave)="onLongPressEnd()"
+    >
+      Long Press Button (Active: {{ longPressActive }})
+    </button>
+
+    <a
+      href="javascript:void(0)"
+      class="link-button"
+      data-cy="link-button"
+      (click)="onLinkClick()"
+    >
+      Clickable Link
+    </a>
+
+    <button
+      class="icon-button"
+      data-cy="icon-button"
+      (click)="onIconClick()"
+    >
+      ★ Icon Button
+    </button>
+  </section>
+
+  <!-- ========== Input Events Tests ========== -->
+  <section class="input-events-section">
+    <h3>Input Events</h3>
+
+    <label for="text-input">Text Input:</label>
+    <input
+      id="text-input"
+      class="text-input"
+      type="text"
+      data-cy="text-input"
+      placeholder="Type something..."
+      (change)="onInputChange($event)"
+      (focus)="onFocus('text-input')"
+      (blur)="onBlur()"
+      [value]="inputValue"
+    />
+    <span data-cy="input-value-display">Current value: {{ inputValue }}</span>
+    <span
+      *ngIf="focusedField === 'text-input'"
+      class="focus-indicator"
+      data-cy="text-input-focused"
+    >
+      Focused
+    </span>
+
+    <label for="select-input">Select Option:</label>
+    <select
+      id="select-input"
+      class="select-input"
+      data-cy="select-input"
+      (change)="onSelectChange($event | json)"
+      (focus)="onFocus('select-input')"
+      (blur)="onBlur()"
+    >
+      <option value="">-- Select --</option>
+      <option value="option1">Option 1</option>
+      <option value="option2">Option 2</option>
+      <option value="option3">Option 3</option>
+    </select>
+    <span
+      *ngIf="focusedField === 'select-input'"
+      class="focus-indicator"
+      data-cy="select-input-focused"
+    >
+      Focused
+    </span>
+
+    <label for="checkbox-input">Checkbox:</label>
+    <input
+      id="checkbox-input"
+      type="checkbox"
+      class="checkbox-input"
+      data-cy="checkbox-input"
+      (change)="onSelectChange($event | json)"
+    />
+  </section>
+
+  <!-- ========== Form Tests ========== -->
+  <section class="form-section">
+    <h3>Form Submission</h3>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <label for="username">Username:</label>
+      <input
+        id="username"
+        type="text"
+        class="form-input"
+        data-cy="form-username"
+        formControlName="username"
+        placeholder="Enter username"
+      />
+      <span
+        *ngIf="form.get('username')?.hasError('required') && form.get('username')?.touched"
+        class="error-message"
+        data-cy="username-error"
+      >
+        Username is required
+      </span>
+
+      <label for="email">Email:</label>
+      <input
+        id="email"
+        type="email"
+        class="form-input"
+        data-cy="form-email"
+        formControlName="email"
+        placeholder="Enter email"
+      />
+      <span
+        *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched"
+        class="error-message"
+        data-cy="email-error"
+      >
+        Email is required
+      </span>
+      <span
+        *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched"
+        class="error-message"
+        data-cy="email-format-error"
+      >
+        Please enter a valid email
+      </span>
+
+      <label for="form-select">Select Field:</label>
+      <select id="form-select" class="form-select" data-cy="form-select" formControlName="select">
+        <option value="">-- Select --</option>
+        <option value="value1">Value 1</option>
+        <option value="value2">Value 2</option>
+      </select>
+      <span
+        *ngIf="form.get('select')?.hasError('required') && form.get('select')?.touched"
+        class="error-message"
+        data-cy="select-error"
+      >
+        Selection is required
+      </span>
+
+      <label for="form-checkbox">
+        <input
+          id="form-checkbox"
+          type="checkbox"
+          class="form-checkbox"
+          data-cy="form-checkbox"
+          formControlName="checkbox"
+        />
+        I agree
+      </label>
+
+      <button
+        type="submit"
+        class="submit-button"
+        data-cy="form-submit"
+        [disabled]="form.invalid"
+      >
+        Submit Form
+      </button>
+
+      <button
+        type="button"
+        class="reset-button"
+        data-cy="form-reset"
+        (click)="resetForm()"
+      >
+        Reset Form
+      </button>
+    </form>
+
+    <div *ngIf="isFormSubmitted" class="success-message" data-cy="form-success">
+      Form submitted successfully!
+    </div>
+  </section>
+
+  <!-- ========== Keyboard Events Tests ========== -->
+  <section class="keyboard-section">
+    <h3>Keyboard Events</h3>
+
+    <input
+      type="text"
+      class="keyboard-input"
+      data-cy="keyboard-input"
+      placeholder="Press Enter or Escape"
+      (keydown)="onKeyDown($event)"
+    />
+
+    <div *ngIf="enterKeyPressed" class="keyboard-event-indicator" data-cy="enter-pressed">
+      Enter key pressed
+    </div>
+    <div *ngIf="escapeKeyPressed" class="keyboard-event-indicator" data-cy="escape-pressed">
+      Escape key pressed
+    </div>
+  </section>
+
+  <!-- ========== Drag and Drop Tests ========== -->
+  <section class="drag-drop-section">
+    <h3>Drag and Drop</h3>
+
+    <div class="drag-container">
+      <div
+        class="draggable-item"
+        data-cy="draggable-item-1"
+        draggable="true"
+        (dragstart)="onDragStart($event, 'item-1')"
+        (dragend)="onDragEnd()"
+      >
+        Drag Item 1
+      </div>
+      <div
+        class="draggable-item"
+        data-cy="draggable-item-2"
+        draggable="true"
+        (dragstart)="onDragStart($event, 'item-2')"
+        (dragend)="onDragEnd()"
+      >
+        Drag Item 2
+      </div>
+    </div>
+
+    <div
+      class="drop-zone"
+      data-cy="drop-zone"
+      (dragover)="onDragOver($event)"
+      (drop)="onDrop($event)"
+    >
+      Drop items here
+    </div>
+
+    <div class="dropped-items" data-cy="dropped-items-list">
+      <p *ngFor="let item of droppedItems" class="dropped-item" [attr.data-cy]="'dropped-' + item">
+        {{ item }}
+      </p>
+    </div>
+  </section>
+
+  <!-- ========== Dialog Tests ========== -->
+  <section class="dialog-section">
+    <h3>Dialog Interactions</h3>
+
+    <button class="dialog-button" data-cy="open-dialog" (click)="openDialog()">
+      Open Dialog
+    </button>
+
+    <div *ngIf="dialogResult" class="dialog-result" data-cy="dialog-result">
+      Dialog Result: {{ dialogResult }}
+    </div>
+  </section>
+</div>

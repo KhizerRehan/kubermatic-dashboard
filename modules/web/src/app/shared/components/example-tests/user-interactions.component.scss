@@ -1,0 +1,178 @@
+// Copyright 2020 The Kubermatic Kubernetes Platform contributors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+.km-user-interactions-container {
+  padding: 20px;
+
+  section {
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 4px;
+
+    h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #333;
+    }
+  }
+
+  button,
+  input,
+  select {
+    margin: 5px 5px 5px 0;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  input[type='text'],
+  input[type='email'],
+  select {
+    cursor: text;
+  }
+
+  input[type='checkbox'] {
+    cursor: pointer;
+    margin-right: 5px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .focus-indicator {
+    display: inline-block;
+    margin-left: 10px;
+    color: blue;
+    font-weight: bold;
+  }
+
+  .error-message {
+    display: block;
+    color: red;
+    font-size: 12px;
+    margin-top: 3px;
+  }
+
+  .success-message {
+    padding: 10px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+
+  .keyboard-event-indicator {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #e7f3ff;
+    border: 1px solid #b3d9ff;
+    border-radius: 4px;
+    color: #004085;
+  }
+
+  .drag-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+
+    .draggable-item {
+      padding: 10px 15px;
+      background-color: #e9ecef;
+      border: 1px solid #adb5bd;
+      border-radius: 4px;
+      cursor: move;
+      user-select: none;
+
+      &:hover {
+        background-color: #dee2e6;
+      }
+    }
+  }
+
+  .drop-zone {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 2px dashed #6c757d;
+    border-radius: 4px;
+    text-align: center;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.drag-over {
+      background-color: #d4edda;
+      border-color: #28a745;
+    }
+  }
+
+  .dropped-items {
+    margin-top: 10px;
+
+    .dropped-item {
+      padding: 8px;
+      background-color: #d4edda;
+      border-left: 3px solid #28a745;
+      margin: 5px 0;
+    }
+  }
+
+  .form-input,
+  .form-select,
+  .form-checkbox {
+    margin-bottom: 10px;
+  }
+
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+
+    &:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+
+    &.reset-button {
+      background-color: #6c757d;
+
+      &:hover:not(:disabled) {
+        background-color: #545b62;
+      }
+    }
+  }
+
+  a.link-button {
+    display: inline-block;
+    padding: 8px 12px;
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
