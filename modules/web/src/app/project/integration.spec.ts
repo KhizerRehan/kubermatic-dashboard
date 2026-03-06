@@ -136,7 +136,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
     }));
 
     it('should display fetched projects in data source', fakeAsync(() => {
-      spyOn(projectService, 'list').and.returnValue(of(mockProjects));
+      spyOn(projectService, 'projects' as any).and.returnValue(of(mockProjects));
 
       component.ngOnInit();
       tick();
@@ -146,7 +146,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
     }));
 
     it('should update UI when service returns empty project list', fakeAsync(() => {
-      spyOn(projectService, 'list').and.returnValue(of([]));
+      spyOn(projectService, 'projects' as any).and.returnValue(of([]));
 
       component.ngOnInit();
       tick();
@@ -158,7 +158,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
 
   describe('Error handling from service', () => {
     it('should handle service error gracefully', fakeAsync(() => {
-      spyOn(projectService, 'list').and.returnValue(
+      spyOn(projectService, 'projects' as any).and.returnValue(
         throwError(() => new Error('Service error'))
       );
 
@@ -170,7 +170,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
     }));
 
     it('should display error notification on service failure', fakeAsync(() => {
-      spyOn(projectService, 'list').and.returnValue(
+      spyOn(projectService, 'projects' as any).and.returnValue(
         throwError(() => ({status: 500, statusText: 'Server Error'}))
       );
 
@@ -184,7 +184,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
     it('should recover from service 404 error', fakeAsync(() => {
       let errorCount = 0;
 
-      spyOn(projectService, 'list').and.callFake(() => {
+      spyOn(projectService, 'projects' as any).and.callFake(() => {
         errorCount++;
         if (errorCount === 1) {
           return throwError(() => ({status: 404}));
@@ -209,7 +209,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
         {id: 'p2', name: 'P2'} as Project,
       ];
 
-      spyOn(projectService, 'list').and.returnValues(of(initialProjects), of(updatedProjects));
+      spyOn(projectService, 'projects' as any).and.returnValues(of(initialProjects), of(updatedProjects));
 
       component.ngOnInit();
       tick();
@@ -225,7 +225,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
     }));
 
     it('should trigger change detection when service emits new data', fakeAsync(() => {
-      spyOn(projectService, 'list').and.returnValue(of(mockProjects));
+      spyOn(projectService, 'projects' as any).and.returnValue(of(mockProjects));
       spyOn(component['_cdr'], 'detectChanges');
 
       component.ngOnInit();
@@ -238,7 +238,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
 
   describe('Concurrent service operations', () => {
     it('should handle concurrent project list and user fetch', fakeAsync(() => {
-      spyOn(projectService, 'list').and.returnValue(of(mockProjects));
+      spyOn(projectService, 'projects' as any).and.returnValue(of(mockProjects));
       spyOn(userService, 'currentUser').and.returnValue(of(mockUser));
 
       component.ngOnInit();
@@ -250,7 +250,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
     }));
 
     it('should not duplicate service calls on multiple subscriptions', fakeAsync(() => {
-      const listSpy = spyOn(projectService, 'list').and.returnValue(of(mockProjects));
+      const listSpy = spyOn(projectService, 'projects' as any).and.returnValue(of(mockProjects));
 
       component.ngOnInit();
       tick();
@@ -263,7 +263,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
   describe('Loading state management', () => {
     it('should set loading state while fetching from service', fakeAsync(() => {
       component.isProjectsLoading = false;
-      spyOn(projectService, 'list').and.returnValue(of(mockProjects));
+      spyOn(projectService, 'projects' as any).and.returnValue(of(mockProjects));
 
       component.ngOnInit();
       tick();
@@ -273,7 +273,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
     }));
 
     it('should clear loading state after service returns data', fakeAsync(() => {
-      spyOn(projectService, 'list').and.returnValue(of(mockProjects));
+      spyOn(projectService, 'projects' as any).and.returnValue(of(mockProjects));
 
       component.ngOnInit();
       tick();
@@ -305,7 +305,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
 
   describe('Data transformation and filtering', () => {
     it('should filter projects by name from service data', fakeAsync(() => {
-      spyOn(projectService, 'list').and.returnValue(of(mockProjects));
+      spyOn(projectService, 'projects' as any).and.returnValue(of(mockProjects));
 
       component.ngOnInit();
       tick();
@@ -319,7 +319,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
     }));
 
     it('should sort projects by name from service data', fakeAsync(() => {
-      spyOn(projectService, 'list').and.returnValue(of(mockProjects));
+      spyOn(projectService, 'projects' as any).and.returnValue(of(mockProjects));
 
       component.ngOnInit();
       tick();
@@ -361,7 +361,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
 
   describe('Memory leak prevention', () => {
     it('should unsubscribe from service on component destroy', fakeAsync(() => {
-      spyOn(projectService, 'list').and.returnValue(of(mockProjects));
+      spyOn(projectService, 'projects' as any).and.returnValue(of(mockProjects));
 
       component.ngOnInit();
       tick();
@@ -374,7 +374,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
     }));
 
     it('should clean up subscriptions to prevent memory leaks', fakeAsync(() => {
-      spyOn(projectService, 'list').and.returnValue(of(mockProjects));
+      spyOn(projectService, 'projects' as any).and.returnValue(of(mockProjects));
 
       component.ngOnInit();
       tick();
@@ -391,7 +391,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
     it('should retain data when service returns error', fakeAsync(() => {
       const initialData = mockProjects;
 
-      spyOn(projectService, 'list').and.returnValues(
+      spyOn(projectService, 'projects' as any).and.returnValues(
         of(initialData),
         throwError(() => new Error('Service unavailable'))
       );
@@ -418,7 +418,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
           name: `Project ${i}`,
         } as Project));
 
-      spyOn(projectService, 'list').and.returnValue(of(manyProjects));
+      spyOn(projectService, 'projects' as any).and.returnValue(of(manyProjects));
 
       component.settings = {itemsPerPage: 10} as UserSettings;
       component.ngOnInit();
@@ -434,7 +434,7 @@ describe('ProjectComponent + ProjectService Integration', () => {
         {id: 'p2', name: 'P2'} as Project,
       ];
 
-      spyOn(projectService, 'list').and.returnValue(of(fewProjects));
+      spyOn(projectService, 'projects' as any).and.returnValue(of(fewProjects));
 
       component.settings = {itemsPerPage: 10} as UserSettings;
       component.ngOnInit();
