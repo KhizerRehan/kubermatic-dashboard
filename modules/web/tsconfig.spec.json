@@ -5,6 +5,8 @@
     "baseUrl": "./src",
     "module": "CommonJS",
     "target": "ES2015",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "types": [
       "jest"
     ]

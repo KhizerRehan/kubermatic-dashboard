@@ -27,7 +27,7 @@ import {Health} from '@shared/entity/health';
 import {ClusterMetrics} from '@shared/entity/metrics';
 import {Node} from '@shared/entity/node';
 import {SSHKey} from '@shared/entity/ssh-key';
-import {defer, Observable, of, Subject} from 'rxjs';
+import {defer, Observable, of, Subject, throwError} from 'rxjs';
 import {async} from 'rxjs-compat/scheduler/async';
 import {fakeClusters, fakeDigitaloceanCluster} from '../data/cluster';
 import {fakeEvents} from '../data/event';
@@ -35,101 +35,972 @@ import {fakeHealth} from '../data/health';
 import {nodesFake} from '../data/node';
 import {fakeSSHKeys} from '../data/sshkey';
 
+/**
+ * Mock implementation of ClusterService for testing cluster management features.
+ *
+ * Provides comprehensive cluster CRUD operations, health monitoring, node management,
+ * and SSH key operations without real API calls. Uses asyncData() for realistic
+ * async behavior in tests.
+ *
+ * **Advanced Testing Features:**
+ * - Call tracking: Track how many times each method was called
+ * - Custom cluster data: Override mocked clusters, nodes, health status
+ * - Error simulation: Configure specific methods to return errors
+ * - Event simulation: Manually emit provider settings patch changes
+ *
+ * All methods return observables of fake data. Override private properties to
+ * test different cluster scenarios.
+ *
+ * @example
+ * ```typescript
+ * // Basic usage
+ * TestBed.configureTestingModule({
+ *   providers: [
+ *     {provide: ClusterService, useClass: ClusterMockService}
+ *   ]
+ * });
+ * const clusterMock = TestBed.inject(ClusterService) as ClusterMockService;
+ * clusterMock.cluster('cluster-1', 'dc-1', 'project-1').subscribe(cluster => {
+ *   expect(cluster.name).toBeTruthy();
+ * });
+ * ```
+ *
+ * @example
+ * ```typescript
+ * // Custom cluster and call tracking
+ * const customCluster = createCluster('custom-cluster', 'ec2');
+ * clusterMock.setCustomCluster(customCluster);
+ * clusterMock.cluster('any-id', 'dc-1', 'proj-1').subscribe(cluster => {
+ *   expect(cluster.name).toBe('custom-cluster');
+ * });
+ * expect(clusterMock.clusterCallCount).toBe(1);
+ * ```
+ *
+ * @example
+ * ```typescript
+ * // Simulate cluster deletion error
+ * clusterMock.setDeleteError(true, 'Cannot delete: cluster still provisioning');
+ * clusterMock.delete('cluster-1', 'dc-1', 'proj-1').subscribe(
+ *   () => { // Should not reach },
+ *   error => expect(error.message).toContain('provisioning')
+ * );
+ * ```
+ *
+ * @see {@link ClusterService} - Real cluster service implementation
+ * @see {@link test/data/cluster} - Source of fake cluster data
+ * @see {@link asyncData} - Wraps response in async observable
+ */
 @Injectable()
 export class ClusterMockService {
+  /**
+   * @private Mocked single cluster instance (DigitalOcean by default)
+   */
   private _cluster: Cluster = fakeDigitaloceanCluster();
+
+  /**
+   * @private Mocked cluster list
+   */
   private _clusters: Cluster[] = fakeClusters();
+
+  /**
+   * @private Mocked SSH keys for cluster access
+   */
   private _sshKeys: SSHKey[] = fakeSSHKeys();
+
+  /**
+   * @private Mocked nodes in cluster
+   */
   private _nodes: Node[] = nodesFake();
+
+  /**
+   * @private Mocked cluster health status
+   */
   private _health: Health = fakeHealth();
 
+  // ===== Private Tracking Fields =====
+
+  /** @private Tracks how many times cluster() was called */
+  private _clusterCallCount = 0;
+
+  /** @private Tracks how many times clusters() was called */
+  private _clustersCallCount = 0;
+
+  /** @private Tracks how many times create() was called */
+  private _createCallCount = 0;
+
+  /** @private Tracks how many times delete() was called */
+  private _deleteCallCount = 0;
+
+  /** @private Tracks how many times edit() was called */
+  private _editCallCount = 0;
+
+  /** @private Tracks how many times health() was called */
+  private _healthCallCount = 0;
+
+  /** @private Tracks how many times nodes() was called */
+  private _nodesCallCount = 0;
+
+  /** @private Custom cluster override */
+  private _customCluster: Cluster | null = null;
+
+  /** @private Custom clusters list override */
+  private _customClusters: Cluster[] | null = null;
+
+  /** @private Custom health override */
+  private _customHealth: Health | null = null;
+
+  /** @private Custom nodes override */
+  private _customNodes: Node[] | null = null;
+
+  /** @private Flag to simulate delete error */
+  private _deleteShouldError = false;
+
+  /** @private Error message for delete failure */
+  private _deleteErrorMessage = 'Failed to delete cluster';
+
+  /** @private Flag to simulate create error */
+  private _createShouldError = false;
+
+  /** @private Error message for create failure */
+  private _createErrorMessage = 'Failed to create cluster';
+
+  /**
+   * Observable for provider settings patch changes.
+   *
+   * Emitted when provider-specific settings are modified.
+   *
+   * @type {Observable<ProviderSettingsPatch>}
+   *
+   * @example
+   * ```typescript
+   * clusterMock.providerSettingsPatchChanges$.subscribe(patch => {
+   *   console.log('Provider settings changed:', patch);
+   * });
+   * ```
+   */
   providerSettingsPatchChanges$ = new Subject<ProviderSettingsPatch>().asObservable();
 
+  /**
+   * Triggers provider settings patch change notification.
+   *
+   * No-op in mock. In real service, notifies subscribers of settings changes.
+   *
+   * @example
+   * ```typescript
+   * clusterMock.changeProviderSettingsPatch();
+   * ```
+   */
   changeProviderSettingsPatch(): void {}
 
-  cluster(_clusterId: string, _dc: string, _projectID: string): Observable<Cluster> {
-    return asyncData(this._cluster);
+  /**
+   * Fetches a single cluster by ID.
+   *
+   * Returns mocked DigitalOcean cluster after async delay by default.
+   * Use setCustomCluster() to override with different cluster data.
+   * Automatically tracks call count for assertion purposes.
+   *
+   * @param {string} clusterId - Cluster ID
+   * @param {string} dc - Datacenter name
+   * @param {string} projectID - Project ID
+   * @returns {Observable<Cluster>} Observable emitting cluster after async delay
+   *
+   * @example
+   * ```typescript
+   * clusterMock.cluster('cluster-1', 'dc-1', 'proj-1').subscribe(cluster => {
+   *   expect(cluster.id).toBeTruthy();
+   * });
+   * expect(clusterMock.clusterCallCount).toBe(1);
+   * ```
+   *
+   * @example
+   * ```typescript
+   * // With custom cluster
+   * const customCluster = createCluster('aws-cluster', 'ec2');
+   * clusterMock.setCustomCluster(customCluster);
+   * clusterMock.cluster('any-id', 'dc-1', 'proj-1').subscribe(cluster => {
+   *   expect(cluster.provider).toBe('ec2');
+   * });
+   * ```
+   */
+  cluster(clusterId: string, dc: string, projectID: string): Observable<Cluster> {
+    this._clusterCallCount++;
+    return asyncData(this._customCluster ?? this._cluster);
   }
 
-  clusters(_projectID: string): Observable<Cluster[]> {
-    return asyncData(this._clusters);
+  /**
+   * Lists all clusters in a project.
+   *
+   * Returns mocked array of clusters after async delay (default 2).
+   * Use setCustomClusters() to override with different cluster lists.
+   * Automatically tracks call count for assertion purposes.
+   *
+   * @param {string} projectID - Project ID
+   * @returns {Observable<Cluster[]>} Observable emitting cluster array
+   *
+   * @example
+   * ```typescript
+   * clusterMock.clusters('proj-1').subscribe(clusters => {
+   *   expect(clusters.length).toBe(2);
+   * });
+   * expect(clusterMock.clustersCallCount).toBe(1);
+   * ```
+   *
+   * @example
+   * ```typescript
+   * // With custom clusters list
+   * const customClusters = [createCluster('c1'), createCluster('c2'), createCluster('c3')];
+   * clusterMock.setCustomClusters(customClusters);
+   * clusterMock.clusters('proj-1').subscribe(clusters => {
+   *   expect(clusters.length).toBe(3);
+   * });
+   * ```
+   */
+  clusters(projectID: string): Observable<Cluster[]> {
+    this._clustersCallCount++;
+    return asyncData(this._customClusters ?? this._clusters);
   }
 
-  health(_cluster: string, _dc: string, _projectID: string): Observable<Health> {
-    return asyncData(this._health);
+  /**
+   * Gets cluster health status.
+   *
+   * Returns mocked health object after async delay.
+   * Use setCustomHealth() to override with different health status.
+   * Automatically tracks call count for assertion purposes.
+   *
+   * @param {string} cluster - Cluster identifier
+   * @param {string} dc - Datacenter name
+   * @param {string} projectID - Project ID
+   * @returns {Observable<Health>} Observable emitting health status
+   *
+   * @example
+   * ```typescript
+   * clusterMock.health('cluster-1', 'dc-1', 'proj-1').subscribe(health => {
+   *   expect(health.apiserver).toBeTruthy();
+   * });
+   * expect(clusterMock.healthCallCount).toBe(1);
+   * ```
+   *
+   * @example
+   * ```typescript
+   * // With unhealthy status for testing error states
+   * const unhealthyStatus = createUnhealthyHealth('apiserver');
+   * clusterMock.setCustomHealth(unhealthyStatus);
+   * clusterMock.health('cluster-1', 'dc-1', 'proj-1').subscribe(health => {
+   *   expect(health.apiserver).toBeFalsy();
+   * });
+   * ```
+   */
+  health(cluster: string, dc: string, projectID: string): Observable<Health> {
+    this._healthCallCount++;
+    return asyncData(this._customHealth ?? this._health);
   }
 
+  /**
+   * Lists SSH keys for cluster access.
+   *
+   * Returns mocked SSH keys after async delay.
+   * Default returns 2 fake SSH keys.
+   *
+   * @returns {Observable<SSHKey[]>} Observable emitting SSH keys array
+   *
+   * @example
+   * ```typescript
+   * clusterMock.sshKeys().subscribe(keys => {
+   *   expect(keys.length).toBeGreaterThan(0);
+   * });
+   * ```
+   */
   sshKeys(): Observable<SSHKey[]> {
     return asyncData(this._sshKeys);
   }
 
+  /**
+   * Deletes an SSH key by fingerprint.
+   *
+   * Returns null after async delay to indicate successful deletion.
+   *
+   * @param {string} _fingerprint - SSH key fingerprint (ignored)
+   * @returns {Observable<any>} Observable emitting null on success
+   *
+   * @example
+   * ```typescript
+   * clusterMock.deleteSSHKey('fingerprint').subscribe(() => {
+   *   expect(component.sshKeys.length).toBeLessThan(previousCount);
+   * });
+   * ```
+   */
   deleteSSHKey(_fingerprint: string): Observable<any> {
     return asyncData(null);
   }
 
-  create(_createClusterModel: CreateClusterModel, _dc: string, _projectID: string): Observable<Cluster> {
-    return asyncData(this._cluster);
+  /**
+   * Creates a new cluster.
+   *
+   * Returns mocked cluster after async delay by default.
+   * Use setCreateError() to simulate creation failures.
+   * Automatically tracks call count for assertion purposes.
+   *
+   * @param {CreateClusterModel} createClusterModel - Cluster creation payload
+   * @param {string} dc - Datacenter name
+   * @param {string} projectID - Project ID
+   * @returns {Observable<Cluster>} Observable emitting created cluster, or error if configured
+   *
+   * @example
+   * ```typescript
+   * const model = createClusterModel();
+   * clusterMock.create(model, 'dc-1', 'proj-1').subscribe(cluster => {
+   *   expect(cluster.id).toBeTruthy();
+   * });
+   * expect(clusterMock.createCallCount).toBe(1);
+   * ```
+   *
+   * @example
+   * ```typescript
+   * // Simulate creation error for testing error handling
+   * clusterMock.setCreateError(true, 'Insufficient quota for cluster creation');
+   * clusterMock.create(model, 'dc-1', 'proj-1').subscribe(
+   *   () => { // Should not reach },
+   *   error => expect(error.message).toContain('Insufficient quota')
+   * );
+   * ```
+   */
+  create(createClusterModel: CreateClusterModel, dc: string, projectID: string): Observable<Cluster> {
+    this._createCallCount++;
+    if (this._createShouldError) {
+      return new Observable(subscriber => {
+        subscriber.error(new Error(this._createErrorMessage));
+      });
+    }
+    return asyncData(this._customCluster ?? this._cluster);
   }
 
-  delete(_clusterName: string, _dc: string, _projectID: string): Observable<any> {
+  /**
+   * Deletes a cluster.
+   *
+   * Returns null after async delay to indicate successful deletion by default.
+   * Use setDeleteError() to simulate deletion failures (e.g., cluster still provisioning).
+   * Automatically tracks call count for assertion purposes.
+   *
+   * @param {string} clusterName - Cluster name
+   * @param {string} dc - Datacenter name
+   * @param {string} projectID - Project ID
+   * @returns {Observable<any>} Observable emitting null on success, or error if configured
+   *
+   * @example
+   * ```typescript
+   * clusterMock.delete('cluster-1', 'dc-1', 'proj-1').subscribe(() => {
+   *   expect(router.navigate).toHaveBeenCalledWith(['/projects/proj-1']);
+   * });
+   * expect(clusterMock.deleteCallCount).toBe(1);
+   * ```
+   *
+   * @example
+   * ```typescript
+   * // Simulate deletion error for testing error handling
+   * clusterMock.setDeleteError(true, 'Cluster is still provisioning, cannot delete');
+   * clusterMock.delete('cluster-1', 'dc-1', 'proj-1').subscribe(
+   *   () => { // Should not reach },
+   *   error => expect(error.message).toContain('provisioning')
+   * );
+   * ```
+   */
+  delete(clusterName: string, dc: string, projectID: string): Observable<any> {
+    this._deleteCallCount++;
+    if (this._deleteShouldError) {
+      return new Observable(subscriber => {
+        subscriber.error(new Error(this._deleteErrorMessage));
+      });
+    }
     return asyncData(null);
   }
 
-  edit(_cluster: Cluster, _dc: string, _projectID: string): Observable<Cluster> {
-    return asyncData(this._cluster);
+  /**
+   * Edits cluster configuration.
+   *
+   * Returns mocked cluster after async delay.
+   * Use setCustomCluster() to return specific cluster data after edit.
+   * Automatically tracks call count for assertion purposes.
+   *
+   * @param {Cluster} cluster - Updated cluster object
+   * @param {string} dc - Datacenter name
+   * @param {string} projectID - Project ID
+   * @returns {Observable<Cluster>} Observable emitting updated cluster
+   *
+   * @example
+   * ```typescript
+   * clusterMock.edit(updatedCluster, 'dc-1', 'proj-1').subscribe(cluster => {
+   *   expect(cluster).toEqual(jasmine.any(Object));
+   * });
+   * expect(clusterMock.editCallCount).toBe(1);
+   * ```
+   */
+  edit(cluster: Cluster, dc: string, projectID: string): Observable<Cluster> {
+    this._editCallCount++;
+    return asyncData(this._customCluster ?? this._cluster);
   }
 
+  /**
+   * Applies a JSON patch to cluster configuration.
+   *
+   * Returns mocked cluster after async delay.
+   * Test partial cluster updates without full re-provisioning.
+   *
+   * @param {string} _projectID - Project ID (ignored)
+   * @param {string} _clusterId - Cluster ID (ignored)
+   * @param {string} _datacenter - Datacenter name (ignored)
+   * @param {ClusterPatch} _patch - JSON patch operations (ignored)
+   * @returns {Observable<Cluster>} Observable emitting patched cluster
+   *
+   * @example
+   * ```typescript
+   * const patch: ClusterPatch = {spec: {enableOperatingSystemManager: true}};
+   * clusterMock.patch('proj-1', 'cluster-1', 'dc-1', patch).subscribe(cluster => {
+   *   expect(cluster.spec.enableOperatingSystemManager).toBe(true);
+   * });
+   * ```
+   */
   patch(_projectID: string, _clusterId: string, _datacenter: string, _patch: ClusterPatch): Observable<Cluster> {
     return asyncData(this._cluster);
   }
 
+  /**
+   * Deletes a node from the cluster.
+   *
+   * Returns null after async delay to indicate successful deletion.
+   *
+   * @param {string} _clusterName - Cluster name (ignored)
+   * @param {string} _nodeName - Node name (ignored)
+   * @param {string} _dc - Datacenter name (ignored)
+   * @param {string} _projectID - Project ID (ignored)
+   * @returns {Observable<any>} Observable emitting null on success
+   *
+   * @example
+   * ```typescript
+   * clusterMock.deleteNode('cluster-1', 'node-1', 'dc-1', 'proj-1').subscribe(() => {
+   *   expect(component.nodes.length).toBeLessThan(previousCount);
+   * });
+   * ```
+   */
   deleteNode(_clusterName: string, _nodeName: string, _dc: string, _projectID: string): Observable<any> {
     return asyncData(null);
   }
 
+  /**
+   * Lists nodes in a cluster (deprecated, use nodes() instead).
+   *
+   * Returns mocked nodes array after async delay.
+   *
+   * @param {string} _cluster - Cluster identifier (ignored)
+   * @param {string} _dc - Datacenter name (ignored)
+   * @param {string} _projectID - Project ID (ignored)
+   * @returns {Observable<Node[]>} Observable emitting nodes array
+   *
+   * @deprecated Use nodes() method instead
+   * @example
+   * ```typescript
+   * clusterMock.getNodes('cluster-1', 'dc-1', 'proj-1').subscribe(nodes => {
+   *   expect(nodes.length).toBeGreaterThan(0);
+   * });
+   * ```
+   */
   getNodes(_cluster: string, _dc: string, _projectID: string): Observable<Node[]> {
     return asyncData(this._nodes);
   }
 
+  /**
+   * Gets available master version upgrades.
+   *
+   * Returns empty array after async delay.
+   * Test upgrade availability checks and UI display.
+   *
+   * @param {string} _cluster - Cluster identifier (ignored)
+   * @returns {Observable<MasterVersion[]>} Observable emitting versions array
+   *
+   * @example
+   * ```typescript
+   * clusterMock.upgrades('cluster-1').subscribe(versions => {
+   *   expect(versions.length).toBe(0); // No upgrades available
+   * });
+   * ```
+   */
   upgrades(_cluster: string): Observable<MasterVersion[]> {
     return asyncData([]);
   }
 
+  /**
+   * Gets CNI plugin versions for cluster.
+   *
+   * Returns null after async delay.
+   * Test network configuration display.
+   *
+   * @param {string} _projectID - Project ID (ignored)
+   * @param {string} _clusterID - Cluster ID (ignored)
+   * @returns {Observable<CNIPluginVersions>} Observable emitting CNI versions
+   *
+   * @example
+   * ```typescript
+   * clusterMock.cniVersions('proj-1', 'cluster-1').subscribe(versions => {
+   *   expect(versions).toBeNull();
+   * });
+   * ```
+   */
   cniVersions(_projectID: string, _clusterID: string): Observable<CNIPluginVersions> {
     return asyncData(null);
   }
 
-  nodes(_projectID: string, _clusterId: string, _datacenter: string): Observable<Node[]> {
-    return asyncData(nodesFake());
+  /**
+   * Lists nodes in a cluster.
+   *
+   * Returns mocked nodes array after async delay.
+   * Use setCustomNodes() to override with different node data.
+   * Automatically tracks call count for assertion purposes.
+   *
+   * @param {string} projectID - Project ID
+   * @param {string} clusterId - Cluster ID
+   * @param {string} datacenter - Datacenter name
+   * @returns {Observable<Node[]>} Observable emitting nodes array
+   *
+   * @example
+   * ```typescript
+   * clusterMock.nodes('proj-1', 'cluster-1', 'dc-1').subscribe(nodes => {
+   *   expect(nodes.length).toBeGreaterThan(0);
+   * });
+   * expect(clusterMock.nodesCallCount).toBe(1);
+   * ```
+   *
+   * @example
+   * ```typescript
+   * // With custom nodes
+   * const customNodes = [createNode('node-1'), createNode('node-2'), createNode('node-3')];
+   * clusterMock.setCustomNodes(customNodes);
+   * clusterMock.nodes('proj-1', 'cluster-1', 'dc-1').subscribe(nodes => {
+   *   expect(nodes.length).toBe(3);
+   * });
+   * ```
+   */
+  nodes(projectID: string, clusterId: string, datacenter: string): Observable<Node[]> {
+    this._nodesCallCount++;
+    return asyncData(this._customNodes ?? nodesFake());
   }
 
+  /**
+   * Gets cluster performance metrics.
+   *
+   * Returns null after async delay.
+   * Test metrics display and monitoring features.
+   *
+   * @param {string} _projectID - Project ID (ignored)
+   * @param {string} _clusterId - Cluster ID (ignored)
+   * @param {string} _datacenter - Datacenter name (ignored)
+   * @returns {Observable<ClusterMetrics>} Observable emitting metrics
+   *
+   * @example
+   * ```typescript
+   * clusterMock.metrics('proj-1', 'cluster-1', 'dc-1').subscribe(metrics => {
+   *   expect(metrics).toBeNull();
+   * });
+   * ```
+   */
   metrics(_projectID: string, _clusterId: string, _datacenter: string): Observable<ClusterMetrics> {
     return asyncData(null);
   }
 
+  /**
+   * Gets available node upgrades for a control plane version.
+   *
+   * Returns empty array after async delay.
+   * Test node upgrade availability checks.
+   *
+   * @param {string} _controlPlaneVersion - Control plane version (ignored)
+   * @param {string} _type - Node type (ignored)
+   * @returns {Observable<MasterVersion[]>} Observable emitting versions array
+   *
+   * @example
+   * ```typescript
+   * clusterMock.nodeUpgrades('1.20.0', 'ubuntu').subscribe(versions => {
+   *   expect(versions.length).toBe(0); // No upgrades available
+   * });
+   * ```
+   */
   nodeUpgrades(_controlPlaneVersion: string, _type: string): Observable<MasterVersion[]> {
     return asyncData([]);
   }
 
+  /**
+   * Lists machine deployments available for upgrade.
+   *
+   * Returns empty array synchronously.
+   * Quick response for upgrade availability checks.
+   *
+   * @returns {Observable<any[]>} Observable emitting machine deployments
+   *
+   * @example
+   * ```typescript
+   * clusterMock.upgradeMachineDeployments().subscribe(deployments => {
+   *   expect(deployments.length).toBe(0);
+   * });
+   * ```
+   */
   upgradeMachineDeployments(): Observable<any[]> {
     return of([]);
   }
 
+  /**
+   * Creates a new SSH key for cluster access.
+   *
+   * Returns null synchronously.
+   * Test SSH key creation flows without real key generation.
+   *
+   * @param {SSHKey} _sshKey - SSH key object (ignored)
+   * @returns {Observable<SSHKey>} Observable emitting null
+   *
+   * @example
+   * ```typescript
+   * clusterMock.createSSHKey(sshKey).subscribe(result => {
+   *   expect(result).toBeNull();
+   * });
+   * ```
+   */
   createSSHKey(_sshKey: SSHKey): Observable<SSHKey> {
     return of(null);
   }
 
+  /**
+   * Gets cluster events.
+   *
+   * Returns mocked events array synchronously.
+   * Test event display without real event polling.
+   *
+   * @param {string} _projectID - Project ID (ignored)
+   * @param {string} _clusterId - Cluster ID (ignored)
+   * @param {string} _datacenter - Datacenter name (ignored)
+   * @returns {Observable<Event[]>} Observable emitting events array
+   *
+   * @example
+   * ```typescript
+   * clusterMock.events('proj-1', 'cluster-1', 'dc-1').subscribe(events => {
+   *   expect(events.length).toBeGreaterThan(0);
+   * });
+   * ```
+   */
   events(_projectID: string, _clusterId: string, _datacenter: string): Observable<Event[]> {
     return of(fakeEvents());
   }
 
+  /**
+   * Lists cluster add-ons (Helm charts, operators, etc.).
+   *
+   * Returns empty array synchronously.
+   * Test add-on management UI without real add-on data.
+   *
+   * @param {string} _projectID - Project ID (ignored)
+   * @param {string} _cluster - Cluster identifier (ignored)
+   * @param {string} _dc - Datacenter name (ignored)
+   * @returns {Observable<Addon[]>} Observable emitting add-ons array
+   *
+   * @example
+   * ```typescript
+   * clusterMock.addons('proj-1', 'cluster-1', 'dc-1').subscribe(addons => {
+   *   expect(addons.length).toBe(0);
+   * });
+   * ```
+   */
   addons(_projectID: string, _cluster: string, _dc: string): Observable<Addon[]> {
     return of([]);
   }
 
+  /**
+   * Triggers cluster list refresh.
+   *
+   * No-op in mock. In real service, forces refresh of cluster list
+   * from API, bypassing cache.
+   *
+   * @example
+   * ```typescript
+   * clusterMock.refreshClusters(); // Does nothing
+   * ```
+   */
   refreshClusters(): void {}
+
+  // ===== Call Tracking Properties =====
+
+  /**
+   * Gets the number of times cluster() was called.
+   *
+   * @returns {number} Count of cluster() calls
+   */
+  get clusterCallCount(): number {
+    return this._clusterCallCount;
+  }
+
+  /**
+   * Gets the number of times clusters() was called.
+   *
+   * @returns {number} Count of clusters() calls
+   */
+  get clustersCallCount(): number {
+    return this._clustersCallCount;
+  }
+
+  /**
+   * Gets the number of times create() was called.
+   *
+   * @returns {number} Count of create() calls
+   */
+  get createCallCount(): number {
+    return this._createCallCount;
+  }
+
+  /**
+   * Gets the number of times delete() was called.
+   *
+   * @returns {number} Count of delete() calls
+   */
+  get deleteCallCount(): number {
+    return this._deleteCallCount;
+  }
+
+  /**
+   * Gets the number of times edit() was called.
+   *
+   * @returns {number} Count of edit() calls
+   */
+  get editCallCount(): number {
+    return this._editCallCount;
+  }
+
+  /**
+   * Gets the number of times health() was called.
+   *
+   * @returns {number} Count of health() calls
+   */
+  get healthCallCount(): number {
+    return this._healthCallCount;
+  }
+
+  /**
+   * Gets the number of times nodes() was called.
+   *
+   * @returns {number} Count of nodes() calls
+   */
+  get nodesCallCount(): number {
+    return this._nodesCallCount;
+  }
+
+  // ===== Configuration Methods =====
+
+  /**
+   * Sets a custom cluster to be returned by cluster(), create(), and edit() methods.
+   *
+   * Useful for testing with specific cluster configurations, different cloud providers,
+   * or special cluster states.
+   *
+   * @param {Cluster} cluster - Custom cluster object to return
+   *
+   * @example
+   * ```typescript
+   * const awsCluster = createCluster('aws-cluster', 'ec2');
+   * clusterMock.setCustomCluster(awsCluster);
+   * clusterMock.cluster('any-id', 'dc-1', 'proj-1').subscribe(cluster => {
+   *   expect(cluster.provider).toBe('ec2');
+   * });
+   * ```
+   */
+  setCustomCluster(cluster: Cluster): void {
+    this._customCluster = cluster;
+  }
+
+  /**
+   * Clears the custom cluster override.
+   *
+   * @example
+   * ```typescript
+   * clusterMock.setCustomCluster(...);
+   * clusterMock.clearCustomCluster();
+   * clusterMock.cluster('id', 'dc', 'proj').subscribe(cluster => {
+   *   expect(cluster.provider).toBe('digitalocean');
+   * });
+   * ```
+   */
+  clearCustomCluster(): void {
+    this._customCluster = null;
+  }
+
+  /**
+   * Sets a custom clusters list to be returned by clusters() method.
+   *
+   * Useful for testing with different cluster counts or specific cluster configurations.
+   *
+   * @param {Cluster[]} clusters - Custom clusters array
+   *
+   * @example
+   * ```typescript
+   * const customClusters = [createCluster('c1'), createCluster('c2'), createCluster('c3')];
+   * clusterMock.setCustomClusters(customClusters);
+   * clusterMock.clusters('proj-1').subscribe(clusters => {
+   *   expect(clusters.length).toBe(3);
+   * });
+   * ```
+   */
+  setCustomClusters(clusters: Cluster[]): void {
+    this._customClusters = clusters;
+  }
+
+  /**
+   * Clears the custom clusters override.
+   */
+  clearCustomClusters(): void {
+    this._customClusters = null;
+  }
+
+  /**
+   * Sets a custom health status to be returned by health() method.
+   *
+   * Useful for testing component behavior with unhealthy clusters or specific health states.
+   *
+   * @param {Health} health - Custom health status object
+   *
+   * @example
+   * ```typescript
+   * const unhealthyStatus = createUnhealthyHealth('apiserver');
+   * clusterMock.setCustomHealth(unhealthyStatus);
+   * clusterMock.health('cluster-1', 'dc-1', 'proj-1').subscribe(health => {
+   *   expect(health.apiserver).toBeFalsy();
+   * });
+   * ```
+   */
+  setCustomHealth(health: Health): void {
+    this._customHealth = health;
+  }
+
+  /**
+   * Clears the custom health override.
+   */
+  clearCustomHealth(): void {
+    this._customHealth = null;
+  }
+
+  /**
+   * Sets a custom nodes list to be returned by nodes() method.
+   *
+   * Useful for testing cluster node management with different node counts or states.
+   *
+   * @param {Node[]} nodes - Custom nodes array
+   *
+   * @example
+   * ```typescript
+   * const customNodes = [createNode('worker-1'), createNode('worker-2')];
+   * clusterMock.setCustomNodes(customNodes);
+   * clusterMock.nodes('proj-1', 'cluster-1', 'dc-1').subscribe(nodes => {
+   *   expect(nodes.length).toBe(2);
+   * });
+   * ```
+   */
+  setCustomNodes(nodes: Node[]): void {
+    this._customNodes = nodes;
+  }
+
+  /**
+   * Clears the custom nodes override.
+   */
+  clearCustomNodes(): void {
+    this._customNodes = null;
+  }
+
+  /**
+   * Configures delete() to return an error instead of success.
+   *
+   * Useful for testing error handling in cluster deletion flows.
+   *
+   * @param {boolean} shouldError - True to make delete fail, false for success
+   * @param {string} errorMessage - Error message to emit on failure
+   *
+   * @example
+   * ```typescript
+   * clusterMock.setDeleteError(true, 'Cluster is still provisioning');
+   * clusterMock.delete('cluster-1', 'dc-1', 'proj-1').subscribe(
+   *   () => { // Should not reach },
+   *   error => expect(error.message).toContain('provisioning')
+   * );
+   * ```
+   */
+  setDeleteError(shouldError: boolean, errorMessage: string = 'Failed to delete cluster'): void {
+    this._deleteShouldError = shouldError;
+    this._deleteErrorMessage = errorMessage;
+  }
+
+  /**
+   * Configures create() to return an error instead of success.
+   *
+   * Useful for testing error handling in cluster creation flows.
+   *
+   * @param {boolean} shouldError - True to make create fail, false for success
+   * @param {string} errorMessage - Error message to emit on failure
+   *
+   * @example
+   * ```typescript
+   * clusterMock.setCreateError(true, 'Insufficient quota');
+   * clusterMock.create(model, 'dc-1', 'proj-1').subscribe(
+   *   () => { // Should not reach },
+   *   error => expect(error.message).toContain('Insufficient')
+   * );
+   * ```
+   */
+  setCreateError(shouldError: boolean, errorMessage: string = 'Failed to create cluster'): void {
+    this._createShouldError = shouldError;
+    this._createErrorMessage = errorMessage;
+  }
+
+  /**
+   * Resets all call tracking counters.
+   *
+   * Useful in beforeEach() hooks to ensure clean state between tests.
+   *
+   * @example
+   * ```typescript
+   * beforeEach(() => {
+   *   clusterMock.resetCallTracking();
+   *   expect(clusterMock.clusterCallCount).toBe(0);
+   * });
+   * ```
+   */
+  resetCallTracking(): void {
+    this._clusterCallCount = 0;
+    this._clustersCallCount = 0;
+    this._createCallCount = 0;
+    this._deleteCallCount = 0;
+    this._editCallCount = 0;
+    this._healthCallCount = 0;
+    this._nodesCallCount = 0;
+  }
+
+  /**
+   * Resets all custom overrides, error configurations, and call tracking.
+   *
+   * Resets the mock to its default state.
+   *
+   * @example
+   * ```typescript
+   * afterEach(() => {
+   *   clusterMock.resetAll();
+   * });
+   * ```
+   */
+  resetAll(): void {
+    this._customCluster = null;
+    this._customClusters = null;
+    this._customHealth = null;
+    this._customNodes = null;
+    this._deleteShouldError = false;
+    this._createShouldError = false;
+    this.resetCallTracking();
+  }
 }
 
 export function asyncData<T>(data: T): Observable<T> {
   return defer(() => of(data, async));
+}
+
+export function asyncError<T>(error: Error): Observable<T> {
+  return defer(() => throwError(() => error));
 }

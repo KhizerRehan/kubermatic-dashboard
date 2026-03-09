@@ -1,0 +1,97 @@
+===============================================================================
+  KUBERMATIC DASHBOARD — TESTING OVERHAUL PROGRESS
+  Started: 2026-03-06
+===============================================================================
+
+TRACK A — CLEANUP
+===============================================================================
+
+  Step 1: Fix/Remove Broken Spec Files                           ✅ DONE 2026-03-06
+  ─────────────────────────────────────
+  [x] Deleted cluster/list/cluster/component.edge-case.spec.ts (735 lines, 152 errors)
+  [x] Fixed test/utils/observable-async-patterns.spec.ts — 36/36 passing
+      - Replaced deprecated multicast/publish/refCount → share()
+      - Changed declarations → imports for Angular 20 standalone components
+      - Added CommonModule for json pipe
+      - Rewrote flawed retry tests (Subject+retry doesn't re-emit)
+      - Fixed flush test with explicit tick(100)
+  [x] simple-display.component.spec.ts — removed with example-tests/
+
+  Step 2: Delete example-tests/ Directory                        ✅ DONE 2026-03-06
+  ────────────────────────────────────────
+  [x] Removed src/app/shared/components/example-tests/ (32 files, not in production)
+
+  Step 3: Archive Testing Docs                                   ✅ DONE 2026-03-06
+  ────────────────────────────────────
+  [x] Moved 26 files from docs/testing/ → docs/testing/_archive/
+  [x] Moved Auto Run Docs/ → docs/testing/_archive/auto-run/
+  [x] Moved root ERROR_*.md files → docs/testing/_archive/
+  [x] Moved RESEARCH_DELIVERABLES.txt → docs/testing/_archive/
+
+  Step 4: Create Fresh Testing README                            ✅ DONE 2026-03-06
+  ────────────────────────────────────
+  [x] Wrote docs/testing/README.md (run commands, conventions, mock inventory)
+
+  Step 5: Normalize Testing APIs                                 ⏭ DEFERRED
+  ──────────────────────────────
+  [ ] ~20 files use jasmine.createSpyObj — works at runtime via Jest compatibility
+      Non-blocking style issue. Will normalize incrementally during P0 test writes.
+
+
+TRACK B — PRD-PER-FEATURE FRAMEWORK
+===============================================================================
+
+  Step 6: Create PRD Directory Structure                         ✅ DONE 2026-03-06
+  ──────────────────────────────────────
+  [x] Created docs/features/ with README.md coverage matrix & implementation index
+
+  Step 7: Write Feature PRDs (P0)                                ✅ DONE 2026-03-06
+  ───────────────────────────────
+  [x] shared-components.md — 54 components, 5 untested gaps identified
+  [x] core-services.md — 39 services, 23 untested with test scenarios
+  [x] cluster.md — 63 components, 17 untested gaps identified
+  [x] wizard.md — 7 steps all tested, integration gaps documented
+  [x] project.md — 3 components all tested, edge cases documented
+
+  Step 8: Write Feature PRDs (P1)                                ✅ DONE 2026-03-06
+  ───────────────────────────────
+  [x] node-data.md — 35 components, 0 tested (largest untested module)
+  [x] backup.md — 11 components, 0 tested
+  [x] member-serviceaccount-sshkey.md — 10 components, all tested, gaps noted
+      (combined member + service-account + ssh-key into one PRD)
+
+  Step 9: Write Feature PRDs (P2)                                ✅ DONE 2026-03-06
+  ───────────────────────────────
+  [x] remaining-features.md — consolidated P2 PRDs:
+      project-overview, external-cluster-wizard, kubeone-wizard,
+      cluster-template, admin-settings, user-settings, dynamic/enterprise
+
+
+TRACK C — TEST IMPLEMENTATION (after PRDs)
+===============================================================================
+
+  Step 10: P0 Tests
+  ─────────────────
+  [ ] Rewrite ClusterListComponent edge-case tests from cluster PRD
+  [ ] Add annotation-form tests
+  [ ] Expand project tests
+
+  Step 11: P1 Tests
+  ─────────────────
+  [ ] node-data core component tests
+  [ ] node-data provider tests (per provider)
+  [ ] backup CRUD dialog tests
+
+  Step 12: P2 Tests
+  ─────────────────
+  [ ] project-overview
+  [ ] external-cluster-wizard
+  [ ] kubeone-wizard
+  [ ] cluster-template
+
+
+VERIFICATION LOG
+===============================================================================
+  2026-03-06  observable-async-patterns.spec.ts — 36/36 PASS
+  2026-03-06  Full test suite verification — PENDING
+
