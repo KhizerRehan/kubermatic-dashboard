@@ -23,6 +23,7 @@ import (
 
 	apiv2 "k8c.io/dashboard/v2/pkg/api/v2"
 	kubermaticv1 "k8c.io/kubermatic/sdk/v2/apis/kubermatic/v1"
+	ksemver "k8c.io/kubermatic/sdk/v2/semver"
 	"k8c.io/kubermatic/v2/pkg/resources"
 
 	"k8s.io/utils/ptr"
@@ -34,6 +35,7 @@ func TestOverrideNetworkDefaultsByDefaultingTemplate(t *testing.T) {
 		provider                     kubermaticv1.ProviderType
 		templateClusterNetwork       kubermaticv1.ClusterNetworkingConfig
 		exposeStrategy               kubermaticv1.ExposeStrategy
+		clusterVersion               ksemver.Semver
 		expectedFinalNetworkDefaults apiv2.NetworkDefaults
 	}{
 		{
@@ -188,7 +190,7 @@ func TestOverrideNetworkDefaultsByDefaultingTemplate(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			networkDefaults := generateNetworkDefaults(tc.provider)
-			networkDefaults = overrideNetworkDefaultsByDefaultingTemplate(networkDefaults, tc.templateClusterNetwork, tc.provider, tc.exposeStrategy)
+			networkDefaults = overrideNetworkDefaultsByDefaultingTemplate(networkDefaults, tc.templateClusterNetwork, tc.provider, tc.exposeStrategy, tc.clusterVersion)
 			assert.Equal(t, tc.expectedFinalNetworkDefaults, networkDefaults)
 		})
 	}
