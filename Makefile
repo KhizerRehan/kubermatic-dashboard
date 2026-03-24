@@ -33,29 +33,6 @@ ifeq (${HUMAN_VERSION},)
 	endif
 endif
 
-export CGO_ENABLED ?= 0
-export GOFLAGS ?= -mod=readonly -trimpath
-export GO111MODULE = on
-CMD ?= $(notdir $(wildcard ./cmd/*))
-GOBUILDFLAGS ?= -v
-GIT_VERSION = $(shell git describe --tags --always)
-TAGS ?= $(GIT_VERSION)
-DOCKERTAGS = $(TAGS) latestbuild
-DOCKER_BUILD_FLAG += $(foreach tag, $(DOCKERTAGS), -t $(REPO):$(tag))
-KUBERMATICCOMMIT ?= $(shell git log -1 --format=%H)
-KUBERMATICDOCKERTAG ?= $(KUBERMATICCOMMIT)
-UIDOCKERTAG ?= NA
-LDFLAGS += -extldflags '-static' \
-  -X k8c.io/kubermatic/v2/pkg/version/kubermatic.gitVersion=$(GIT_VERSION) \
-  -X k8c.io/kubermatic/v2/pkg/version/kubermatic.kubermaticDockerTag=$(KUBERMATICDOCKERTAG) \
-  -X k8c.io/kubermatic/v2/pkg/version/kubermatic.uiDockerTag=$(UIDOCKERTAG) \
-  -X k8c.io/dashboard/v2/pkg/version/kubermatic.Edition=$(KUBERMATIC_EDITION) \
-  -X k8c.io/dashboard/v2/pkg/version/kubermatic.Version=$(HUMAN_VERSION)
-LDFLAGS_EXTRA=-w
-BUILD_DEST ?= _build
-GOTOOLFLAGS ?= $(GOBUILDFLAGS) -ldflags '$(LDFLAGS_EXTRA) $(LDFLAGS)' $(GOTOOLFLAGS_EXTRA)
-DOCKER_BIN := $(shell which docker)
-
 version:
 	@echo $(HUMAN_VERSION)
 
