@@ -41,13 +41,13 @@ var _ toolscache.ResourceEventHandler = &UserWatcher{}
 
 // UserWatcher returns a new resource watcher.
 func NewUserWatcher(ctx context.Context, log *zap.SugaredLogger) (*UserWatcher, error) {
-	w := &UserWatcher{
+	watcher := &UserWatcher{
 		log:       log,
 		publisher: pubsub.New(),
 		userCache: make(map[uint64]*kubermaticv1.User),
 	}
 
-	return w, nil
+	return watcher, nil
 }
 
 func (watcher *UserWatcher) CalculateHash(id string) (uint64, error) {

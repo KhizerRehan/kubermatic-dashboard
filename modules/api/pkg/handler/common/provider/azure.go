@@ -420,7 +420,8 @@ func AzureSize(ctx context.Context, machineFilter kubermaticv1.MachineFlavorFilt
 					case "MaxResourceVolumeMB":
 						vm.ResourceDiskSizeInMB = int32(val)
 					case "MemoryGB":
-						vm.MemoryInMB = int32(val * 1024)
+						mbPerGB := float64(1024)
+						vm.MemoryInMB = int32(val * mbPerGB)
 					case "MaxDataDiskCount":
 						vm.MaxDataDiskCount = int32(val)
 					}

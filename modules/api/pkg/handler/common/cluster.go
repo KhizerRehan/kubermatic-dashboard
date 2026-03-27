@@ -1273,8 +1273,9 @@ func ConvertClusterMetrics(podMetrics *v1beta1.PodMetricsList, nodeMetrics []v1b
 			clusterMetrics.NodesMetrics.CPUAvailableMillicores += availableCPU.MilliValue()
 
 			quantityM := resourceMetricsInfo.Metrics[corev1.ResourceMemory]
-			clusterMetrics.NodesMetrics.MemoryTotalBytes += quantityM.Value() / (1024 * 1024)
-			clusterMetrics.NodesMetrics.MemoryAvailableBytes += availableMemory.Value() / (1024 * 1024)
+			bytesPerMiB := int64(1024 * 1024)
+			clusterMetrics.NodesMetrics.MemoryTotalBytes += quantityM.Value() / bytesPerMiB
+			clusterMetrics.NodesMetrics.MemoryAvailableBytes += availableMemory.Value() / bytesPerMiB
 		}
 	}
 
@@ -1289,7 +1290,8 @@ func ConvertClusterMetrics(podMetrics *v1beta1.PodMetricsList, nodeMetrics []v1b
 			quantityCPU := usage[corev1.ResourceCPU]
 			clusterMetrics.ControlPlaneMetrics.CPUTotalMillicores += quantityCPU.MilliValue()
 			quantityM := usage[corev1.ResourceMemory]
-			clusterMetrics.ControlPlaneMetrics.MemoryTotalBytes += quantityM.Value() / (1024 * 1024)
+			bytesPerMiB := int64(1024 * 1024)
+			clusterMetrics.ControlPlaneMetrics.MemoryTotalBytes += quantityM.Value() / bytesPerMiB
 		}
 	}
 

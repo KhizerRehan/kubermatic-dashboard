@@ -115,7 +115,7 @@ func DigitaloceanSize(ctx context.Context, quota kubermaticv1.MachineFlavorFilte
 	// type 3 isn't listed in the pricing anymore and only will be available for legacy issues until July 1st, 2018
 	// therefore we might not want to log all cases that aren't starting with s or c
 	for k := range sizes {
-		s := apiv1.DigitaloceanSize{
+		doSize := apiv1.DigitaloceanSize{
 			Slug:         sizes[k].Slug,
 			Available:    sizes[k].Available,
 			Transfer:     sizes[k].Transfer,
@@ -128,9 +128,9 @@ func DigitaloceanSize(ctx context.Context, quota kubermaticv1.MachineFlavorFilte
 		}
 		switch {
 		case reStandard.MatchString(sizes[k].Slug):
-			sizeList.Standard = append(sizeList.Standard, s)
+			sizeList.Standard = append(sizeList.Standard, doSize)
 		case reOptimized.MatchString(sizes[k].Slug):
-			sizeList.Optimized = append(sizeList.Optimized, s)
+			sizeList.Optimized = append(sizeList.Optimized, doSize)
 		}
 	}
 

@@ -109,7 +109,7 @@ func HetznerSize(ctx context.Context, machineFilter kubermaticv1.MachineFlavorFi
 	sizeList := apiv1.HetznerSizeList{}
 
 	for _, size := range sizes {
-		s := apiv1.HetznerSize{
+		hetznerSize := apiv1.HetznerSize{
 			ID:          size.ID,
 			Name:        size.Name,
 			Description: size.Description,
@@ -119,9 +119,9 @@ func HetznerSize(ctx context.Context, machineFilter kubermaticv1.MachineFlavorFi
 		}
 		switch {
 		case reStandardSize.MatchString(size.Name):
-			sizeList.Standard = append(sizeList.Standard, s)
+			sizeList.Standard = append(sizeList.Standard, hetznerSize)
 		case reDedicatedSize.MatchString(size.Name):
-			sizeList.Dedicated = append(sizeList.Dedicated, s)
+			sizeList.Dedicated = append(sizeList.Dedicated, hetznerSize)
 		}
 	}
 

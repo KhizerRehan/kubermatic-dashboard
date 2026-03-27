@@ -147,7 +147,7 @@ func AKSAzureSize(ctx context.Context, cred resources.AKSCredentials, location s
 				vmName := *vm.Name
 
 				if _, okSKU := validSKUSet[vmName]; okSKU {
-					s := apiv2.AKSVMSize{
+					vmSize := apiv2.AKSVMSize{
 						Name:                 vmName,
 						NumberOfCores:        to.Int32(vm.NumberOfCores),
 						MemoryInMB:           to.Int32(vm.MemoryInMB),
@@ -156,10 +156,10 @@ func AKSAzureSize(ctx context.Context, cred resources.AKSCredentials, location s
 						ResourceDiskSizeInMB: to.Int32(vm.ResourceDiskSizeInMB),
 					}
 					if gpus, okGPU := gpuInstanceFamilies[vmName]; okGPU {
-						s.NumberOfGPUs = gpus
+						vmSize.NumberOfGPUs = gpus
 					}
 
-					sizeList = append(sizeList, s)
+					sizeList = append(sizeList, vmSize)
 				}
 			}
 		}

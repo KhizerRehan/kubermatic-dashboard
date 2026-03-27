@@ -20,8 +20,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/containerservice/mgmt/containerservice"
@@ -38,6 +36,7 @@ import (
 	"k8c.io/dashboard/v2/pkg/handler/v1/common"
 	"k8c.io/dashboard/v2/pkg/provider"
 	"k8c.io/dashboard/v2/pkg/provider/cloud/aks"
+	"k8c.io/dashboard/v2/pkg/validation"
 	kubermaticv1 "k8c.io/kubermatic/sdk/v2/apis/kubermatic/v1"
 	kuberneteshelper "k8c.io/kubermatic/v2/pkg/kubernetes"
 	"k8c.io/kubermatic/v2/pkg/resources"
@@ -522,12 +521,8 @@ func checkCreatePoolReqValidity(aksMD *apiv2.AKSMachineDeploymentCloudSpec) erro
 	}
 	basicSettings := aksMD.BasicSettings
 	// check whether required fields for nodepool creation are provided
-	fields := reflect.ValueOf(&basicSettings).Elem()
-	for i := 0; i < fields.NumField(); i++ {
-		yourjsonTags := fields.Type().Field(i).Tag.Get("required")
-		if strings.Contains(yourjsonTags, "true") && fields.Field(i).IsZero() {
-			return utilerrors.NewBadRequest("required field is missing: %v", fields.Type().Field(i).Name)
-		}
+	if err := validation.ValidateRequiredFields(&basicSettings); err != nil {
+		return err
 	}
 	if basicSettings.EnableAutoScaling {
 		maxCount := basicSettings.ScalingConfig.MaxCount
@@ -557,12 +552,8 @@ func createOrImportAKSCluster(ctx context.Context, name string, userInfoGetter p
 	isImported := resources.ExternalClusterIsImportedTrue
 
 	// check whether required fields for cluster import are provided
-	fields := reflect.ValueOf(cloud.AKS).Elem()
-	for i := 0; i < fields.NumField(); i++ {
-		yourjsonTags := fields.Type().Field(i).Tag.Get("required")
-		if strings.Contains(yourjsonTags, "true") && fields.Field(i).IsZero() {
-			return nil, utilerrors.NewBadRequest("required field is missing: %v", fields.Type().Field(i).Name)
-		}
+	if err := validation.ValidateRequiredFields(cloud.AKS); err != nil {
+		return nil, err
 	}
 
 	// If Spec is not nil, it is interpreted as create cluster on the provider.

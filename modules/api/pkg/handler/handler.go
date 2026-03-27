@@ -82,7 +82,7 @@ func ErrorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 		additional = httpErr.Details()
 	}
 
-	e := ErrorResponse{
+	errorResp := ErrorResponse{
 		Error: ErrorDetails{
 			Code:       errorCode,
 			Message:    msg,
@@ -92,7 +92,7 @@ func ErrorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 
 	w.Header().Set(headerContentType, contentTypeJSON)
 	w.WriteHeader(errorCode)
-	err = EncodeJSON(ctx, w, e)
+	err = EncodeJSON(ctx, w, errorResp)
 	if err != nil {
 		log.Logger.Error(err)
 	}

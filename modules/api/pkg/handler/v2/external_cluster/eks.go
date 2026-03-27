@@ -21,8 +21,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"reflect"
-	"strings"
 
 	ekstypes "github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/go-kit/kit/endpoint"
@@ -35,6 +33,7 @@ import (
 	"k8c.io/dashboard/v2/pkg/provider"
 	awsprovider "k8c.io/dashboard/v2/pkg/provider/cloud/aws"
 	eksprovider "k8c.io/dashboard/v2/pkg/provider/cloud/eks"
+	"k8c.io/dashboard/v2/pkg/validation"
 	kubermaticv1 "k8c.io/kubermatic/sdk/v2/apis/kubermatic/v1"
 	kuberneteshelper "k8c.io/kubermatic/v2/pkg/kubernetes"
 	"k8c.io/kubermatic/v2/pkg/resources"
@@ -657,12 +656,8 @@ func createNewEKSCluster(ctx context.Context, eksClusterSpec *apiv2.EKSClusterSp
 
 	clusterSpec := eksClusterSpec
 
-	fields := reflect.ValueOf(clusterSpec).Elem()
-	for i := 0; i < fields.NumField(); i++ {
-		yourjsonTags := fields.Type().Field(i).Tag.Get("required")
-		if strings.Contains(yourjsonTags, "true") && fields.Field(i).IsZero() {
-			return fmt.Errorf("required field is missing %v", fields.Type().Field(i).Tag)
-		}
+	if err := validation.ValidateRequiredFields(clusterSpec); err != nil {
+		return err
 	}
 
 	return eksprovider.CreateCluster(ctx, client, clusterSpec, eksCloudSpec.Name)
@@ -671,12 +666,8 @@ func createNewEKSCluster(ctx context.Context, eksClusterSpec *apiv2.EKSClusterSp
 func createOrImportEKSCluster(ctx context.Context, name string, userInfoGetter provider.UserInfoGetter, project *kubermaticv1.Project, spec *apiv2.ExternalClusterSpec, cloud *apiv2.ExternalClusterCloudSpec, clusterProvider provider.ExternalClusterProvider, privilegedClusterProvider provider.PrivilegedExternalClusterProvider) (*kubermaticv1.ExternalCluster, error) {
 	isImported := resources.ExternalClusterIsImportedTrue
 
-	fields := reflect.ValueOf(cloud.EKS).Elem()
-	for i := 0; i < fields.NumField(); i++ {
-		yourjsonTags := fields.Type().Field(i).Tag.Get("required")
-		if strings.Contains(yourjsonTags, "true") && fields.Field(i).IsZero() {
-			return nil, utilerrors.NewBadRequest("required field is missing: %v", fields.Type().Field(i).Name)
-		}
+	if err := validation.ValidateRequiredFields(cloud.EKS); err != nil {
+		return nil, err
 	}
 
 	if spec != nil && spec.EKSClusterSpec != nil {

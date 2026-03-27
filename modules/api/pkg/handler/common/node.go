@@ -55,9 +55,9 @@ func ConvertNodeMetrics(metrics []v1beta1.NodeMetrics, availableResources map[st
 
 		if available, found := resourceMetricsInfo.Available[corev1.ResourceMemory]; found {
 			quantityM := resourceMetricsInfo.Metrics[corev1.ResourceMemory]
-			// memory in bytes
-			nodeMetric.MemoryTotalBytes = quantityM.Value() / (1024 * 1024)
-			nodeMetric.MemoryAvailableBytes = available.Value() / (1024 * 1024)
+			bytesPerMiB := int64(1024 * 1024)
+			nodeMetric.MemoryTotalBytes = quantityM.Value() / bytesPerMiB
+			nodeMetric.MemoryAvailableBytes = available.Value() / bytesPerMiB
 			fraction := float64(quantityM.MilliValue()) / float64(available.MilliValue()) * 100
 			nodeMetric.MemoryUsedPercentage = int64(fraction)
 		}

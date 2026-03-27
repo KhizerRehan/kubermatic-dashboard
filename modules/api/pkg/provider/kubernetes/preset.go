@@ -365,7 +365,7 @@ func (m *PresetProvider) setOpenStackCredentials(preset *kubermaticv1.Preset, cl
 	cloud.Openstack.ApplicationCredentialID = credentials.ApplicationCredentialID
 	cloud.Openstack.ApplicationCredentialSecret = credentials.ApplicationCredentialSecret
 
-	// if the preset is customizable then no need to update these value from the prest, since we have them in the req.body
+	// if the preset is customizable then no need to update these values from the preset, since we have them in the req.body
 	if !preset.Spec.Openstack.IsCustomizable {
 		cloud.Openstack.SubnetID = credentials.SubnetID
 		cloud.Openstack.Network = credentials.Network

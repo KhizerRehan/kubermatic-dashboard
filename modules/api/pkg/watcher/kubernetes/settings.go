@@ -35,12 +35,12 @@ type SettingsWatcher struct {
 
 // SettingsWatcher returns a new resource watcher.
 func NewSettingsWatcher(ctx context.Context, log *zap.SugaredLogger) (*SettingsWatcher, error) {
-	w := &SettingsWatcher{
+	watcher := &SettingsWatcher{
 		log:       log,
 		publisher: pubsub.New(),
 	}
 
-	return w, nil
+	return watcher, nil
 }
 
 // Subscribe allows to register subscription handler which will be invoked on each settings change.

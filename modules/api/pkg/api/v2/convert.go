@@ -25,9 +25,14 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 )
 
+const (
+	binaryBase     = 1024
+	bytesPerGiB    = binaryBase * binaryBase * binaryBase
+	roundPrecision = 100 // multiplier for rounding to 2 decimal places
+)
+
 func ConvertToAPIQuota(resourceDetails kubermaticv1.ResourceDetails) Quota {
 	quota := Quota{}
-	bytesPerGiB := 1024 * 1024 * 1024
 
 	if resourceDetails.CPU != nil {
 		cpu := resourceDetails.CPU.Value()
@@ -36,18 +41,16 @@ func ConvertToAPIQuota(resourceDetails kubermaticv1.ResourceDetails) Quota {
 
 	// Get memory and storage denoted in GB
 	if resourceDetails.Memory != nil && !resourceDetails.Memory.IsZero() {
-		changeToBinary := TreatDecimalAsBinary(resourceDetails.Memory)
-		memory := float64(changeToBinary.Value()) / float64(bytesPerGiB)
-		// round to 2 decimal places
-		memory = math.Round(memory*100) / 100
+		binaryQuantity := TreatDecimalAsBinary(resourceDetails.Memory)
+		memory := float64(binaryQuantity.Value()) / float64(bytesPerGiB)
+		memory = math.Round(memory*roundPrecision) / roundPrecision
 		quota.Memory = &memory
 	}
 
 	if resourceDetails.Storage != nil && !resourceDetails.Storage.IsZero() {
-		changeToBinary := TreatDecimalAsBinary(resourceDetails.Storage)
-		storage := float64(changeToBinary.Value()) / float64(bytesPerGiB)
-		// round to 2 decimal places
-		storage = math.Round(storage*100) / 100
+		binaryQuantity := TreatDecimalAsBinary(resourceDetails.Storage)
+		storage := float64(binaryQuantity.Value()) / float64(bytesPerGiB)
+		storage = math.Round(storage*roundPrecision) / roundPrecision
 		quota.Storage = &storage
 	}
 	return quota
@@ -88,11 +91,11 @@ func ConvertToCRDQuota(quota Quota) (kubermaticv1.ResourceDetails, error) {
 // Convert memory from decimal units (K, M, G) to binary units (Ki, Mi, Gi)
 // so memory calculations use base-2 (1024) instead of base-10 (1000).
 func TreatDecimalAsBinary(q *resource.Quantity) resource.Quantity {
-	s := q.String() // e.g. "512M", "25G"
+	quantityStr := q.String() // e.g. "512M", "25G"
 
 	var value int64
 	var unit string
-	_, err := fmt.Sscanf(s, "%d%s", &value, &unit)
+	_, err := fmt.Sscanf(quantityStr, "%d%s", &value, &unit)
 	if err != nil {
 		return *q
 	}
@@ -110,7 +113,7 @@ func TreatDecimalAsBinary(q *resource.Quantity) resource.Quantity {
 		// unit not found, return original quantity
 		return *q
 	}
-	bytes = value * int64(math.Pow(1024, float64(exponent)))
+	bytes = value * int64(math.Pow(binaryBase, float64(exponent)))
 
 	return *resource.NewQuantity(bytes, resource.BinarySI)
 }

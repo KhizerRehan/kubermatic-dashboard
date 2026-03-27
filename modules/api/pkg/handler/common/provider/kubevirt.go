@@ -264,23 +264,23 @@ func kubeVirtInstancetypes(ctx context.Context, client ctrlruntimeclient.Client,
 		instancetypes.items = make([]instancetypeWrapper, 0)
 	}
 	for i := range clusterInstancetypes.Items {
-		w := customInstancetypeWrapper{&clusterInstancetypes.Items[i]}
-		instancetypes.items = append(instancetypes.items, &w)
+		wrapper := customInstancetypeWrapper{&clusterInstancetypes.Items[i]}
+		instancetypes.items = append(instancetypes.items, &wrapper)
 	}
 
 	standardNames := sets.New[string]()
 	for i := range standardInstancetypes.Items {
 		standardNames.Insert(standardInstancetypes.Items[i].Name)
-		w := standardInstancetypeWrapper{&standardInstancetypes.Items[i]}
-		instancetypes.items = append(instancetypes.items, &w)
+		wrapper := standardInstancetypeWrapper{&standardInstancetypes.Items[i]}
+		instancetypes.items = append(instancetypes.items, &wrapper)
 	}
 	for i := range namespaceInstancetypes.Items {
 		// Skip if already added from standard instancetypes to avoid duplicates
 		if standardNames.Has(namespaceInstancetypes.Items[i].Name) {
 			continue
 		}
-		w := standardInstancetypeWrapper{&namespaceInstancetypes.Items[i]}
-		instancetypes.items = append(instancetypes.items, &w)
+		wrapper := standardInstancetypeWrapper{&namespaceInstancetypes.Items[i]}
+		instancetypes.items = append(instancetypes.items, &wrapper)
 	}
 
 	return instancetypes, nil
@@ -397,12 +397,12 @@ func kubeVirtPreferences(ctx context.Context, client ctrlruntimeclient.Client, d
 		preferences.items = make([]preferenceWrapper, 0)
 	}
 	for i := range customPreferences.Items {
-		w := customPreferenceWrapper{&customPreferences.Items[i]}
-		preferences.items = append(preferences.items, &w)
+		wrapper := customPreferenceWrapper{&customPreferences.Items[i]}
+		preferences.items = append(preferences.items, &wrapper)
 	}
 	for i := range standardPreferences.Items {
-		w := standardPreferenceWrapper{&standardPreferences.Items[i]}
-		preferences.items = append(preferences.items, &w)
+		wrapper := standardPreferenceWrapper{&standardPreferences.Items[i]}
+		preferences.items = append(preferences.items, &wrapper)
 	}
 
 	return preferences, nil
