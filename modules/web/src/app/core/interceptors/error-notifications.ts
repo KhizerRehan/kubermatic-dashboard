@@ -81,8 +81,8 @@ export class ErrorNotificationsInterceptor implements HttpInterceptor {
     this._notificationService = this._inj.get(NotificationService);
     this._settingsService = this._inj.get(SettingsService);
 
-    // TODO: Fix this
-    // Currently the way admin settings is being fetched is wrong and it needs to be revamped. We don't need a websocket or defaultings in FE.
+    // TODO: Revamp admin settings fetching — remove websocket dependency and FE defaulting logic.
+    // Currently takes first 2 emissions as a workaround; settings should be fetched once via a simple HTTP call.
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     this._settingsService.adminSettings.pipe(take(2)).subscribe(settings => {
       this.adminSettings = settings;

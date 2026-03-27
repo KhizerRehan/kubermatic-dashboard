@@ -198,7 +198,7 @@ export class AWSBasicNodeDataComponent extends BaseFormValidator implements OnIn
 
     // If there are any sizes in the filtered set pick the cheapest one as default option.
     if (!this.selectedSize && this.filteredSizes.length > 0) {
-      const cheapestInstance = this.filteredSizes.reduce((p, c) => (p.price < c.price ? p : c));
+      const cheapestInstance = this.filteredSizes.reduce((cheapest, current) => (cheapest.price < current.price ? cheapest : current));
       this.selectedSize = cheapestInstance.name;
       this.onSizeChange(this.selectedSize);
     }
@@ -265,7 +265,7 @@ export class AWSBasicNodeDataComponent extends BaseFormValidator implements OnIn
     // If there are any sizes in the filtered set pick the cheapest one as default option.
     this.filteredSizes = this._sizes.filter(size => size.architecture === this.selectedArchitecture);
     if (!this.selectedSize && this.filteredSizes.length > 0) {
-      const cheapestInstance = this.filteredSizes.reduce((p, c) => (p.price < c.price ? p : c));
+      const cheapestInstance = this.filteredSizes.reduce((cheapest, current) => (cheapest.price < current.price ? cheapest : current));
       this.selectedSize = cheapestInstance.name;
       this.onSizeChange(this.selectedSize);
     }

@@ -178,7 +178,7 @@ export class ExternalMachineDeploymentDetailsComponent implements OnInit, OnDest
 
   private _storeNodeMetrics(metrics: NodeMetrics[]): void {
     const map = new Map<string, NodeMetrics>();
-    metrics.forEach(m => map.set(m.name, m));
+    metrics.forEach(metric => map.set(metric.name, metric));
     this.metrics = map;
   }
 }
