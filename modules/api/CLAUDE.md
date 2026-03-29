@@ -1,6 +1,9 @@
 # KKP Dashboard — Go REST API
 
-Go REST API server for the KKP Dashboard. Sits between Angular UI and Kubernetes clusters. Uses gorilla/mux routing, Go-Kit endpoint abstraction, and controller-runtime for Kubernetes API access. Authentication via OIDC + Service Account JWT tokens.
+REST API server (Go) serving as the backend for the KKP Dashboard. Manages clusters, projects, users, seeds, and other resources.
+
+**Type**: HTTP REST API Server (Go) | **Port**: 8080 | **Framework**: Gorilla Mux + Go-Kit
+**Auth**: OIDC + Service Account JWT | **Storage**: Kubernetes API (controller-runtime client)
 
 ## Build Commands
 
@@ -12,6 +15,17 @@ make api-test                       # Run API tests
 make update-codegen                 # Regenerate code (deepcopy, swagger, API client)
 make update-kkp                     # Update KKP/SDK dependencies
 ```
+
+## Testing
+
+```bash
+go test -v ./pkg/handler/v2/cluster/...          # Test specific package
+go test -v ./pkg/handler/v1/project -run TestName # Single test
+go test -tags "ee" -v ./pkg/handler/...           # EE tests
+go test -tags "ce" -v ./pkg/handler/...           # CE tests
+```
+
+Handler tests use mock providers from `pkg/test/`.
 
 ## Key Directories
 
@@ -26,52 +40,74 @@ make update-kkp                     # Update KKP/SDK dependencies
 - `pkg/validation/` — Input validation
 - `pkg/test/` — Test utilities and mock providers
 
-## Architecture
+## Main Entry Point
 
-```
-HTTP Request → Middleware (auth, RBAC, context) → Handler → Provider → Kubernetes API → Response
-```
+**File**: `cmd/kubermatic-api/main.go`
 
-- **Handlers** (`pkg/handler/`): Parse HTTP, delegate to providers, encode responses. Go-Kit endpoint pattern. v2 is current, v1 is legacy.
-- **Providers** (`pkg/provider/`): Business logic interfaces. Implementations in `pkg/provider/kubernetes/` use impersonation clients for RBAC.
-- **Middleware** (`pkg/handler/middleware/`): Token verification (OIDC/JWT), user context injection, RBAC checks.
-- **Seed-scoped providers**: Many providers are per-seed (cluster, addon, alertmanager). Accessed via getter functions like `ClusterProviderGetter`.
+Startup: Parse flags -> Setup logging -> Register K8s schemes -> Create controller manager -> Create providers (`createInitProviders()`) -> Create auth clients (`createAuthClients()`) -> Register HTTP routes (`createAPIHandler()`) -> Start server.
+
+## Core Architecture
+
+Five key patterns govern the codebase. Brief summaries below; full details with code examples in the reference doc.
+
+- **Handler Pattern**: Go-Kit endpoints — Request -> Middleware -> Handler -> Provider -> Response
+- **Provider Pattern**: Interfaces abstracting business logic (e.g., `ClusterProvider`, `ProjectProvider`), implemented as K8s client wrappers in `pkg/provider/kubernetes/`
+- **Middleware Pattern**: Token verification, RBAC, context injection (`pkg/handler/middleware/`)
+- **Authentication**: Dual-mode — OIDC for UI users, JWT for service accounts
+- **Impersonation**: RBAC enforced by creating K8s clients that impersonate the requesting user
+
+Architecture patterns reference: @agent_docs/architecture-patterns.md
+
+## API Versions
+
+- **V1** (`/api/v1/*`): Legacy API in `pkg/handler/v1/` — projects, clusters, nodes, SSH keys
+- **V2** (`/api/v2/*`): Current API in `pkg/handler/v2/` — 42+ resources with consistent CRUD patterns
+
+API routing reference: @agent_docs/api-routing.md
 
 ## CE/EE Build Tags
 
-**CRITICAL**: EE-only code must be in `pkg/ee/` with `//go:build ee` tag. CE stubs must be in `cmd/kubermatic-api/wrappers_ce.go` returning `nil`. EE implementations go in `pkg/ee/` with `//go:build ee`. This ensures clean separation and prevents accidental imports.
+**CRITICAL**: EE-only code must be in `pkg/ee/` with `//go:build ee` tag. CE stubs must be in `cmd/kubermatic-api/wrappers_ce.go` returning `nil`. This ensures clean separation and prevents accidental imports.
 
-```go
-//go:build ee    // EE-only code
-//go:build !ee   // CE-only code (stubs)
-```
+Edition handling reference: @agent_docs/edition-handling.md
 
-CE stubs in `cmd/kubermatic-api/wrappers_ce.go` return `nil` for EE providers. EE implementations in `pkg/ee/`.
+## Key Concepts
 
+- **Seeds**: K8s clusters hosting user clusters; discovered via `SeedsGetter`, accessed through seed-scoped provider getters
+- **Projects**: Logical namespace for resources (clusters, SSH keys, members)
+- **UserContext**: `UserInfo` struct (Email, Groups, IsAdmin) carried through request context
+- **Privileged Providers**: Bypass RBAC for admin-only operations
 
-## Patterns
+Domain concepts reference: @agent_docs/domain-concepts.md
 
-### Adding a New Endpoint
+## Key Technologies
 
-1. Create handler in `pkg/handler/v2/<resource>/`
-2. Define request/response types in `pkg/api/v2/`
-3. Register route in `pkg/handler/routing.go`
-4. Use middleware for auth/RBAC
+Gorilla Mux (routing), Go-Kit (endpoints), Controller-Runtime (K8s client/cache), Prometheus (metrics), Zap (logging), go-oidc (OIDC auth), JWT (service accounts)
 
-### Adding EE-Only Feature
+## Common Workflows
 
-1. Create EE handler wrapper in `wrappers_ee.go`
-2. Create CE stub in `wrappers_ce.go` (return `nil`)
-3. Implement in `pkg/ee/`
-4. Use feature gates if needed: `options.featureGates.Enabled(features.FeatureName)`
+Step-by-step guides for adding new endpoints, providers, and EE-only features.
 
-## Testing
+Development workflows reference: @agent_docs/development-workflows.md
 
-```bash
-go test -v ./pkg/handler/v2/cluster/...          # Test specific package
-go test -v ./pkg/handler/v1/project -run TestName # Single test
-go test -tags "ee" -v ./pkg/handler/...           # EE tests
-go test -tags "ce" -v ./pkg/handler/...           # CE tests
-```
+## Key Files
 
-Handler tests use mock providers from `pkg/test/`.
+Critical files for understanding the codebase entry points and wiring. See the architecture patterns reference for the full table.
+
+Architecture patterns reference: @agent_docs/architecture-patterns.md
+
+## Import Aliases
+
+Strict import aliasing enforced by golangci-lint. Key aliases: `kubermaticv1`, `apiv1`/`apiv2`, `corev1`, `metav1`, `ctrlruntimeclient`. See full reference for complete list.
+
+Import aliases reference: @agent_docs/import-aliases.md
+
+## Metrics
+
+Prometheus metrics on internal address (default: `127.0.0.1:8085/metrics`). HTTP request metrics: method, path, status code, duration.
+
+## Development Tips
+
+Practical guidance for local dev, logging, provider usage, and edition-specific testing.
+
+Development tips reference: @agent_docs/development-tips.md
