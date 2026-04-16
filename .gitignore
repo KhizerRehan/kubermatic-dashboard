@@ -20,3 +20,8 @@
 .nvmrc
 .DS_Store
 applypatch-msg
+
+.claude/
+kr/
+ai/
+modules/api/agent_docs/
