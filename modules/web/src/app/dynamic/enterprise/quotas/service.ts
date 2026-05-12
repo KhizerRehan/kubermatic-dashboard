@@ -43,6 +43,10 @@ export class QuotaService {
   private readonly _refreshTime = 5;
   private readonly _newRestRoot = environment.newRestRoot;
   private readonly _baseUrl = this._newRestRoot + '/quotas';
+  // Opt in to the decimal encoding contract on every quota call so the API
+  // returns/accepts values in decimal GB to match the dashboard's GB labels.
+  // See ConvertToAPIQuota / ConvertToCRDQuota in modules/api/pkg/api/v2/convert.go.
+  private readonly _decimalEncoding = '?encoding=decimal';
   private _refreshTimer$ = timer(0, this._appConfigService.getRefreshTimeBase() * this._refreshTime);
   private _previousQuotas: QuotaDetails[];
 
@@ -79,11 +83,11 @@ export class QuotaService {
   }
 
   createQuota(payload: Quota): Observable<Record<string, never>> {
-    return this._http.post<Record<string, never>>(this._baseUrl, payload);
+    return this._http.post<Record<string, never>>(this._baseUrl + this._decimalEncoding, payload);
   }
 
   updateQuota(quotaName: string, payload: QuotaVariables): Observable<Record<string, never>> {
-    return this._http.put<Record<string, never>>(this._baseUrl + '/' + quotaName, payload);
+    return this._http.put<Record<string, never>>(this._baseUrl + '/' + quotaName + this._decimalEncoding, payload);
   }
 
   deleteQuota(quotaName: string): Observable<Record<string, never>> {
@@ -95,7 +99,7 @@ export class QuotaService {
       const quota$ = this._refreshTimer$.pipe(
         switchMap(_ =>
           this._http
-            .get<QuotaDetails>(`${this._newRestRoot}/projects/${projectId}/quota`)
+            .get<QuotaDetails>(`${this._newRestRoot}/projects/${projectId}/quota${this._decimalEncoding}`)
             .pipe(catchError(_ => of(null)))
         ),
         shareReplay({refCount: true, bufferSize: 1}),
@@ -115,13 +119,13 @@ export class QuotaService {
 
   getProjectQuota(projectId: string): Observable<QuotaDetails> {
     return this._http
-      .get<QuotaDetails>(`${this._newRestRoot}/projects/${projectId}/quota`)
+      .get<QuotaDetails>(`${this._newRestRoot}/projects/${projectId}/quota${this._decimalEncoding}`)
       .pipe(catchError(_ => of(null)));
   }
 
   private _getQuotas(): Observable<QuotaDetails[]> {
     return this._http
-      .get<QuotaDetails[]>(this._baseUrl)
+      .get<QuotaDetails[]>(this._baseUrl + this._decimalEncoding)
       .pipe(map(quota => quota.sort((a, b) => (a.name < b.name ? -1 : 1))));
   }
 }

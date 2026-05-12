@@ -25,38 +25,71 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 )
 
-func ConvertToAPIQuota(resourceDetails kubermaticv1.ResourceDetails) Quota {
+const (
+	bytesPerGiB = 1024 * 1024 * 1024
+	bytesPerGB  = 1_000_000_000
+
+	// EncodingDecimal is the opt-in HTTP query value that tells quota endpoints
+	// to use decimal SI math throughout (1 GB = 10^9 bytes) instead of the
+	// legacy binary-as-decimal PR-7729 behavior.
+	EncodingDecimal = "decimal"
+)
+
+// ConvertToAPIQuota converts a kubermaticv1.ResourceDetails (bytes) into an
+// API-side Quota (GB float, 2 decimals).
+//
+// When encoding == EncodingDecimal the conversion is honest decimal SI:
+// bytes / 10^9. Otherwise the legacy PR-7729 path is used: decimal SI suffixes
+// in the source Quantity are first reinterpreted as binary IEC via
+// TreatDecimalAsBinary, then divided by 2^30. The legacy branch keeps existing
+// HTTP clients (and issue kubermatic/dashboard#7715) unchanged.
+func ConvertToAPIQuota(resourceDetails kubermaticv1.ResourceDetails, encoding string) Quota {
 	quota := Quota{}
-	bytesPerGiB := 1024 * 1024 * 1024
 
 	if resourceDetails.CPU != nil {
 		cpu := resourceDetails.CPU.Value()
 		quota.CPU = &cpu
 	}
 
-	// Get memory and storage denoted in GB
-	if resourceDetails.Memory != nil && !resourceDetails.Memory.IsZero() {
-		changeToBinary := TreatDecimalAsBinary(resourceDetails.Memory)
-		memory := float64(changeToBinary.Value()) / float64(bytesPerGiB)
-		// round to 2 decimal places
-		memory = math.Round(memory*100) / 100
-		quota.Memory = &memory
+	if encoding == EncodingDecimal {
+		if resourceDetails.Memory != nil && !resourceDetails.Memory.IsZero() {
+			memory := math.Round(float64(resourceDetails.Memory.Value())/float64(bytesPerGB)*100) / 100
+			quota.Memory = &memory
+		}
+		if resourceDetails.Storage != nil && !resourceDetails.Storage.IsZero() {
+			storage := math.Round(float64(resourceDetails.Storage.Value())/float64(bytesPerGB)*100) / 100
+			quota.Storage = &storage
+		}
+		return quota
 	}
 
+	// Legacy PR-7729 path: rewrite decimal suffixes as binary, divide by GiB.
+	if resourceDetails.Memory != nil && !resourceDetails.Memory.IsZero() {
+		changeToBinary := TreatDecimalAsBinary(resourceDetails.Memory)
+		memory := math.Round(float64(changeToBinary.Value())/float64(bytesPerGiB)*100) / 100
+		quota.Memory = &memory
+	}
 	if resourceDetails.Storage != nil && !resourceDetails.Storage.IsZero() {
-		changeToBinary := TreatDecimalAsBinary(resourceDetails.Storage)
-		storage := float64(changeToBinary.Value()) / float64(bytesPerGiB)
-		// round to 2 decimal places
-		storage = math.Round(storage*100) / 100
+		changeToBinary := TreatDecimquotaalAsBinary(resourceDetails.Storage)
+		storage := math.Round(float64(changeToBinary.Value())/float64(bytesPerGiB)*100) / 100
 		quota.Storage = &storage
 	}
 	return quota
 }
 
-func ConvertToCRDQuota(quota Quota) (kubermaticv1.ResourceDetails, error) {
+// ConvertToCRDQuota converts an API Quota (GB float) into a CRD ResourceDetails.
+// EncodingDecimal writes the float with a decimal G suffix; otherwise the
+// legacy binary Gi suffix is used so the value round-trips against the legacy
+// ConvertToAPIQuota path.
+func ConvertToCRDQuota(quota Quota, encoding string) (kubermaticv1.ResourceDetails, error) {
 	resourceDetails := kubermaticv1.ResourceDetails{}
 	var cpu, mem, storage resource.Quantity
 	var err error
+
+	suffix := "Gi"
+	if encoding == EncodingDecimal {
+		suffix = "G"
+	}
 
 	if quota.CPU != nil {
 		cpu, err = resource.ParseQuantity(fmt.Sprintf("%d", *quota.CPU))
@@ -67,7 +100,7 @@ func ConvertToCRDQuota(quota Quota) (kubermaticv1.ResourceDetails, error) {
 	}
 
 	if quota.Memory != nil {
-		mem, err = resource.ParseQuantity(fmt.Sprintf("%fG", *quota.Memory))
+		mem, err = resource.ParseQuantity(fmt.Sprintf("%f%s", *quota.Memory, suffix))
 		if err != nil {
 			return kubermaticv1.ResourceDetails{}, fmt.Errorf("error parsing quota Memory %w", err)
 		}
@@ -75,7 +108,7 @@ func ConvertToCRDQuota(quota Quota) (kubermaticv1.ResourceDetails, error) {
 	}
 
 	if quota.Storage != nil {
-		storage, err = resource.ParseQuantity(fmt.Sprintf("%fG", *quota.Storage))
+		storage, err = resource.ParseQuantity(fmt.Sprintf("%f%s", *quota.Storage, suffix))
 		if err != nil {
 			return kubermaticv1.ResourceDetails{}, fmt.Errorf("error parsing quota Storage %w", err)
 		}
@@ -85,8 +118,13 @@ func ConvertToCRDQuota(quota Quota) (kubermaticv1.ResourceDetails, error) {
 	return resourceDetails, nil
 }
 
-// Convert memory from decimal units (K, M, G) to binary units (Ki, Mi, Gi)
-// so memory calculations use base-2 (1024) instead of base-10 (1000).
+// TreatDecimalAsBinary converts a Quantity that uses decimal SI suffixes
+// (K, M, G, T) into one whose bytes are computed against base 1024 instead of
+// 1000, so a value like "6500M" produced by `kubectl apply` is treated as
+// "6500Mi" for the purposes of legacy dashboard arithmetic and display. This
+// matches the convention assumed by issue kubermatic/dashboard#7715. The
+// returned Quantity is intended for in-memory math only and is never written
+// back to the CRD.
 func TreatDecimalAsBinary(q *resource.Quantity) resource.Quantity {
 	s := q.String() // e.g. "512M", "25G"
 
@@ -114,3 +152,4 @@ func TreatDecimalAsBinary(q *resource.Quantity) resource.Quantity {
 
 	return *resource.NewQuantity(bytes, resource.BinarySI)
 }
+
