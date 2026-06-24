@@ -1,0 +1,164 @@
+Khizer Rehan  [4:12 PM]
+Thread Dashboard Issue#3024 (edited) 
+12 repliesKhizer Rehan  [4:14 PM]
+Based on Support Ticket/Daniel Comment: I have checked and investigate regarding the issue. The problem is that the image list is not updated automatically. The image list is updated manually by the admin in the infra repo. So, if you want to use a new image, you need to ask the admin to update the image list in the infra repo. Once the image list is updated, you can see the new image in the dropdown.
+
+Currently of Openstack provider, we are currently definining the images at seed object under dc.spec.openstack.images and each OS image is defined as a single image. The images are updated manually by the admin in the e.g infra repo. So, if you want to use a new image, you need to ask the admin to update the image list in the infra repo. Once the image list is updated, you can see the new image in the dropdown.
+
+As per this ticket/proposed
+
+
+
+Option-1: (Defining a new endpoint to fetch the list of images for a particular project):
+
+_Fetch all project-specific Openstack images_ 
+
+
+
+There is no endpoint to fetch the list of images for a particular project and even not sure how how differentiate images for different operating systems. (In that case we might need to define some metadata for each image to identify the OS type). (Not sure but have to check it in case some custom lables can be done)
+image.png [4:16 PM]Option-2: (Follow the same structure as Kubevirt/Baremetal):
+
+wdyt in case we go towards Kubervirt or Baremetal structure where we define the list of images for each OS type and then update the list manually by admin in the infra repo. (This is the current approach we are following for KKP side)
+
+Should we delegate this responsibility to update images list by admin
+
+FYI: AFAIK
+
+We are currently, doing the same way for KKP side (Manualy infra repo e.g [PR](https://github.com/kubermatic/infra/pull/3382))
+[4:18 PM]Kubervirt UI (Images Dropdown) e.g
+image.png [4:18 PM]cc: @Burak @ahmad.hamza (edited) 
+Burak Sekili  [8:21 PM]
+Thanks Khizer for the detailed analysis - you already covered most of the technical parts :))
+
+kubevirt's approach looks good, but right now our DC spec stores 1 OS -> 1 image for openstack, while kubevirt has 1 OS -> multiple versions -> 1 image per version. I'd rather not touch the DC spec of openstack for this.
+
+The support ticket just wants a dropdown of project-scoped images instead of the one preset image. my ddea is adding a field in kubermaticsettings that, when enabled, makes the dashboard API fetch images from openstack. machine-controller already does something similar here: https://github.com/kubermatic/machine-controller/blob/c87c24541364de60e0e4cf8cae3a184f82a2a102/pkg/cloudprovider/provider/openstack/provider.go#L545-L549
+
+for example, we can have sth like the following:
+
+user picks an OS in the wizard or node deployment editor.
+frontend calls the dashboard API image endpoint with the selected OS and the user's OpenStack credentials.
+dashboard API fetches all images visible in the user's project. OpenStack has no server-side OS filter, so we fetch everything and filter ourselves.
+keep only the images whose os_distro matches the selected OS.
+If nothing matches os_distro, return only dc.spec.openstack.images[os].
+
+frontend renders those as a dropdown, with dc.spec.openstack.images[os] marked as the default.
+If the OS changes, the frontend calls again. The API serves from cache if warm, else re-fetches.
+
+
+
+
+So, i checked that os_distro is an optional metadata and often missing. On setups where images aren't tagged, the dropdown just shows the datacenter default. That's expected, not a bug and we can document it. we can cache the full list for about 5 minutes and filter per OS in memory. We run multiple replicas with no shared cache, so a cold replica just re-fetches which should be fine. and then we can filter based on status=active  and os_distro (edited) 
+[8:21 PM]wdyt?
+Khizer Rehan  [12:02 PM]
+Thx! But there are few more Questions
+
+_support ticket just wants a dropdown of project-scoped images instead of the one preset image_
+
+Q1: Why do they need list of all images for a particular project? AFAIK I know old images were causing some issue machine provisioing when old Image was used as discussed like in this [thread](https://kubermatic.slack.com/archives/C08PNJ0R8F3/p1780469438260489)
+
+_while kubevirt has 1 OS -> multiple versions -> 1 image per version._
+Q1.1: Correct me! but I see on syscloud (openstack) under 1 project we have multiple OSes and each OS has multiple versions and each version has 1 image. can’t we define similar structure for openstack images like kubevirt?
+
+e.g Based on Image
+
+ {
+    “ubuntu”: {
+        “18.04": “Ubuntu Bionic 18.04 (2026-04-27)“,
+        “20.04”: “Ubuntu Focal 20.04 (2026-04-27)“,
+        “22.04”: “Ubuntu Jammy 22.04 (2026-04-27)”
+
+    },
+ }
+
+
+
+
+
+ Pros:
+ - Follow similar structure as kubevirt/baremetal
+ - Admin can update the list of images in infra repo and we can fetch the list of images
+ - Reduces complexity of defining new endpoint to fetch the list of images for a particular project  (I don’t have issue but the problem is how to identify the project and how to differentiate images for different operating systems. (In that case we might need to define some metadata for each image to identify the OS type).
+
+ As you mentioned os_distro
+
+ I can see alot of images
+  - machine controller images
+  - centos / coreos
+  - talos
+  - test images
+
+fetching all list which is not required for user and then filtering the list based on os_distro will be overhead thoughts?
+
+Q2: Not sure why do we need this kubermaticsettings thing? I think in any case we need to fetch the list (in case we opt new endpoint) and user has to provide that image in any case otherwise cluster won’t be allowed to be created?
+
+cc: @Burak (edited) 
+Screenshot 2026-06-23 at 11.38.04 AM.png w.r.t to this PR https://github.com/kubermatic/infra/pull/3365/changes IMO, we need to update again to new image for Ubuntu for OS provider. As i am not able to create any machine with Ubuntu Noble 24.04 (2026-04-27) image
+
+cc: @Shinu (edited) 
+Thread in dev-kkp-release | Jun 3rd | View messageBurak Sekili  [12:37 PM]
+Q1: Why do they need list of all images for a particular project? AFAIK I know old images were causing some issue machine provisioing when old Image was used as discussed like in this [thread](https://kubermatic.slack.com/archives/C08PNJ0R8F3/p1780469438260489)
+
+they should have some use-case for sure. most-likely they keep their images up to date so they don't face provisioning issues that we have sometimes. they may also want to have the similar behaviour that we provide for kubevirt. for ex, when they select Ubuntu, they may want to allow their customers to pick whatever ubuntu image they have in their openstack project.
+ re the old-image provisioning risk: fair point. os_distro + status=active filters bound it to OS-correct active images, but they can't exclude an outdated-but-valid ubuntu image. that residual risk already exists today actually :/ via the free text field though, the dropdown just makes it more discoverable. the fully safe path is the admin-curated list (the kubevirt-style CRD change, what you described in Q1.1 i believe :thinking_face:), but i don't think this support ticket justifies a CRD change. so i'm ok accepting the bounded risk and documenting it.
+
+
+Q1.1: Correct me! but I see on syscloud (openstack) under 1 proecht we have multiple OSes and each OS has multiple versions and each version has 1 image. can't we define similar structure for openstack images like kubevirt?
+
+sorry, looks like i was not clear enough :) the flow i mentioned is about our DC spec (Seed object, not the cloud API). what you described is correct at the openstack API level, but at the moment KKP's stored contract is 1 OS -> 1 image, so there's a discrepancy between what openstack actually has and what KKP stores.
+
+your proposal (kubevirt-style OS -> version -> image in the DC spec) is the cleanest and most correct one, no argument there. the reason i'm hesitant is the cost. we can't reshape images from map[string]string to map[string]map[string]string in place, that's breaking. we'd add a new optional field (e.g. imagesWithVersions) next to the existing one, keep both, and define which wins when both are set.
+the field itself is cheap, but the real cost is the permanent two-field precedence logic across three places: frontend default, dashboard API, and the KKP defaulting code in CompleteOpenstackProviderSpec. so it's a real change touching multiple repos, not just one struct field.
+So, my concern is most likely related to maintainability cost based on the importance of this support ticket.
+
+
+
+Q2: Not sure why do we need this kubermaticsettings thing? I think in any case we need to fetch the list (in case we opt new endpoint) and user has to provide that image in any case otherwise cluster won't be allowed to be created?
+
+To gate this behaviour actually. if someone with openstack doesn't use their image registry often, or doesn't want their KKP user-cluster customers to see everything in the project, they can continue as-is. but if someone wants this new feature, they enable it. i figured kubermaticsettings is a good fit since this is a dashboard API feature, not a core KKP controller thing.
+Also, small note on the second part, today the user doesn't strictly have to provide an image. if they leave it empty, KKP defaults it from dc.spec.openstack.images[os] via CompleteOpenstackProviderSpec so the field is more about discoverability than about making the image mandatory. Also, under the hood, machine-controller also runs discovery for os image as well just in case.
+Khizer Rehan  [2:21 PM]
+Thx for Response! Make sense
+
+Rep-1:
+
+Regarding Image filtering os_distro + status=active  it would be something common like i mean for Ubuntu images 
+os_distro=“ubuntu”
+status=“active|inactive” 
+
+But I assume this would be set by “Admin” when pushing image to Cloud Provider? (Not sure)
+then we can use this filters on API level right?
+
+Any input how can we define these metadata tags to existing image or somehting in can use for testing while dev?
+
+Rep-2:
+we can’t reshape images from map[string]string to map[string]map[string]string  Yeah! I had same understanding we need to change struct and it will backend change first
+
+But regarding proposal of `imagesWithVersions`  Like if we go with approach like metadata based filtering we might NOT need this field then (I guess you were proposing to IF i follow Kubevirt structure) for backword compatabilty right?
+
+CompleteOpenstackProviderSpec so the field is more about discoverability than about making the image mandatory.
+
+Image from UI is *mandatory but i guess from CLI it does make sense to have auto discovery from defaulting logic 
+
+
+
+
+Rep-3:
+
+Gated option make sense (incase other customers want) current impl or incase needed to fetch from Cloud side
+[2:25 PM]https://docs.openstack.org/glance/latest/admin/useful-image-properties.html
+I think this os_distro  but something to be defined.
+
+Just checked
+I think it’s already there asfar as i see existing (edited) 
+image.png Khizer Rehan  [12:45 PM]
+@Burak Can you please check Rep-2? I just want to confirm that this is something we can ignore for now and that the filter approach is fine for the time being. Also, could you take a final look at the overall comments? I’m already working on this ticket, so one last review of the comments would be helpful.
+Thanks!Burak Sekili  [12:51 PM]
+But I assume this would be set by “Admin” when pushing image to Cloud Provider? (Not sure)Yes. Admins can set those metadatas to let KKP now which OS is that image.
+
+then we can use this filters on API level right?I haven't had the chance to fully check openstack API docs, but my initial assessment is that it does not support this type of filtering at the API level. If that's the case, we can have an in-memor y filtering.
+
+But regarding proposal of `imagesWithVersions`  Like if we go with approach like metadata based filtering we might NOT need this field then (I guess you were proposing to IF i follow Kubevirt structure) for backword compatabilty right?Yes, we need to select one of these approaches:
+
+Using Openstack APIs to discover images automatically
+Or, let KKP admins to declare the images explicitly on the new DC field, something called imagesWithVersions (to prevent backward compatibility issues)
