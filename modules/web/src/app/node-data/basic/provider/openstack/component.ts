@@ -28,7 +28,7 @@ import {DynamicModule} from '@dynamic/module-registry';
 import {duration} from 'moment';
 import _ from 'lodash';
 import {merge, Observable, of} from 'rxjs';
-import {filter, map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
+import {filter, map, startWith, switchMap, take, takeUntil, tap} from 'rxjs/operators';
 import {ClusterSpecService} from '@core/services/cluster-spec';
 import {DatacenterService} from '@core/services/datacenter';
 import {NodeDataService} from '@core/services/node-data/service';
@@ -149,9 +149,9 @@ export class OpenstackBasicNodeDataComponent extends BaseFormValidator implement
       .pipe(map((serverGroups: OpenstackServerGroup[]) => serverGroups.sort((a, b) => (a.name < b.name ? -1 : 1))));
   }
 
-  private get _imagesObservable(): Observable<OpenstackImage[]> {
+  private _imagesObservable(os: string): Observable<OpenstackImage[]> {
     return this._nodeDataService.openstack
-      .images(this._clearImage.bind(this), this._onImageLoading.bind(this))
+      .images(os, this._clearImage.bind(this), this._onImageLoading.bind(this))
       .pipe(map((images: OpenstackImage[]) => images.sort((a, b) => (a.name < b.name ? -1 : 1))));
   }
 
@@ -241,7 +241,16 @@ export class OpenstackBasicNodeDataComponent extends BaseFormValidator implement
     this._availabilityZonesObservable
       .pipe(takeUntil(this._unsubscribe))
       .subscribe(this._setAvailabilityZone.bind(this));
-    this._imagesObservable.pipe(takeUntil(this._unsubscribe)).subscribe(this._setImages.bind(this));
+    // The dropdown lists project-scoped images filtered by the selected OS
+    // (os_distro, done backend-side); the stream re-fetches whenever the OS
+    // changes. If no image matches the os_distro, the backend falls back to the
+    // datacenter preset image for that OS.
+    this._nodeDataService.operatingSystemChanges
+      .pipe(startWith(this._nodeDataService.operatingSystem))
+      .pipe(filter(os => !!os))
+      .pipe(switchMap(os => this._imagesObservable(os)))
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe(this._setImages.bind(this));
 
     this.form
       .get(Controls.Flavor)

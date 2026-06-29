@@ -151,7 +151,7 @@ export class NodeDataOpenstackProvider {
     }
   }
 
-  images(onError: () => void = undefined, onLoadingCb: () => void = null): Observable<OpenstackImage[]> {
+  images(os?: string, onError: () => void = undefined, onLoadingCb: () => void = null): Observable<OpenstackImage[]> {
     switch (this._nodeDataService.mode) {
       case NodeDataMode.Wizard:
         return this._clusterSpecService.clusterChanges
@@ -172,7 +172,7 @@ export class NodeDataOpenstackProvider {
                 .projectID(this._clusterSpecService.cluster.spec.cloud.openstack.projectID)
                 .datacenter(this._clusterSpecService.cluster.spec.cloud.dc)
                 .credential(this._presetService.preset)
-                .images(onLoadingCb)
+                .images(os, onLoadingCb)
                 .pipe(
                   catchError(_ => {
                     if (onError) {
@@ -190,7 +190,9 @@ export class NodeDataOpenstackProvider {
           .pipe(debounceTime(this._debounceTime))
           .pipe(tap(project => (selectedProject = project.id)))
           .pipe(tap(_ => (onLoadingCb ? onLoadingCb() : null)))
-          .pipe(switchMap(_ => this._openStackService.getImages(selectedProject, this._clusterSpecService.cluster.id)))
+          .pipe(
+            switchMap(_ => this._openStackService.getImages(selectedProject, this._clusterSpecService.cluster.id, os))
+          )
           .pipe(
             catchError(_ => {
               if (onError) {
