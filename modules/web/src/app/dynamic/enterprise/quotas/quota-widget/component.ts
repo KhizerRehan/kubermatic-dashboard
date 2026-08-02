@@ -29,6 +29,7 @@ import {
   SimpleChanges,
   Output,
   EventEmitter,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {QuotaCalculationService} from '../services/quota-calculation';
 import {debounceTime, take, takeUntil, map, filter} from 'rxjs/operators';
@@ -45,6 +46,7 @@ import {getProgressBarAccent} from '../utils/common';
   selector: 'km-quota-widget',
   templateUrl: './template.html',
   styleUrls: ['./style.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class QuotaWidgetComponent implements OnInit, OnChanges, OnDestroy {

@@ -19,7 +19,7 @@
 // END OF TERMS AND CONDITIONS
 
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
-import {Component, OnInit, OnDestroy, Inject, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, OnDestroy, Inject, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {takeUntil, filter, tap, distinctUntilChanged, map} from 'rxjs/operators';
 import {Observable, Subject, of} from 'rxjs';
@@ -43,6 +43,7 @@ enum Error {
   selector: 'km-quota-dialog',
   templateUrl: './template.html',
   styleUrls: ['./style.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ProjectQuotaDialogComponent implements OnInit, OnDestroy {

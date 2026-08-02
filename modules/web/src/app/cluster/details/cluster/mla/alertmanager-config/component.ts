@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DatacenterService} from '@core/services/datacenter';
@@ -47,6 +47,7 @@ export enum AddonType {
   selector: 'km-alertmanager-config',
   templateUrl: './template.html',
   styleUrls: ['./style.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AlertmanagerConfigComponent implements OnInit, OnDestroy {
