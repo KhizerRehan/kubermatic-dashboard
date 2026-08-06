@@ -15,6 +15,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions v1.3.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription v1.2.0
 	github.com/Azure/go-autorest/autorest/to v0.4.1
+	github.com/LeanerCloud/ec2-instances-info v0.0.0-20241101103313-93438b48d82f
 	github.com/Masterminds/semver/v3 v3.4.0
 	github.com/aliyun/alibaba-cloud-sdk-go v1.63.107
 	github.com/aws/aws-sdk-go-v2 v1.41.7
@@ -27,7 +28,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.42.1
 	github.com/aws/smithy-go v1.25.1
 	github.com/coreos/go-oidc v2.3.0+incompatible
-	github.com/cristim/ec2-instances-info v0.0.0-20221130144415-da4474e2a3d1
 	github.com/digitalocean/godo v1.145.0
 	github.com/embik/nutanix-client-go v0.1.0
 	github.com/evanphx/json-patch v5.9.11+incompatible

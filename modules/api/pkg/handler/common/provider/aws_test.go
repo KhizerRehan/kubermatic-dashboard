@@ -22,6 +22,8 @@ import (
 
 	"k8c.io/dashboard/v2/pkg/handler/common/provider"
 	kubermaticv1 "k8c.io/kubermatic/sdk/v2/apis/kubermatic/v1"
+
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 func TestAWSSizeARMFiltering(t *testing.T) {
@@ -98,6 +100,64 @@ func TestAWSSizeARMFiltering(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+// TestAWSSizesNotFilteredByPrice makes sure that instance types which fit into the configured
+// resource quota are returned regardless of their hourly price, and that the bundled instance
+// type data is recent enough to carry regional pricing for them.
+func TestAWSSizesNotFilteredByPrice(t *testing.T) {
+	const (
+		region       = "eu-central-1"
+		architecture = "x64"
+	)
+
+	// Same values as the default MachineDeploymentVMResourceQuota created in
+	// pkg/provider/kubernetes/settings.go.
+	quota := kubermaticv1.MachineFlavorFilter{
+		MinCPU:    2,
+		MaxCPU:    32,
+		MinRAM:    2,
+		MaxRAM:    128,
+		EnableGPU: false,
+	}
+
+	// All of these fit into the quota above; the 4xlarge and 8xlarge sizes cost more than 1$ per
+	// hour and used to be dropped by a hardcoded price filter.
+	expectedNames := []string{
+		"m6id.large",
+		"m6id.2xlarge",
+		"m6id.4xlarge",
+		"m6id.8xlarge",
+		"m6in.2xlarge",
+		"m6in.4xlarge",
+		"m6idn.8xlarge",
+	}
+
+	awsSizeList, err := provider.AWSSizes(region, architecture, quota)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(awsSizeList) == 0 {
+		t.Fatalf("Expected sizes for region %s, got an empty list", region)
+	}
+
+	sizes := sets.New[string]()
+	for _, size := range awsSizeList {
+		sizes.Insert(size.Name)
+
+		if size.VCPUs > quota.MaxCPU {
+			t.Errorf("Instance type %s has %d vCPUs, which exceeds the quota of %d", size.Name, size.VCPUs, quota.MaxCPU)
+		}
+		if int(size.Memory) > quota.MaxRAM {
+			t.Errorf("Instance type %s has %.f GB of memory, which exceeds the quota of %d", size.Name, size.Memory, quota.MaxRAM)
+		}
+	}
+
+	for _, name := range expectedNames {
+		if !sizes.Has(name) {
+			t.Errorf("Expected instance type %s to be listed for region %s, but it is missing", name, region)
+		}
 	}
 }
 

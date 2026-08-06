@@ -22,8 +22,9 @@ import (
 	"net/http"
 	"strings"
 
+	ec2 "github.com/LeanerCloud/ec2-instances-info"
 	ec2types "github.com/aws/aws-sdk-go-v2/service/ec2/types"
-	ec2 "github.com/cristim/ec2-instances-info"
+	"go.uber.org/zap"
 
 	apiv1 "k8c.io/dashboard/v2/pkg/api/v1"
 	handlercommon "k8c.io/dashboard/v2/pkg/handler/common"
@@ -35,6 +36,7 @@ import (
 	awsprovider "k8c.io/dashboard/v2/pkg/provider/cloud/aws"
 	kubernetesprovider "k8c.io/dashboard/v2/pkg/provider/kubernetes"
 	kubermaticv1 "k8c.io/kubermatic/sdk/v2/apis/kubermatic/v1"
+	kubermaticlog "k8c.io/kubermatic/v2/pkg/log"
 	utilerrors "k8c.io/kubermatic/v2/pkg/util/errors"
 	clusterv1alpha1 "k8c.io/machine-controller/sdk/apis/cluster/v1alpha1"
 
@@ -47,7 +49,11 @@ var data *ec2.InstanceData
 
 // Due to big amount of data we are loading AWS instance types only once. Do not edit it.
 func init() {
-	data, _ = ec2.Data()
+	var err error
+	data, err = ec2.Data()
+	if err != nil {
+		kubermaticlog.Logger.Errorw("failed to load AWS instance type data", zap.Error(err))
+	}
 }
 
 func AWSSubnetNoCredentialsEndpoint(ctx context.Context, userInfoGetter provider.UserInfoGetter, projectProvider provider.ProjectProvider, privilegedProjectProvider provider.PrivilegedProjectProvider, seedsGetter provider.SeedsGetter, projectID, clusterID string) (interface{}, error) {
@@ -292,11 +298,6 @@ func filterMachineFlavorsForAWS(instances apiv1.AWSSizeList, filter kubermaticv1
 	// If the record passes all the filters, add it to the final slice.
 	for _, r := range instances {
 		keep := true
-
-		// Filter too expensive instance types (>1$ per hour) if GPU not enabled
-		if !filter.EnableGPU && r.Price > 1 {
-			continue
-		}
 
 		if !handlercommon.FilterGPU(r.GPUs, filter.EnableGPU) {
 			keep = false

@@ -25,7 +25,6 @@ import (
 	ec2service "github.com/aws/aws-sdk-go-v2/service/ec2"
 	ec2types "github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
-	ec2 "github.com/cristim/ec2-instances-info"
 
 	apiv2 "k8c.io/dashboard/v2/pkg/api/v2"
 	"k8c.io/dashboard/v2/pkg/handler/v1/common"
@@ -36,11 +35,6 @@ import (
 
 	"k8s.io/apimachinery/pkg/util/sets"
 )
-
-// Due to big amount of data we are loading AWS instance types only once. Do not edit it.
-func init() {
-	data, _ = ec2.Data()
-}
 
 // Region value will instruct the SDK where to make service API requests to.
 // Region must be provided before a service client request is made.
