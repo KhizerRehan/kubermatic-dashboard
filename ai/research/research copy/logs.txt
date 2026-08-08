@@ -1,0 +1,14 @@
+k logs pod/headlamp-78c6bd7965-cc4xk -n cluster-dznjc7pp85
+Defaulted container "headlamp" out of: headlamp, copy-http-prober (init)
+{"level":"info","time":"2026-03-31T20:47:09.660Z","logger":"http-prober","caller":"http-prober/main.go:137","msg":"Probing","attempt":1,"max-attempts":100,"target":"https://apiserver-external.cluster-dznjc7pp85.svc.cluster.local./healthz"}
+{"level":"info","time":"2026-03-31T20:47:09.751Z","logger":"http-prober","caller":"http-prober/main.go:126","msg":"Hostname resolved","hostname":"apiserver-external.cluster-dznjc7pp85.svc.cluster.local.","address":"10.242.29.255:443"}
+{"level":"info","time":"2026-03-31T20:47:09.757Z","logger":"http-prober","caller":"http-prober/main.go:150","msg":"Endpoint is available"}
+{"level":"error","source":"/headlamp/backend/pkg/config/config.go","line":199,"error":"mkdir /home/headlamp/.config: read-only file system","time":"2026-03-31T20:47:09Z","message":"creating plugins directory"}
+{"level":"info","source":"/headlamp/backend/cmd/headlamp.go","line":339,"time":"2026-03-31T20:47:09Z","message":"Creating Headlamp handler"}
+{"level":"info","source":"/headlamp/backend/cmd/headlamp.go","line":340,"time":"2026-03-31T20:47:09Z","message":"Kubeconfig path: /etc/kubernetes/kubeconfig/kubeconfig"}
+{"level":"info","source":"/headlamp/backend/cmd/headlamp.go","line":341,"time":"2026-03-31T20:47:09Z","message":"Static plugin dir: /headlamp/static-plugins"}
+{"level":"info","source":"/headlamp/backend/cmd/headlamp.go","line":342,"time":"2026-03-31T20:47:09Z","message":"Plugins dir: "}
+{"level":"info","source":"/headlamp/backend/cmd/headlamp.go","line":343,"time":"2026-03-31T20:47:09Z","message":"Dynamic clusters support: false"}
+{"level":"info","source":"/headlamp/backend/cmd/headlamp.go","line":344,"time":"2026-03-31T20:47:09Z","message":"Helm support: false"}
+{"level":"info","source":"/headlamp/backend/cmd/headlamp.go","line":345,"time":"2026-03-31T20:47:09Z","message":"Proxy URLs: []"}
+{"level":"error","source":"/headlamp/backend/cmd/headlamp.go","line":169,"error":"open /headlamp/frontend/index.baseUrl.html: read-only file system","time":"2026-03-31T20:47:09Z","message":"writing file"}

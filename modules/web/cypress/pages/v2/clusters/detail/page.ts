@@ -118,8 +118,8 @@ class Buttons extends PageOptions {
     return this._get('#km-close-dialog-btn');
   }
 
-  get openKubernetesDashboard(): Cypress.Chainable {
-    return this._get('#km-open-kubernetes-dashboard-btn');
+  get openHeadlamp(): Cypress.Chainable {
+    return this._get('#km-open-headlamp-btn');
   }
 
   get shareKubeconfig(): Cypress.Chainable {

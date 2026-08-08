@@ -64,20 +64,17 @@ limitations under the License.
         <span>Get Kubeconfig</span>
       </button>
       @if (adminSettings.enableDashboard) {
-      <a class="km-open-kubernetes-dashboard-btn"
-         id="km-open-kubernetes-dashboard-btn"
+      <a class="km-open-headlamp-btn"
+         id="km-open-headlamp-btn"
          [href]="getProxyURL()"
          target="_blank"
          rel="noopener noreferrer"
          mat-flat-button
-         [disabled]="!isKubernetesDashboardHealthy || isDeletingState"
-         [matTooltip]="getOpenDashboardTooltip()">
+         [disabled]="!isHeadlampHealthy || isDeletingState"
+         [matTooltip]="getOpenHeadlampTooltip()">
         <i class="km-icon-mask km-icon-external-link"
            matButtonIcon></i>
-        <span>Open Dashboard
-          <i class="km-icon-warning km-pointer km-dashboard-deprecation-warning"
-             [matTooltip]="KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE"></i>
-        </span>
+        <span>Open Headlamp</span>
       </a>
       }
       @if (adminSettings.enableOIDCKubeconfig && isWebTerminalEnabled()) {
@@ -291,7 +288,7 @@ limitations under the License.
             <km-property-health label="User Controller Manager"
                                 [healthState]="health?.userClusterControllerManager" />
             @if (cluster.spec.kubernetesDashboard?.enabled) {
-            <km-property-health label="Kubernetes Dashboard"
+            <km-property-health label="Headlamp"
                                 [healthState]="health?.kubernetesDashboard" />
             }
             @if (isEnterpriseEdition && cluster.spec.kubelb?.enabled) {

@@ -1,0 +1,625 @@
+
+
+
+ ▐▛███▜▌   Claude Code v2.1.87
+▝▜█████▛▘  Sonnet 4.6 · Claude Max
+  ▘▘ ▝▝    ~/Work/Github/kubermatic/kubermatic-kkp
+
+❯ /clear                                                                                                                                     
+  ⎿  (no content)
+
+❯ /superpowers:brainstorm                                                                                                                    
+                                                                                                                                             
+'/Users/mac/Work/Github/kubermatic/kubermatic-kkp/ai/plans'                                                                                  
+                                                                                                                                             
+Take following plans and reitearte as this is what we don't want PLEASE check existing kuberneres-dashboard                                  
+implementation'/Users/mac/Work/Github/kubermatic/kubermatic-kkp/pkg/resources/kubernetes-dashboard' we need to have something linke that     
+'/Users/mac/Work/Github/kubermatic/kubermatic-kkp/research/headlamp.md' to cover of this task                                                
+                                                                                                                                             
+THe proposed plan was something to have installed as applicaiton but we don't need ti we need something that has headlamp to be installed in 
+ seed or master cluster and something that can work simialr                                                                                  
+                                                                                                                                             
+                                                                                                                                             
+FIGURE out and how controller can be defined and how can it done                                                                             
+
+⏺ Skill(superpowers:brainstorming)
+  ⎿  Successfully loaded skill
+  ⎿  Interrupted · What should Claude do instead?
+
+❯ /superpowers:brainstorm                                                                                                                    
+                                                                                                                                             
+'/Users/mac/Work/Github/kubermatic/kubermatic-kkp/ai/plans'                                                                                  
+                                                                                                                                             
+Take following plans and reitearte as this is what we don't want PLEASE check existing kuberneres-dashboard                                  
+implementation'/Users/mac/Work/Github/kubermatic/kubermatic-kkp/pkg/resources/kubernetes-dashboard' we need to have something linke that     
+'/Users/mac/Work/Github/kubermatic/kubermatic-kkp/research/headlamp.md' to cover of this task                                                
+                                                                                                                                             
+THe proposed plan was something to have installed as applicaiton but we don't need ti we need something that has headlamp to be installed in 
+ seed or master cluster and something that can work simialr                                                                                  
+                                                                                                                                             
+                                                                                                                                             
+FIGURE out and how controller can be defined and how can it done                                                                             
+
+⏺ Note: The /superpowers:brainstorm command is deprecated and will be removed in the next major release. In the future, just ask me to use
+  the "superpowers brainstorming" skill instead.
+
+  Let me start by exploring the existing codebase to understand the kubernetes-dashboard implementation, your existing plans, and the
+  headlamp research document.
+
+⏺ Let me create tasks and start exploring the codebase.
+
+⏺ Now let me explore the three key areas in parallel:
+
+⏺ 3 Explore agents finished (ctrl+o to expand)
+   ├─ Explore kubernetes-dashboard impl · 29 tool uses · 34.3k tokens
+   │  ⎿  Done
+   ├─ Explore headlamp research doc · 6 tool uses · 9.9k tokens
+   │  ⎿  Done
+   └─ Explore controller patterns · 44 tool uses · 83.5k tokens
+      ⎿  Done
+
+⏺ Good, I now have a clear picture. Here's what I understand:
+
+  Current state: The existing plans (v1 and v2) propose deploying Headlamp as a KKP Application (Helm chart in user clusters). You explicitly
+   don't want that. Instead, you want to follow the same pattern as the current kubernetes-dashboard — where the main deployment runs on the
+  seed cluster (in the per-user-cluster namespace) and connects to user clusters via kubeconfig.
+
+  This is architecturally very similar to how MLA gateways work — a centralized component on the seed that proxies/serves multiple user
+  clusters.
+
+⏺ User answered Claude's questions:
+  ⎿  · Should Headlamp be deployed as a per-user-cluster component in the seed (one Headlamp instance per user cluster, in the cluster-xxx
+     namespace — exactly like the current kubernetes-dashboard), or as a single shared instance on the seed that can serve all user clusters
+     (like Grafana in the MLA stack)? → Per-user-cluster (Recommended)
+
+
+  ⎿  Interrupted · What should Claude do instead?
+
+❯ continue                                                                                                                                   
+
+⏺ Good — per-user-cluster model, mirroring the current kubernetes-dashboard pattern exactly. Let me continue with clarifying questions.
+
+⏺ User answered Claude's questions:
+  ⎿  · For the API/CRD changes, should we replace the existing `KubernetesDashboard` field on `ClusterSpec` with a new `Headlamp` field, or
+     keep the old field for backward compatibility and add a new one alongside it? → Add alongside + deprecate
+
+
+⏺ User answered Claude's questions:
+  ⎿  · Does Headlamp need any user-cluster-side resources (like the current metrics-scraper deployment + RBAC), or should it be purely
+     seed-side with only a kubeconfig connection to the user cluster API server? → Need to investigate first
+
+
+⏺ User answered Claude's questions:
+  ⎿  · Should the controller be a new standalone controller (like MLA), or should Headlamp resources be managed within the existing
+     Kubernetes cluster reconciler (the same one that currently manages the kubernetes-dashboard)? → Existing cluster reconciler
+     (Recommended)
+
+⏺ Good. One more question before I move to proposing approaches.
+
+⏺ User answered Claude's questions:
+  ⎿  · Should this design also cover the removal/cleanup of the old kubernetes-dashboard code, or focus only on adding Headlamp (with old
+     dashboard removal as a separate future task)? → Add Headlamp only
+
+
+⏺ Now let me design the approaches. Let me first investigate Headlamp's runtime requirements to address the open question about user-cluster
+  resources.
+
+⏺ Plan(Research Headlamp runtime needs)
+  ⎿  Done (0 tool uses · 0 tokens · 3m 48s)
+  (ctrl+o to expand)
+
+⏺ Explore(Research Headlamp runtime needs)
+  ⎿  Done (0 tool uses · 0 tokens · 3m 39s)
+  (ctrl+o to expand)
+
+⏺ Let me read the research doc and plan files directly to gather what we need about Headlamp's runtime requirements.
+
+  Read 2 files (ctrl+o to expand)
+
+⏺ Now let me also quickly check the existing kubernetes-dashboard deployment to understand the exact kubeconfig pattern used.
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ Now I have everything I need. Let me propose the approaches.
+
+  Proposed Approaches
+
+  Based on the exploration, here are 3 approaches for integrating Headlamp as a seed-side per-user-cluster deployment:
+
+  ---
+  Approach A: Direct Mirror of kubernetes-dashboard (Recommended)
+
+  How it works: Create a new pkg/resources/headlamp/ package that is structurally identical to pkg/resources/kubernetes-dashboard/. Headlamp
+  deployment runs on the seed in the cluster-xxx namespace with a kubeconfig secret pointing to the user cluster API server. Wire it into the
+   existing cluster reconciler alongside the current dashboard.
+
+  SEED (cluster-xxx namespace)              USER CLUSTER
+  ─────────────────────────────             ─────────────
+  Deployment: headlamp                      RBAC for kubeconfig cert user
+    --kubeconfig /etc/kubernetes/kubeconfig    (Role + RoleBinding)
+  Secret: headlamp-kubeconfig
+
+  User-cluster side: Minimal RBAC only — a Role/RoleBinding granting the kubeconfig cert user (kubermatic:headlamp) access to cluster
+  resources. No deployments in the user cluster (no metrics-scraper equivalent needed — Headlamp has its own built-in resource browser).
+
+  Trade-offs:
+  - (+) Proven pattern, minimal risk, easy to understand
+  - (+) Reuses existing kubeconfig generation infrastructure
+  - (+) Clean separation from old dashboard code
+  - (-) Per-user-cluster overhead (one Headlamp pod per cluster)
+  - (-) No plugin sharing across clusters
+
+  ---
+  Approach B: Seed-side with ConfigMap-based Multi-Cluster Config
+
+  How it works: Same seed-side deployment, but instead of --kubeconfig, use Headlamp's --kubeconfig flag pointing to a multi-cluster
+  kubeconfig (or multiple --proxy-urls). Still one Headlamp per user cluster, but architecturally prepared for future consolidation.
+
+  Trade-offs:
+  - (+) Could evolve toward shared instances later
+  - (-) More complex kubeconfig management
+  - (-) Headlamp's multi-cluster support may not work cleanly with kubeconfig-based auth
+  - (-) Over-engineering for current requirements
+
+  ---
+  Approach C: Helm Chart Rendered Server-Side
+
+  How it works: Instead of writing Go resource reconcilers, render the Headlamp Helm chart server-side and apply the manifests to the seed
+  cluster namespace. Uses the chart as a source of truth but deploys to seed, not user cluster.
+
+  Trade-offs:
+  - (+) Stays aligned with upstream Helm chart
+  - (-) Adds Helm rendering dependency to the controller
+  - (-) Breaks the established Go reconciler pattern used by every other component
+  - (-) Harder to customize for seed-side deployment (chart assumes in-cluster)
+
+  ---
+  My recommendation: Approach A. It's the lowest-risk path, follows the exact pattern that already works for kubernetes-dashboard, and keeps
+  the codebase consistent. The per-cluster overhead is acceptable since KKP already runs ~10 deployments per user cluster on the seed.
+
+⏺ User answered Claude's questions:
+  ⎿  · Which approach do you prefer for the Headlamp integration? → Approach A: Direct Mirror (Recommended)
+
+
+⏺ Now let me present the design in detail. Let me first gather a few more details about the existing reconciler wiring to make sure the
+  design is accurate.
+
+  Searched for 3 patterns, read 1 file (ctrl+o to expand)
+
+⏺ Now let me look at the ClusterSpec API type to understand the current structure.
+
+  Searched for 2 patterns (ctrl+o to expand)
+
+⏺ I now have all the details. Let me present the design section by section.
+
+  Design: Headlamp Integration (Seed-Side, Per-User-Cluster)
+
+  Section 1: Architecture Overview
+
+  SEED CLUSTER (per user cluster namespace: cluster-xxx)
+  ┌──────────────────────────────────────────────────┐
+  │                                                  │
+  │  Deployment: headlamp (2 replicas)               │
+  │    container: headlamp-server                    │
+  │      --kubeconfig /etc/kubernetes/kubeconfig      │
+  │      --in-cluster=false                          │
+  │    volumes:                                      │
+  │      - headlamp-kubeconfig (Secret)              │
+  │      - tmp-volume (EmptyDir)                     │
+  │      - plugins (EmptyDir or PVC)                 │
+  │                                                  │
+  │  Secret: headlamp-kubeconfig                     │
+  │    (auto-generated, cert user:                   │
+  │     kubermatic:headlamp)                         │
+  │                                                  │
+  └──────────────┬───────────────────────────────────┘
+                 │ kubeconfig → user cluster API
+                 ▼
+  USER CLUSTER
+  ┌──────────────────────────────────────────────────┐
+  │  Role: system:headlamp                           │
+  │    (in namespace: headlamp)                      │
+  │  RoleBinding: system:headlamp                    │
+  │    subject: kubermatic:headlamp                  │
+  │                                                  │
+  │  ClusterRole: system:headlamp                    │
+  │    (read access to cluster-scoped resources)     │
+  │  ClusterRoleBinding: system:headlamp             │
+  │    subject: kubermatic:headlamp                  │
+  └──────────────────────────────────────────────────┘
+
+  The pattern is identical to the current kubernetes-dashboard: the Headlamp server runs on the seed, connects to the user cluster via
+  kubeconfig, and RBAC in the user cluster controls what the cert user can access.
+
+  Does this architecture section look right so far?
+
+⏺ User answered Claude's questions:
+  ⎿  · Does the architecture overview look correct? Specifically: Headlamp on seed with kubeconfig + RBAC in user cluster for the cert user.
+     → Investigate and similar to kubernetes dashboard check how it is done there?
+
+
+⏺ Got it — you want me to deeply investigate exactly how the kubernetes-dashboard does it and mirror that precisely. Let me dig into the
+  user-cluster-side resources in detail.
+
+  Read 8 files (ctrl+o to expand)
+
+⏺ Now let me also check the deletion resources and how the user-cluster controller manager wires everything together.
+
+  Read 3 files (ctrl+o to expand)
+
+⏺ Now let me check how the user-cluster controller manager wires in the kubernetes-dashboard resources.
+
+  Searched for 3 patterns (ctrl+o to expand)
+
+⏺ Now I have a complete picture of how the kubernetes-dashboard is implemented across both the seed and user-cluster sides. Let me present
+  the full design.
+
+  Design: Headlamp Integration — Mirroring kubernetes-dashboard Exactly
+
+  Here's the complete design, mapping every component 1:1 from the existing kubernetes-dashboard pattern:
+
+  Component Map: kubernetes-dashboard → headlamp
+
+  KUBERNETES-DASHBOARD                          HEADLAMP (NEW)
+  ────────────────────────────────────          ─────────────────────────────────
+
+  SEED SIDE (pkg/resources/kubernetes-dashboard/)    SEED SIDE (pkg/resources/headlamp/)
+  ├── deployment.go                                  ├── deployment.go
+  │   Deployment: kubernetes-dashboard               │   Deployment: headlamp
+  │   Image: kubernetesui/dashboard:v2.7.0           │   Image: ghcr.io/headlamp-k8s/headlamp:v0.26.0
+  │   Args: --kubeconfig, --namespace, --enable-     │   Args: --kubeconfig, --in-cluster=false
+  │         insecure-login                           │
+  │   Port: 9090                                     │   Port: 4466 (headlamp default)
+  │   Replicas: 2                                    │   Replicas: 2
+  │   Secret mount: kubernetes-dashboard-kubeconfig   │   Secret mount: headlamp-kubeconfig
+  │                                                  │
+  └── deletion.go                                    └── deletion.go
+      Resources: Deployment + kubeconfig Secret           Resources: Deployment + kubeconfig Secret
+
+  USER CLUSTER SIDE                                  USER CLUSTER SIDE
+  (pkg/controller/user-cluster-controller-manager/   (pkg/controller/user-cluster-controller-manager/
+   resources/resources/kubernetes-dashboard/)          resources/resources/headlamp/)
+  ├── constants.go  (Namespace, AppName)             ├── constants.go  (Namespace="headlamp", AppName)
+  ├── namespace.go  (kubernetes-dashboard ns)        ├── namespace.go  (headlamp ns, PSA baseline)
+  ├── role.go       (dashboard secrets/configmaps)   ├── clusterrole.go (read access to resources)
+  ├── rolebinding.go (cert user binding)             ├── clusterrolebinding.go (cert user binding)
+  ├── clusterrole.go (metrics-scraper)               │   (Headlamp needs cluster-wide read, not just
+  ├── clusterrolebinding.go                          │    namespaced — it's a full cluster browser)
+  ├── serviceaccount.go (metrics-scraper SA)         ├── deletion.go
+  ├── service.go (metrics-scraper svc)               │
+  ├── deployment.go (metrics-scraper)                │   NO metrics-scraper equivalent needed
+  ├── secret.go (key-holder, csrf)                   │   NO secrets needed (no JWE/CSRF)
+  └── deletion.go                                    │   NO serviceaccount needed
+                                                     │   NO service needed (no in-cluster svc)
+
+  API (sdk/apis/kubermatic/v1/cluster.go)            API (sdk/apis/kubermatic/v1/cluster.go)
+  ├── KubernetesDashboard struct                     ├── Headlamp struct (NEW, alongside old)
+  ├── IsKubernetesDashboardEnabled()                 ├── IsHeadlampEnabled()
+  └── ClusterHealth.KubernetesDashboard              └── ClusterHealth.Headlamp
+
+  CONSTANTS (pkg/resources/resources.go)             CONSTANTS (pkg/resources/resources.go)
+  ├── KubernetesDashboardDeploymentName              ├── HeadlampDeploymentName = "headlamp"
+  ├── KubernetesDashboardKubeconfigSecretName        ├── HeadlampKubeconfigSecretName
+  ├── KubernetesDashboardCertUsername                ├── HeadlampCertUsername = "kubermatic:headlamp"
+  └── KubernetesDashboard*                           └── Headlamp*
+
+  Key Differences from kubernetes-dashboard
+
+  1. No metrics-scraper — Headlamp has built-in resource browsing, no sidecar needed
+  2. ClusterRole instead of namespaced Role — Headlamp is a full cluster UI that needs read access to cluster-scoped resources (namespaces,
+  nodes, CRDs, etc.)
+  3. No JWE/CSRF secrets — Headlamp handles auth differently (kubeconfig-based)
+  4. Different container flags — Headlamp uses --kubeconfig and --in-cluster=false instead of dashboard's --namespace and
+  --enable-insecure-login
+  5. Simpler user-cluster footprint — Only Namespace + ClusterRole + ClusterRoleBinding (no Deployments in user cluster)
+
+  API Changes
+
+  // In sdk/apis/kubermatic/v1/cluster.go
+
+  // NEW struct (alongside existing KubernetesDashboard)
+  type Headlamp struct {
+      // Controls whether Headlamp is deployed to the user cluster or not.
+      // Enabled by default.
+      Enabled bool `json:"enabled,omitempty"`
+  }
+
+  // NEW field on ClusterSpec (alongside existing KubernetesDashboard field)
+  Headlamp *Headlamp `json:"headlamp,omitempty"`
+
+  // NEW method
+  func (c ClusterSpec) IsHeadlampEnabled() bool {
+      return c.Headlamp == nil || c.Headlamp.Enabled
+  }
+
+  // NEW health field in ClusterHealth
+  Headlamp *HealthStatus `json:"headlamp,omitempty"`
+
+  Reconciler Integration Points
+
+  Seed controller (pkg/controller/seed-controller-manager/kubernetes/resources.go):
+  Line ~440: if data.Cluster().Spec.IsHeadlampEnabled() → append headlamp.DeploymentReconciler
+  Line ~555: if data.Cluster().Spec.IsHeadlampEnabled() → append kubeconfig secret reconciler
+  Line ~207: if !IsHeadlampEnabled() → ensureHeadlampResourcesAreRemoved
+
+  Health check (pkg/controller/seed-controller-manager/kubernetes/health.go):
+  Line ~113: if cluster.Spec.IsHeadlampEnabled() → headlampHealthCheck (same pattern)
+
+  User-cluster controller (pkg/controller/user-cluster-controller-manager/resources/reconciler.go):
+  Same pattern as kubernetesDashboardEnabled:
+  - reconcileData.headlampEnabled field
+  - Conditionally reconcile: Namespace, ClusterRole, ClusterRoleBinding
+  - ensureHeadlampResourcesAreRemoved when disabled
+
+  Files to Create/Modify
+
+  CREATE:
+    pkg/resources/headlamp/deployment.go          — seed Deployment reconciler
+    pkg/resources/headlamp/deletion.go            — seed deletion list
+    pkg/controller/user-cluster-controller-manager/
+      resources/resources/headlamp/constants.go   — Namespace, AppName
+      resources/resources/headlamp/namespace.go   — Namespace reconciler
+      resources/resources/headlamp/clusterrole.go — ClusterRole (read access)
+      resources/resources/headlamp/clusterrolebinding.go — cert user binding
+      resources/resources/headlamp/deletion.go    — user-cluster deletion list
+
+  MODIFY:
+    sdk/apis/kubermatic/v1/cluster.go             — add Headlamp struct + field + method
+    pkg/resources/resources.go                    — add Headlamp constants
+    pkg/defaulting/cluster.go                     — add Headlamp defaulting
+    pkg/controller/seed-controller-manager/
+      kubernetes/resources.go                     — wire headlamp reconcilers
+      kubernetes/health.go                        — add health check
+    pkg/controller/user-cluster-controller-manager/
+      resources/reconciler.go                     — wire user-cluster resources
+    pkg/install/images/images.go                  — add headlamp image
+
+⏺ User answered Claude's questions:
+  ⎿  · Does this detailed design mapping look correct? It mirrors the kubernetes-dashboard pattern exactly, with the key simplifications
+     noted (no metrics-scraper, ClusterRole instead of Role, no secrets). → Looks good, proceed to spec
+
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ Bash(mkdir -p /Users/mac/Work/Github/kubermatic/kubermatic-kkp/docs/superpowers/specs)
+  ⎿  /Users/mac/Work/Github/kubermatic/kubermatic-kkp/docs/superpowers
+     /Users/mac/Work/Github/kubermatic/kubermatic-kkp/docs/superpowers/specs
+
+⏺ Write(docs/superpowers/specs/2026-03-31-headlamp-integration-design.md)
+  ⎿  Wrote 286 lines to docs/superpowers/specs/2026-03-31-headlamp-integration-design.md
+      1 # Headlamp Integration Design — Seed-Side Per-User-Cluster Deployment
+      2
+      3 **Date:** 2026-03-31
+      4 **Issue:** https://github.com/kubermatic/kubermatic/issues/15287
+      5 **Status:** Draft
+      6
+      7 ## Context
+      8
+      9 The Kubernetes Dashboard project has been retired (`kubernetes-retired/dashboard`). KKP needs to migrate to [Headlamp](https:/
+        /github.com/kubernetes-sigs/headlamp), a modern Kubernetes web UI under `kubernetes-sigs`.
+     … +276 lines (ctrl+o to expand)
+
+
+
+⏺ Now let me run the spec review loop.
+
+⏺ superpowers:code-reviewer(Review spec document quality)
+  ⎿  Done (42 tool uses · 49.6k tokens · 2m 52s)
+  (ctrl+o to expand)
+
+⏺ Good review. Let me fix the spec to address the important issues found.
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ Let me apply the fixes from the review.
+
+⏺ Update(docs/superpowers/specs/2026-03-31-headlamp-integration-design.md)
+  ⎿  Added 14 lines, removed 4 lines
+      138  ### Seed-Side Resources: `pkg/resources/headlamp/`
+      139  
+      140  **`deployment.go`** — Mirrors `pkg/resources/kubernetes-dashboard/deployment.go`
+      141 -- `DeploymentReconciler()` returning `NamedDeploymentReconcilerFactory`                                                    
+      142 -- Image: `ghcr.io/headlamp-k8s/headlamp:v0.26.0`                                                                           
+      141 +- `headlampData` interface: `Cluster() *kubermaticv1.Cluster`, `RewriteImage(string) (string, error)`                      
+      142 +- `DeploymentReconciler(data headlampData)` returning `NamedDeploymentReconcilerFactory`                                   
+      143 +- Image: `registry.Must(data.RewriteImage("ghcr.io/headlamp-k8s/headlamp:v0.26.0"))` (supports custom registries)          
+      144  - Command: headlamp-server binary
+      145  - Args: `--kubeconfig /etc/kubernetes/kubeconfig/kubeconfig`, `--in-cluster=false`
+      146  - Port: 4466
+      146 -- 2 replicas, anti-affinity, runAsUser 1001, readOnlyRootFilesystem                                                        
+      147 +- 2 replicas with `HostnameAntiAffinity(name, AntiAffinityTypePreferred)`                                                  
+      148 +- SecurityContext: `runAsUser: 1001`, `readOnlyRootFilesystem: true`, `allowPrivilegeEscalation: false`                    
+      149 +- Resource requirements:                                                                                                   
+      150 +  ```go                                                                                                                    
+      151 +  Requests: cpu=100m, memory=128Mi                                                                                         
+      152 +  Limits:   cpu=250m, memory=256Mi                                                                                         
+      153 +  ```                                                                                                                      
+      154  - `apiserver.IsRunningWrapper` to wait for user cluster API server
+      155  - kubeconfig secret volume mount at `/etc/kubernetes/kubeconfig`
+      156 +- `ImagePullSecrets: []corev1.LocalObjectReference{{Name: resources.ImagePullSecretName}}`                                 
+      157 +- Annotations: `ClusterLastRestartAnnotation`, `ClusterAutoscalerSafeToEvictVolumesAnnotation` for tmp-volume              
+      158  - `HeadlampVersion()` function for version mapping
+      159  
+      160  **`deletion.go`** — Mirrors `pkg/resources/kubernetes-dashboard/deletion.go`
+      152 -- Returns `[]ctrlruntimeclient.Object` with Deployment and kubeconfig Secret                                               
+      161 +- `ResourcesForDeletion(namespace string) []ctrlruntimeclient.Object` — takes namespace parameter (the per-user-cluster nam
+          +espace on seed)                                                                                                            
+      162 +- Returns Deployment and kubeconfig Secret in the given namespace                                                          
+      163  
+      164  ### User-Cluster Resources: `pkg/controller/user-cluster-controller-manager/resources/resources/headlamp/`
+      165  
+
+⏺ Update(docs/superpowers/specs/2026-03-31-headlamp-integration-design.md)
+  ⎿  Added 6 lines, removed 2 lines
+      174  **`namespace.go`** — Creates `headlamp` namespace with PSA baseline labels
+      175  
+      176  **`clusterrole.go`** — ClusterRole `system:headlamp` granting read access to cluster resources
+      177 +                                                                                                                           
+      178 +> **Security note:** Headlamp is a full cluster browser, so it requires broad read access. The `rbac.authorization.k8s.io` 
+          +group grants read access to roles and bindings — this is intentional for Headlamp's RBAC visibility feature but should be r
+          +eviewed if more restrictive access is needed.                                                                              
+      179 +                                                                                                                           
+      180  ```go
+      181  Rules: []rbacv1.PolicyRule{
+      182      {
+      180 -        APIGroups: []string{"", "apps", "batch", "extensions", "networking.k8s.io",                                        
+      183 +        APIGroups: []string{"", "apps", "batch", "networking.k8s.io",                                                      
+      184                              "rbac.authorization.k8s.io", "storage.k8s.io",
+      185                              "apiextensions.k8s.io", "policy", "autoscaling"},
+      186          Resources: []string{"*"},
+     ...
+      196  
+      197  **`clusterrolebinding.go`** — Binds ClusterRole to User `kubermatic:headlamp`
+      198  
+      196 -**`deletion.go`** — Returns list of user-cluster resources for cleanup: ClusterRole, ClusterRoleBinding, Namespace         
+      199 +**`deletion.go`** — `ResourcesForDeletion() []ctrlruntimeclient.Object` (no parameters — uses package constants)           
+      200 +- Returns: ClusterRole, ClusterRoleBinding, Namespace                                                                      
+      201  
+      202  ---
+      203  
+
+
+
+
+
+⏺ Update(docs/superpowers/specs/2026-03-31-headlamp-integration-design.md)
+  ⎿  Added 11 lines, removed 1 line
+      255  1. Add `headlampEnabled bool` to `reconcileData` struct
+      256  2. Set from `cluster.Spec.IsHeadlampEnabled()` during data init
+      257  3. Wire into existing reconcile methods following the exact same pattern as `kubernetesDashboardEnabled`:
+      258 +                                                                                                                           
+      259 +   **Methods that NEED headlamp wiring:**                                                                                  
+      260     - `reconcileNamespaces`: append `headlamp.NamespaceReconciler`
+      261     - `reconcileClusterRoles`: append `headlamp.ClusterRoleReconciler()`
+      262     - `reconcileClusterRoleBindings`: append `headlamp.ClusterRoleBindingReconciler()`
+      261 -   - Cleanup: `ensureHeadlampResourcesAreRemoved` when disabled                                                            
+      263 +   - Cleanup block (~line 297): `ensureHeadlampResourcesAreRemoved` when disabled                                          
+      264  
+      265 +   **Methods that do NOT need headlamp wiring (intentionally omitted — headlamp has no user-cluster deployments, services, 
+          +secrets, roles, role bindings, or service accounts):**                                                                     
+      266 +   - `reconcileDeployments` — no in-cluster deployment (unlike metrics-scraper)                                            
+      267 +   - `reconcileServices` — no in-cluster service                                                                           
+      268 +   - `reconcileServiceAccounts` — no in-cluster service account                                                            
+      269 +   - `reconcileRoles` — using ClusterRole instead of namespaced Role                                                       
+      270 +   - `reconcileRoleBindings` — using ClusterRoleBinding instead                                                            
+      271 +   - `reconcileSecrets` — no JWE/CSRF secrets needed                                                                       
+      272 +                                                                                                                           
+      273  ### Defaulting
+      274  
+      275  **`pkg/defaulting/cluster.go`:**
+
+
+
+
+⏺ Now remove the duplicate namespace constant from resources.go section:
+
+⏺ Update(docs/superpowers/specs/2026-03-31-headlamp-integration-design.md)
+  ⎿  Added 2 lines, removed 1 line
+      126  HeadlampDeploymentName          = "headlamp"
+      127  HeadlampKubeconfigSecretName    = "headlamp-kubeconfig"
+      128  HeadlampCertUsername            = "kubermatic:headlamp"
+      129 -HeadlampNamespace               = "headlamp"                                                                               
+      129  HeadlampClusterRoleName         = "system:headlamp"
+      130  HeadlampClusterRoleBindingName  = "system:headlamp"
+      131  ```
+      132  
+      133 +> **Note:** The namespace constant `"headlamp"` lives in the user-cluster package `constants.go` (matching the kubernetes-d
+          +ashboard pattern), NOT in `resources.go`.                                                                                  
+      134 +                                                                                                                           
+      135  ---
+      136  
+      137  ## Files to Create
+
+⏺ Spec written and committed to docs/superpowers/specs/2026-03-31-headlamp-integration-design.md. The spec review identified 5 important gaps
+   (function signatures, explicit omission documentation, resource requirements, security context details, namespace constant deduplication)
+  — all have been fixed.
+
+  Please review the spec and let me know if you want to make any changes before we start writing out the implementation plan.
+
+⏺ User answered Claude's questions:
+  ⎿  · Have you reviewed the spec? Ready to proceed to creating the implementation plan? → show final plan
+
+⏺ Here's the final spec:
+
+  Read 1 file (ctrl+o to expand)
+
+⏺ There's the full spec. Ready to proceed whenever you approve it — the next step would be creating the implementation plan.
+
+⏺ User answered Claude's questions:
+  ⎿  · Spec is displayed above. Ready to create the implementation plan? → User-cluster Secrets JWE key-holder + CSRF token     None
+     User-cluster ServiceAccount        dashboard-metrics-scraper       None
+     User-cluster Service       dashboard-metrics-scraper:8000  None
+     Container Image    kubernetesui/dashboard  ghcr.io/headlamp-k8s/headlamp
+
+     does headlamp will work its own?
+
+⏺ Good question. You're asking whether Headlamp will actually work without any user-cluster resources (no ServiceAccount, no Service, no
+  Secrets) — just the seed-side deployment with a kubeconfig.
+
+  Yes, it should work. Here's why:
+
+  The current kubernetes-dashboard needs those user-cluster resources because of its specific architecture:
+  - metrics-scraper runs inside the user cluster to collect metrics from metrics.k8s.io — Headlamp doesn't need this, it queries the API
+  server directly
+  - JWE key-holder / CSRF secrets are specific to kubernetes-dashboard's authentication mechanism — Headlamp uses its own auth
+  (kubeconfig-based when out-of-cluster)
+  - ServiceAccount was for the metrics-scraper pod — no pods in user cluster means no SA needed
+
+  How Headlamp works out-of-cluster:
+  1. The headlamp-server binary accepts --kubeconfig flag pointing to a kubeconfig file
+  2. It uses that kubeconfig to make API calls to the target cluster
+  3. The kubeconfig will contain a client certificate with username kubermatic:headlamp
+  4. The ClusterRole/ClusterRoleBinding in the user cluster grants that cert user read access
+  5. Headlamp serves the web UI — users access it via the seed-side service/proxy
+
+  What the user-cluster ClusterRole provides is the authorization for the kubeconfig cert user to read resources. Without it, all API calls
+  from Headlamp to the user cluster would get 403 Forbidden.
+
+  However — there's one open question I flagged in the spec: we need to validate the exact Headlamp server CLI flags (--kubeconfig,
+  --in-cluster=false). This should be verified against the actual Headlamp binary before implementation.
+
+⏺ User answered Claude's questions:
+  ⎿  · Does this explanation address your concern? Should we proceed to the implementation plan, or would you like to first do a hands-on
+     test of Headlamp with an external kubeconfig to validate it works? → Test Headlamp first
+
+⏺ Good call. Let me research Headlamp's exact CLI flags and out-of-cluster behavior first, then create a concrete validation plan.
+
+  Fetch(https://raw.githubusercontent.com/kubernetes-sigs/headlamp/main/backend/cmd/headlamp.go)
+  ⎿  Fetching…
+
+✽ Imagining… (20m 44s · ↓ 17.6k tokens)
+  ⎿  ✔ Explore project context     
+     ✔ Ask clarifying questions
+     ✔ Propose 2-3 approaches  
+     ✔ Present design        
+     ✔ Write design doc
+     ✔ Spec review loop
+     ✔ User reviews written spec
+     ◻ Transition to implementation                                                                                                          
+  
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯                                         
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  Opus 4.6 │ kubermatic-kkp █████░░░░░ 55%
+  -- INSERT -- ⏸ plan mode on (shift+tab to cycle)
+
+
+
+---
+
+https://headlamp.dev/docs/latest/installation/in-cluster/
+https://github.com/kubernetes-sigs/headlamp/blob/main/backend/pkg/config/config.go
+
+
+
+
+
+- func ResourcesForDeletion
+ - func DeploymentReconciler
+
+
+
+## Kubernetes API
+
+- https://github.com/kubernetes/api

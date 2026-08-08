@@ -32,7 +32,7 @@ import {VeleroChecksumAlgorithm} from '@shared/entity/backup';
 import {Member} from '@shared/entity/member';
 import {AdminSettings, AllowedOperatingSystems, StaticLabel} from '@shared/entity/settings';
 import {getEditionVersion, objectDiff} from '@shared/utils/common';
-import {KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE, OPA_DEPRECATED_MESSAGE} from '@app/shared/constants/common';
+import {OPA_DEPRECATED_MESSAGE} from '@app/shared/constants/common';
 import _ from 'lodash';
 import {Subject} from 'rxjs';
 import {debounceTime, switchMap, take, takeUntil} from 'rxjs/operators';
@@ -68,7 +68,6 @@ export class DefaultsComponent implements OnInit, OnDestroy {
   readonly OperatingSystem = OperatingSystem;
   readonly ipAllocationModes = [VMwareCloudDirectorIPAllocationMode.POOL, VMwareCloudDirectorIPAllocationMode.DHCP];
   readonly veleroChecksumAlgorithms = Object.values(VeleroChecksumAlgorithm);
-  readonly KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE = KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE;
   readonly OPA_DEPRECATED_MESSAGE = OPA_DEPRECATED_MESSAGE;
   private readonly _debounceTime = 500;
   private _settingsChange = new Subject<void>();
@@ -97,7 +96,7 @@ export class DefaultsComponent implements OnInit, OnDestroy {
     this._featureGatesService.featureGates.pipe(takeUntil(this._unsubscribe)).subscribe(featureGates => {
       this.isOIDCKubeCfgEndpointEnabled = !!featureGates?.oidcKubeCfgEndpoint;
       this.isOpenIDAuthPluginEnabled = !!featureGates?.openIDAuthPlugin;
-      this._verifyEnableKubernetesDashboardRequirements();
+      this._verifyEnableHeadlampRequirements();
     });
 
     this._settingsService.adminSettings.pipe(takeUntil(this._unsubscribe)).subscribe(settings => {
@@ -235,7 +234,7 @@ export class DefaultsComponent implements OnInit, OnDestroy {
     this.onSettingsChange();
   }
 
-  isKubernetesDashboardFeatureGatesEnabled(): boolean {
+  isHeadlampFeatureGatesEnabled(): boolean {
     return this.isOIDCKubeCfgEndpointEnabled && this.isOpenIDAuthPluginEnabled;
   }
 
@@ -322,8 +321,8 @@ export class DefaultsComponent implements OnInit, OnDestroy {
     return staticLabels.every(label => label?.key && label.values?.length);
   }
 
-  private _verifyEnableKubernetesDashboardRequirements() {
-    // Note: Kubernetes Dashboard feature requires both feature gates from admin side to be enabled.
+  private _verifyEnableHeadlampRequirements() {
+    // Note: Headlamp feature requires both feature gates from admin side to be enabled.
     if ((!this.isOIDCKubeCfgEndpointEnabled || !this.isOpenIDAuthPluginEnabled) && this.settings.enableDashboard) {
       this.settings.enableDashboard = false;
       this.onSettingsChange();

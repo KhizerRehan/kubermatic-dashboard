@@ -245,7 +245,7 @@ export class ClusterService {
     return `${this._newRestRoot}/projects/${projectID}/kubernetes/clusters/${clusterID}/kubeconfig`;
   }
 
-  getDashboardProxyURL(projectID: string, clusterID: string): string {
+  getHeadlampProxyURL(projectID: string, clusterID: string): string {
     return `${this._newRestRoot}/dashboard/login?projectID=${projectID}&clusterID=${clusterID}`;
   }
 

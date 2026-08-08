@@ -60,7 +60,7 @@ func isEnabled(ctx context.Context, settingsProvider provider.SettingsProvider) 
 	}
 
 	if !settings.Spec.EnableDashboard {
-		return utilerrors.New(http.StatusForbidden, "Kubernetes Dashboard access is disabled by the global settings")
+		return utilerrors.New(http.StatusForbidden, "Headlamp access is disabled by the global settings")
 	}
 
 	return nil

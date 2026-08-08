@@ -38,7 +38,7 @@ import (
 )
 
 const tokenCookieName = "proxy"
-const csp = "style-src 'self' 'unsafe-inline';"
+const csp = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';"
 
 type proxyHandler struct {
 	baseHandler
@@ -139,7 +139,7 @@ func (h *proxyHandler) storeToken(ctx context.Context, request interface{}) (int
 // swagger:route GET /api/v2/projects/{project_id}/clusters/{cluster_id}/dashboard/proxy
 // Implements http.Handler interface
 //
-//	Starts a simple reverse proxy to access the Kubernetes Dashboard installed inside the
+//	Starts a simple reverse proxy to access the Headlamp installed inside the
 //	user cluster
 //
 //	Responses:

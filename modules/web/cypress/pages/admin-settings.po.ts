@@ -102,8 +102,8 @@ class InterfacePage {
     return cy.get(`${this._secondLastCustomLink} > button`);
   }
 
-  getEnableKubernetesDashboardCheckbox(): Cypress.Chainable {
-    return cy.get('#km-enable-kubernetes-dashboard-setting');
+  getEnableHeadlampCheckbox(): Cypress.Chainable {
+    return cy.get('#km-enable-headlamp-setting');
   }
 
   getEnableOIDCCheckbox(): Cypress.Chainable {

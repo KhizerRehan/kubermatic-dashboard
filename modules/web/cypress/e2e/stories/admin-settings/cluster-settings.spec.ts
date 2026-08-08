@@ -64,7 +64,7 @@ describe('Admin Settings - Cluster Related Settings Story', () => {
   });
 
   it('should make sure settings have default values', () => {
-    AdminSettings.InterfacePage.getEnableKubernetesDashboardCheckbox().find('input').should(Condition.BeChecked);
+    AdminSettings.InterfacePage.getEnableHeadlampCheckbox().find('input').should(Condition.BeChecked);
     AdminSettings.InterfacePage.getEnableOIDCCheckbox().find('input').should(Condition.NotBeChecked);
     AdminSettings.InterfacePage.getEnableExternalClustersCheckbox().find('input').should(Condition.BeChecked);
   });
@@ -131,7 +131,7 @@ describe('Admin Settings - Cluster Related Settings Story', () => {
     ClustersPage.getDialogCloseButton().click();
 
     // Kubernetes Dashboard settings check
-    ClustersPage.getOpenKubernetesDashboardButton().should(Condition.Exist);
+    ClustersPage.getOpenHeadlampButton().should(Condition.Exist);
 
     // OIDC Kubeconfig settings check
     // Note: This is actually a workaround to simplify this check as it directly depends
@@ -166,7 +166,7 @@ describe('Admin Settings - Cluster Related Settings Story', () => {
       Mocks.adminSettings.enableOIDCKubeconfig = true;
       Mocks.adminSettings.enableExternalClusterImport = false;
     } else {
-      AdminSettings.InterfacePage.getEnableKubernetesDashboardCheckbox().click();
+      AdminSettings.InterfacePage.getEnableHeadlampCheckbox().click();
       AdminSettings.waitForSave();
 
       AdminSettings.InterfacePage.getEnableOIDCCheckbox().click();
@@ -204,7 +204,7 @@ describe('Admin Settings - Cluster Related Settings Story', () => {
     ClustersPage.getDialogCloseButton().click();
 
     // Kubernetes Dashboard settings check
-    ClustersPage.getOpenKubernetesDashboardButton().should(Condition.NotExist);
+    ClustersPage.getOpenHeadlampButton().should(Condition.NotExist);
 
     // OIDC Kubeconfig settings check
     ClustersPage.getShareKubeconfigButton().should(Condition.NotExist);
@@ -237,7 +237,7 @@ describe('Admin Settings - Cluster Related Settings Story', () => {
       Mocks.adminSettings.enableOIDCKubeconfig = false;
       Mocks.adminSettings.enableExternalClusterImport = true;
     } else {
-      AdminSettings.InterfacePage.getEnableKubernetesDashboardCheckbox().click();
+      AdminSettings.InterfacePage.getEnableHeadlampCheckbox().click();
       AdminSettings.waitForSave();
 
       AdminSettings.InterfacePage.getEnableOIDCCheckbox().click();

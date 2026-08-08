@@ -1,0 +1,114 @@
+⏺ In the context of your KKP setup, the mutatingwebhookconfiguration kubermatic-clusters is a Kubernetes admission webhook that intercepts
+  Cluster resource create/update requests and modifies them before they're persisted.
+
+  Specifically for your Headlamp testing, it causes a problem because:
+                                                                      
+  1. You patch the Cluster CRD to add the new spec.headlamp field                                                                             
+  2. You then kubectl patch cluster to set spec.headlamp.enabled: true
+  3. But the webhook intercepts that patch and strips spec.headlamp because the webhook's validation logic doesn't know about the new field   
+  yet (it's running the old operator code)                                                                                                    
+                                                                                                                                              
+  That's why your testing script:                                                                                                             
+  - Scales down kubermatic-operator (which would restore the webhook and overwrite the CRD)
+  - Deletes the webhook (kubectl delete mutatingwebhookconfiguration kubermatic-clusters)                                                     
+  - Only then patches the cluster with headlamp enabled                                  
+                                                                                                                                              
+  In general, MutatingWebhookConfigurations:                                                                                                  
+  - Fire before objects are stored in etcd                                                                                                    
+  - Can modify (mutate) the incoming object — add defaults, inject sidecars, strip unknown fields                                             
+  - Are used by KKP to apply defaulting logic to Cluster objects (similar to what pkg/defaulting/cluster.go does in code)                     
+                                                                                                                                              
+  The KKP operator manages this webhook, so if the operator is running, it will re-create the webhook even after you delete it — hence scaling
+   it to 0 replicas first.    
+
+
+---
+
+ 1. The operator is a pod that manages resources — it creates/updates the CRD and the webhook configuration. Scaling it down stops it from   
+  restoring them.                                                                                                                             
+  2. The webhook configuration is a standalone Kubernetes resource already stored in etcd. The API server reads it directly. As long as the   
+  MutatingWebhookConfiguration object exists, the API server will try to call the webhook endpoint on every Cluster create/update — regardless
+   of whether the operator is running.                                                                                                        
+                                                                                                                                              
+  So the order matters:                                                                                                                       
+                                                  
+  Scale down operator  →  stops it from re-creating the webhook after you delete it
+  Delete webhook       →  stops the API server from mutating your patches                                                                     
+  Replace CRD          →  adds the headlamp field to the schema                                                                               
+                                                                                                                                              
+  If you only scaled down the operator but didn't delete the webhook:                                                                         
+  - The webhook endpoint (a Service/pod) might still be running, and it would strip spec.headlamp                                             
+  - Or if the endpoint is down, the failurePolicy on the webhook decides what happens — if set to Fail, your patch would be rejected entirely;
+   if Ignore, it would pass through                                                                                                           
+                                                                                                                                              
+  That's why the script does both — scale down the operator (so it doesn't undo your changes) and delete the webhook (so it stops intercepting
+   your patches).                                                                                                                             
+                                          
+❯ but is it safe if i delete webhook?                                                                                                         
+                                          
+⏺ Yes, it's safe temporarily for local testing — as long as you restore it afterward.                                                         
+                                          
+  What you lose while the webhook is deleted:                                                                                                 
+  - No defaulting on Cluster objects (e.g., missing fields won't get auto-filled)                                                             
+  - No validation/mutation on Cluster create/update from other sources (UI, API, other controllers)                                           
+                                                                                                   
+  Why it's safe in your case:                                                                                                                 
+  - You're the only one making changes to that dev cluster                                                                                    
+  - The operator is scaled down, so nothing else is creating/modifying clusters                                                               
+  - Your test script already backs up and restores it:                                                                                        
+                                                                                                                                              
+  # Backup before deleting                                                                                                                    
+  kubectl get mutatingwebhookconfiguration kubermatic-clusters -o yaml > /tmp/mutating-webhook-clusters-backup.yaml                           
+                                                                                                                                              
+  # ... do your testing ...                                                                                                                   
+                                                  
+  # Restore when done                                                                                                                         
+  kubectl apply -f /tmp/mutating-webhook-clusters-backup.yaml
+  kubectl -n kubermatic scale deploy kubermatic-operator --replicas=1
+                                                                                                                                              
+  Once the operator is scaled back to 1, it will also re-create the webhook automatically — so even if you forget to restore the backup, the  
+  operator will fix it.                                                                                                                       
+                                                                                                                                              
+  Don't do this on a shared/production cluster — other users' Cluster operations would bypass validation.     
+
+
+
+
+kubectl get crd clusters.kubermatic.k8c.io -ojsonpath='{.spec.versions[0].schema.openAPIV3Schema.properties.spec.properties.headlamp}' && echo
+
+
+⏺ # 1. Check if headlamp field exists in CRD schema                                                                       
+kubectl get crd clusters.kubermatic.k8c.io -ojsonpath='{.spec.versions[0].schema.openAPIV3Schema.properties.spec.properties.headlamp}' && echo
+                                                                                                                          
+  # 2. Check if headlamp is set on cluster object                                                                         
+  kubectl get cluster ${CLUSTER_ID} -o jsonpath='{.spec.headlamp}' && echo
+
+
+
+----
+
+kubectl patch cluster ${CLUSTER_ID} --type=merge -p '{"spec":{"headlamp":{"enabled":true}}}'
+
+Warning: unknown field "spec.headlamp"
+cluster.kubermatic.k8c.io/bdjghjndvs patched (no change)
+
+----
+
+
+k get mutatingwebhookconfigurations.admissionregistration.k8s.io
+NAME                                                   WEBHOOKS   AGE
+cert-manager-webhook                                   1          323d
+envoy-gateway-topology-injector.envoy-gateway-system   1          61d
+kubermatic-addons                                      1          270d
+kubermatic-application-definitions                     1          323d
+kubermatic-application-installations                   1          324d
+kubermatic-clusters                                    1          2m19s
+kubermatic-externalclusters                            1          323d
+kubermatic-mlaadminsettings                            1          270d
+kubermatic-usersshkeys                                 1          323d
+kyverno-policy-mutating-webhook-cfg                    1          300d
+kyverno-resource-mutating-webhook-cfg                  0          300d
+kyverno-verify-mutating-webhook-cfg                    1          300d
+machine-controller.kubermatic.io                       2          324d
+operating-system-manager.kubermatic.io                 1          324d
+vpa-webhook-config                                     1          142d

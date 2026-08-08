@@ -48,7 +48,7 @@ describe('Admin Settings - Defaults Story', () => {
     Pages.AdminSettings.Defaults.Elements.enableClusterCleanupCheckboxInput.should(Condition.NotBeChecked);
     Pages.AdminSettings.Defaults.Elements.enforceClusterCleanupCheckboxInput.should(Condition.NotBeChecked);
 
-    Pages.AdminSettings.Interface.Elements.enableKubernetesDashboardCheckboxInput.should(Condition.NotBeChecked);
+    Pages.AdminSettings.Interface.Elements.enableHeadlampCheckboxInput.should(Condition.NotBeChecked);
     Pages.AdminSettings.Interface.Elements.enableOIDCCheckboxInput.should(Condition.NotBeChecked);
     Pages.AdminSettings.Interface.Elements.enableExternalClustersCheckboxInput.should(Condition.BeChecked);
   });
@@ -111,8 +111,8 @@ describe('Admin Settings - Defaults Story', () => {
     Pages.Clusters.Details.Elements.deleteDialogCleanupVolumeCheckboxInput.should(Condition.NotBeChecked);
     Pages.Clusters.Details.Buttons.deleteClusterClose.click();
 
-    // Kubernetes Dashboard settings check
-    Pages.Clusters.Details.Buttons.openKubernetesDashboard.should(Condition.Exist);
+    // Headlamp settings check
+    Pages.Clusters.Details.Buttons.openHeadlamp.should(Condition.Exist);
   });
 
   it('should go to the admin settings and update default values - defaults and limits page', () => {
@@ -127,11 +127,11 @@ describe('Admin Settings - Defaults Story', () => {
 
   it('should go to the admin settings and update default values - interface page', () => {
     // TODO: There is some inconsistency in the test and the actual implementation, this button/setting appears as disabled sometimes
-    // Pages.AdminSettings.Interface.selectEnableKubernetesDashboard(false);
+    // Pages.AdminSettings.Interface.selectEnableHeadlamp(false);
     Pages.AdminSettings.Interface.selectEnableOIDCKubeconfig(true);
     Pages.AdminSettings.Interface.selectEnableExternalClusterImport(false);
 
-    // Pages.AdminSettings.Interface.Elements.enableKubernetesDashboardCheckboxInput.should(Condition.NotBeChecked);
+    // Pages.AdminSettings.Interface.Elements.enableHeadlampCheckboxInput.should(Condition.NotBeChecked);
     Pages.AdminSettings.Interface.Elements.enableOIDCCheckboxInput.should(Condition.BeChecked);
     Pages.AdminSettings.Interface.Elements.enableExternalClustersCheckboxInput.should(Condition.NotBeChecked);
   });
@@ -161,8 +161,8 @@ describe('Admin Settings - Defaults Story', () => {
     Pages.Clusters.Details.Buttons.deleteClusterClose.click();
 
     // TODO: There is some inconsistency in the test and the actual implementation, this button/setting appears as disabled sometimes
-    // Kubernetes Dashboard settings check
-    // Pages.Clusters.Details.Buttons.openKubernetesDashboard.should(Condition.NotExist);
+    // Headlamp settings check
+    // Pages.Clusters.Details.Buttons.openHeadlamp.should(Condition.NotExist);
   });
 
   it('should delete created project and logout', () => {

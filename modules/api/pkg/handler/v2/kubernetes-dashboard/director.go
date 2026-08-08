@@ -23,7 +23,7 @@ import (
 	"strings"
 )
 
-// dashboardProxyDirector is responsible for adjusting proxy request, so we can properly access Kubernetes Dashboard.
+// dashboardProxyDirector is responsible for adjusting proxy request, so we can properly access Headlamp.
 type dashboardProxyDirector struct {
 	proxyURL        *url.URL
 	token           string
@@ -48,17 +48,18 @@ func (director *dashboardProxyDirector) getAuthorizationHeader() string {
 
 // We need to get proper path to Dashboard API and strip the URL from the Kubermatic API request part.
 func (director *dashboardProxyDirector) getBasePath(path string) string {
-	separator := "proxy"
-	if !strings.Contains(path, separator) {
+	const separator = "/proxy"
+	idx := strings.LastIndex(path, separator)
+	if idx == -1 {
 		return "/"
 	}
 
-	parts := strings.Split(path, separator)
-	if len(parts) != 2 {
+	remainder := path[idx+len(separator):]
+	if remainder == "" {
 		return "/"
 	}
 
-	return parts[1]
+	return remainder
 }
 
 func newDashboardProxyDirector(proxyURL *url.URL, token string, request *http.Request) *dashboardProxyDirector {

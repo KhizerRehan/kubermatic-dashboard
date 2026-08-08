@@ -86,7 +86,6 @@ import {
   ANEXIA_DEPRECATED_MESSAGE,
   CLICK_TO_COPY_TOOLTIP,
   GO_BACK_TO_CLUSTER_LIST_TOOLTIP,
-  KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE,
   OPA_DEPRECATED_MESSAGE,
 } from '@app/shared/constants/common';
 
@@ -110,7 +109,6 @@ export class ClusterDetailsComponent implements OnInit, OnDestroy {
   readonly isEnterpriseEdition = DynamicModule.isEnterpriseEdition;
   readonly ANEXIA_DEPRECATED_MESSAGE = ANEXIA_DEPRECATED_MESSAGE;
   readonly CLICK_TO_COPY_TOOLTIP = CLICK_TO_COPY_TOOLTIP;
-  readonly KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE = KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE;
   readonly OPA_DEPRECATED_MESSAGE = OPA_DEPRECATED_MESSAGE;
   readonly GO_BACK_TO_CLUSTER_LIST_TOOLTIP = GO_BACK_TO_CLUSTER_LIST_TOOLTIP;
   adminSettings: AdminSettings;
@@ -156,7 +154,7 @@ export class ClusterDetailsComponent implements OnInit, OnDestroy {
     return this.healthStatus?.message === StatusMassage?.Deleting;
   }
 
-  get isKubernetesDashboardHealthy(): boolean {
+  get isHeadlampHealthy(): boolean {
     return this.cluster?.spec?.kubernetesDashboard?.enabled && this.health?.kubernetesDashboard === HealthState.Up;
   }
 
@@ -433,7 +431,7 @@ export class ClusterDetailsComponent implements OnInit, OnDestroy {
   }
 
   getProxyURL(): string {
-    return this._clusterService.getDashboardProxyURL(this.projectID, this.cluster.id);
+    return this._clusterService.getHeadlampProxyURL(this.projectID, this.cluster.id);
   }
 
   getExternalCCMMigrationStatus(): string {
@@ -709,14 +707,14 @@ export class ClusterDetailsComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  getOpenDashboardTooltip(): string {
+  getOpenHeadlampTooltip(): string {
     if (this.isDeletingState) {
       return this.clusterDeletionTooltip;
     }
-    if (!this.isKubernetesDashboardHealthy) {
+    if (!this.isHeadlampHealthy) {
       return this.cluster?.spec?.kubernetesDashboard?.enabled
-        ? 'Kubernetes Dashboard is not running'
-        : 'Kubernetes Dashboard is disabled';
+        ? 'Headlamp is not running'
+        : 'Headlamp is disabled';
     }
     return '';
   }

@@ -31,8 +31,8 @@ export class Interface extends PageOptions implements Page {
     this.Elements.navItem.click();
   }
 
-  selectEnableKubernetesDashboard(selected: boolean) {
-    this.Elements.enableKubernetesDashboardCheckbox.click().then(_ => {
+  selectEnableHeadlamp(selected: boolean) {
+    this.Elements.enableHeadlampCheckbox.click().then(_ => {
       this._strategy?.onSettingsChange({
         enableDashboard: selected,
       });
@@ -82,12 +82,12 @@ class Elements extends PageOptions {
     return this._get(`${this._secondLastCustomLink} > button`);
   }
 
-  get enableKubernetesDashboardCheckbox(): Cypress.Chainable {
-    return this._get('#km-enable-kubernetes-dashboard-setting');
+  get enableHeadlampCheckbox(): Cypress.Chainable {
+    return this._get('#km-enable-headlamp-setting');
   }
 
-  get enableKubernetesDashboardCheckboxInput(): Cypress.Chainable {
-    return this._get('#km-enable-kubernetes-dashboard-setting input');
+  get enableHeadlampCheckboxInput(): Cypress.Chainable {
+    return this._get('#km-enable-headlamp-setting input');
   }
 
   get enableOIDCCheckbox(): Cypress.Chainable {

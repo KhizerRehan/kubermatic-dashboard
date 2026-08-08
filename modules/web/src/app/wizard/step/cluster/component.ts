@@ -77,7 +77,6 @@ import {
 import {getEditionVersion} from '@shared/utils/common';
 import {
   GENERATE_NAME_TOOLTIP,
-  KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE,
   OPA_DEPRECATED_MESSAGE,
 } from '@app/shared/constants/common';
 import {AsyncValidators} from '@shared/validators/async.validators';
@@ -211,7 +210,6 @@ export class ClusterStepComponent extends StepBase implements OnInit, ControlVal
   readonly AuditPolicyPreset = AuditPolicyPreset;
   readonly IPFamily = IPFamily;
   readonly NodeProvider = NodeProvider;
-  readonly KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE = KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE;
   readonly OPA_DEPRECATED_MESSAGE = OPA_DEPRECATED_MESSAGE;
   readonly GENERATE_NAME_TOOLTIP = GENERATE_NAME_TOOLTIP;
   private _datacenterSpec: Datacenter;
@@ -225,7 +223,7 @@ export class ClusterStepComponent extends StepBase implements OnInit, ControlVal
   private readonly _cniCiliumApplicationName = 'cilium';
   private readonly _debounceTime = 500;
 
-  get isKubernetesDashboardEnabled(): boolean {
+  get isHeadlampEnabled(): boolean {
     return this._settings.enableDashboard;
   }
 
@@ -871,7 +869,7 @@ export class ClusterStepComponent extends StepBase implements OnInit, ControlVal
             clusterSpec?.clusterNetwork?.konnectivityEnabled ?? this.controlValue(Controls.Konnectivity),
           [Controls.MLALogging]: clusterSpec?.mla?.loggingEnabled ?? this.controlValue(Controls.MLALogging),
           [Controls.KubernetesDashboardEnabled]:
-            (this.isKubernetesDashboardEnabled && clusterSpec?.kubernetesDashboard?.enabled) ??
+            (this.isHeadlampEnabled && clusterSpec?.kubernetesDashboard?.enabled) ??
             this.controlValue(Controls.KubernetesDashboardEnabled),
           [Controls.MLAMonitoring]: clusterSpec?.mla?.monitoringEnabled ?? this.controlValue(Controls.MLAMonitoring),
           [Controls.AdmissionPlugins]: clusterSpec?.admissionPlugins ?? this.controlValue(Controls.AdmissionPlugins),

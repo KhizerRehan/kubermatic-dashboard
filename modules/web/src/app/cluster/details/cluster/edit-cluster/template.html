@@ -286,16 +286,10 @@ limitations under the License.
       </mat-checkbox>
       }
 
-      @if (isKubernetesDashboardEnable) {
+      @if (isHeadlampEnabled) {
       <mat-checkbox [formControlName]="Controls.KubernetesDashboardEnabled"
                     kmValueChangedIndicator>
-        <div fxLayout="row"
-             fxLayoutAlign=" center">
-          <span>Kubernetes Dashboard</span>
-          <i class="km-icon-warning km-pointer"
-             style="margin: 0 10px"
-             [matTooltip]="KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE"></i>
-        </div>
+        Headlamp
       </mat-checkbox>
       }
 

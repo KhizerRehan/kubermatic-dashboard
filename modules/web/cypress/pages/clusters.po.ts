@@ -154,8 +154,8 @@ export class ClustersPage {
     return cy.get('#km-delete-cluster-volume-cleanup');
   }
 
-  static getOpenKubernetesDashboardButton(): Cypress.Chainable {
-    return cy.get('#km-open-kubernetes-dashboard-btn');
+  static getOpenHeadlampButton(): Cypress.Chainable {
+    return cy.get('#km-open-headlamp-btn');
   }
 
   static getShareKubeconfigButton(): Cypress.Chainable {

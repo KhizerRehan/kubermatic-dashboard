@@ -163,17 +163,15 @@ limitations under the License.
           <div fxFlex="16%"
                fxLayoutAlign=" center"
                class="entry-label">
-            <span>Enable Kubernetes Dashboard</span>
+            <span>Enable Headlamp</span>
             <div class="km-icon-info km-pointer"
-                 matTooltip='Show/Hide "Open Dashboard" button on cluster details and allow/block Kubernetes Dashboard access through the API.'></div>
-            <i class="km-icon-warning km-pointer"
-               [matTooltip]="KUBERNETES_DASHBOARD_DEPRECATED_MESSAGE"></i>
+                 matTooltip='Show/Hide "Open Headlamp" button on cluster details and allow/block Headlamp access through the API.'></div>
           </div>
           <mat-checkbox [(ngModel)]="settings.enableDashboard"
                         (change)="onSettingsChange()"
-                        [disabled]="!isKubernetesDashboardFeatureGatesEnabled()"
-                        id="km-enable-kubernetes-dashboard-setting">
-            @if (!isKubernetesDashboardFeatureGatesEnabled()) {
+                        [disabled]="!isHeadlampFeatureGatesEnabled()"
+                        id="km-enable-headlamp-setting">
+            @if (!isHeadlampFeatureGatesEnabled()) {
             <mat-hint>This feature requires both OIDC Kubeconfig and OpenID Auth Plugin feature flags to be enabled.
               @if (getDocumentationLink()) {
               Visit the
